@@ -75,16 +75,17 @@
         }
         .whatsapp-button {
             display: inline-block;
-            background: #25D366;
-            color: white;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
             margin-top: 10px;
+            position: relative; /* Pour l'animation */
+            animation: float 3s infinite;
         }
-        .whatsapp-button:hover {
-            background: #1DAF57;
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
         .stars {
             color: #FFD700; /* Gold color */
@@ -114,6 +115,34 @@
             position: relative;
             bottom: 0;
             width: 100%;
+        }
+        .rating {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .star {
+            cursor: pointer;
+            font-size: 24px;
+            color: #FFD700; /* Gold color */
+        }
+        .email-input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 80%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .submit-button {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -151,56 +180,19 @@
         <p>Voici quelques-unes de mes formations phares :</p>
         <ul>
             <li>
-                <strong>Devenir expert en Python en 30 jours</strong> : apprenez à maîtriser ce langage puissant en un mois seulement ! 
+                <strong>Devenir expert en Python en 30 jours</strong> : apprenez à maîtriser ce langage puissant en un mois seulement! 
                 <span class="stars">★★★★★</span>
                 <div class="review">"Une formation incroyable, très bien expliquée!" - Marie</div>
                 <div class="review">"J'ai beaucoup appris en peu de temps." - Paul</div>
                 <div class="review">"Formation bien structurée!" - Sophie</div>
                 <div class="review">"Je recommande vivement!" - Julien</div>
             </li>
-            <li>
-                <strong>Hacking éthique : les bases en 10 étapes</strong> : découvrez les techniques des hackers pour mieux vous défendre 
-                <span class="stars">★★★★★</span>
-                <div class="review">"Très utile pour comprendre la cybersécurité." - Alice</div>
-                <div class="review">"Formation complète et interactive." - Lucas</div>
-                <div class="review">"Les exercices pratiques sont excellents." - Emma</div>
-                <div class="review">"Une excellente introduction au hacking éthique." - Thomas</div>
-            </li>
-            <li>
-                <strong>Créez votre blog professionnel en 1 heure</strong> : lancez rapidement votre blog pour votre activité ou votre marque 
-                <span class="stars">★★★★★</span>
-                <div class="review">"Facile à suivre, très pratique!" - Clara</div>
-                <div class="review">"J'ai lancé mon blog en un rien de temps!" - Maxime</div>
-                <div class="review">"Super conseils et astuces." - Léa</div>
-                <div class="review">"Je ne pensais pas que ce serait si simple." - Antoine</div>
-            </li>
-            <li>
-                <strong>HTML & CSS : Créez des sites web modernes</strong> : apprenez les bases du développement web 
-                <span class="stars">★★★★☆</span>
-                <div class="review">"Une bonne introduction, mais j'aurais aimé plus d'exemples." - Hugo</div>
-                <div class="review">"Formation intéressante." - Inès</div>
-                <div class="review">"Les ressources fournies sont très utiles." - Chloé</div>
-                <div class="review">"J'ai appris beaucoup de choses." - Samuel</div>
-            </li>
-            <li>
-                <strong>JavaScript : Dynamisez vos pages web</strong> : rendez vos sites interactifs avec ce langage puissant 
-                <span class="stars">★★★★☆</span>
-                <div class="review">"Une formation très dynamique!" - Camille</div>
-                <div class="review">"Les projets pratiques sont géniaux." - Nathan</div>
-                <div class="review">"Un peu complexe par moments, mais très enrichissant." - Émilie</div>
-                <div class="review">"J'ai adoré les exercices pratiques." - Olivier</div>
-            </li>
-            <li>
-                <strong>C/C++ : Programmation avancée</strong> : maîtrisez les notions essentielles de ces langages 
-                <span class="stars">★★★☆☆</span>
-                <div class="review">"Un peu difficile pour les débutants." - Laura</div>
-                <div class="review">"De bonnes bases, mais un peu théorique." - Julien</div>
-                <div class="review">"J'ai appris des concepts avancés." - Sarah</div>
-                <div class="review">"La formation est bien, mais un peu trop rapide." - Victor</div>
-            </li>
+            <!-- Ajoutez d'autres formations ici -->
         </ul>
-        <a href="#" class="cta-button">S'inscrire maintenant</a>
-        <a href="https://wa.me/237653817752" class="whatsapp-button">Contactez-moi sur WhatsApp</a>
+        <a href="https://wa.me/237653817752?text=Je%20souhaite%20demander%20un%20devis" class="cta-button">Demandez un devis</a>
+        <a href="https://wa.me/237653817752" class="whatsapp-button">
+            <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="Contactez-moi sur WhatsApp" style="width: 50px; height: 50px;">
+        </a>
     </section>
 
     <section id="installation-gps">
@@ -218,7 +210,6 @@
             <li>Historique des trajets pour une meilleure gestion de votre véhicule</li>
         </ul>
         <p>Ne laissez pas votre véhicule sans protection ! Contactez-moi pour plus d'informations et pour un devis gratuit.</p>
-        <a href="#" class="cta-button">Demandez un devis</a>
     </section>
 
     <section id="pourquoi-me-choisir">
@@ -229,6 +220,21 @@
             <li>Cours en ligne et en groupe pour un apprentissage optimal</li>
             <li>Conseils personnalisés pour atteindre vos objectifs</li>
         </ul>
+    </section>
+
+    <section id="evaluation">
+        <h2>Évaluez mes formations</h2>
+        <p>Votre avis compte ! Évaluez votre formation :</p>
+        <input type="email" id="email" class="email-input" placeholder="Entrez votre adresse Gmail" required>
+        <div class="rating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
+        <p id="rating-result"></p>
+        <a href="#" class="submit-button" id="submit-rating">Soumettre l'évaluation</a>
     </section>
 
     <section id="contact">
@@ -253,6 +259,41 @@
         link.addEventListener('mouseout', () => {
             link.style.backgroundColor = 'transparent';
         });
+    });
+
+    // Évaluation des formations
+    const stars = document.querySelectorAll('.star');
+    const ratingResult = document.getElementById('rating-result');
+    const emailInput = document.getElementById('email');
+    const submitButton = document.getElementById('submit-rating');
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const ratingValue = star.getAttribute('data-value');
+            ratingResult.textContent = `Vous avez évalué la formation avec ${ratingValue} étoiles. Merci !`;
+            stars.forEach(s => {
+                s.style.color = s.getAttribute('data-value') <= ratingValue ? '#FFD700' : '#333';
+            });
+            submitButton.style.display = 'inline-block'; // Afficher le bouton de soumission
+        });
+    });
+
+    // Soumission de l'évaluation
+    submitButton.addEventListener('click', () => {
+        const ratingValue = Array.from(stars).find(star => star.style.color === 'rgb(255, 215, 0)').getAttribute('data-value');
+        const email = emailInput.value;
+
+        if (email) {
+            const message = `Évaluation reçue : ${ratingValue} étoiles de ${email}`;
+            const whatsappLink = `https://wa.me/237653817752?text=${encodeURIComponent(message)}`;
+            window.open(whatsappLink, '_blank');
+            ratingResult.textContent = 'Merci pour votre évaluation !';
+            emailInput.value = ''; // Réinitialiser le champ email
+            stars.forEach(s => s.style.color = '#333'); // Réinitialiser les étoiles
+            submitButton.style.display = 'none'; // Cacher le bouton de soumission
+        } else {
+            alert('Veuillez entrer une adresse Gmail valide.');
+        }
     });
 </script>
 
