@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Questionnaire</title>
+    <title>Dongle Bot</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,6 +20,13 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
+        .chat-header {
+            background-color: #25d366;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 24px;
+        }
         .messages {
             height: 400px;
             overflow-y: auto;
@@ -34,6 +41,8 @@
             max-width: 75%;
             position: relative;
             word-wrap: break-word;
+            display: flex;
+            align-items: center;
         }
         .message.user {
             background-color: #dcf8c6;
@@ -42,6 +51,20 @@
         .message.bot {
             background-color: #f1f0f0;
             align-self: flex-start;
+        }
+        .message .status {
+            margin-left: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+        .message .status.seen {
+            color: #34b7f1;
+        }
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            font-style: italic;
+            color: blue;
         }
         .input-container {
             display: flex;
@@ -68,7 +91,9 @@
 </head>
 <body>
     <div class="chat-container">
+        <div class="chat-header">Dongle Bot</div>
         <div class="messages" id="messages"></div>
+        <div class="typing-indicator" id="typingIndicator">Dongle Bot est en train d'écrire...</div>
         <div class="input-container">
             <input type="text" id="userInput" placeholder="Écrivez un message..." />
             <button onclick="sendMessage()">Envoyer</button>
@@ -77,6 +102,7 @@
 
     <script>
         const messagesDiv = document.getElementById('messages');
+        const typingIndicator = document.getElementById('typingIndicator');
         let currentStep = 0;
         const questions = [
             "Quel est votre nom ?",
@@ -91,32 +117,50 @@
             const userMessage = userInput.value.trim();
 
             if (userMessage) {
-                addMessage(userMessage, 'user');
+                addMessage(userMessage, 'user', '✓✓');
                 userResponses[currentStep] = userMessage; // Stocker la réponse de l'utilisateur
                 userInput.value = '';
                 currentStep++;
 
                 if (currentStep < questions.length) {
-                    respondToQuestionnaire(questions[currentStep]);
+                    showTypingIndicator();
+                    setTimeout(() => {
+                        hideTypingIndicator();
+                        respondToQuestionnaire(questions[currentStep]);
+                    }, 4000);
                 } else {
                     addMessage(questions[questions.length - 1], 'bot'); // Dernier message
                 }
             }
         }
 
-        function addMessage(text, sender) {
+        function addMessage(text, sender, status = '') {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
             messageDiv.textContent = text;
+
+            if (status) {
+                const statusSpan = document.createElement('span');
+                statusSpan.className = 'status seen';
+                statusSpan.textContent = status;
+                messageDiv.appendChild(statusSpan);
+            }
+
             messagesDiv.appendChild(messageDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll to the bottom
         }
 
+        function showTypingIndicator() {
+            typingIndicator.style.display = 'block';
+        }
+
+        function hideTypingIndicator() {
+            typingIndicator.style.display = 'none';
+        }
+
         function respondToQuestionnaire(question) {
-            setTimeout(() => {
-                addMessage(question, 'bot');
-            }, 1000);
+            addMessage(question, 'bot');
         }
     </script>
 </body>
-          </html>
+</html>
