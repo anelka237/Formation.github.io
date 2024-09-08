@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Questionnaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e5ddd5;
+            margin: 0;
+            padding: 0;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 75%;
+            position: relative;
+            word-wrap: break-word;
+        }
+        .message.user {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+        }
+        .message.bot {
+            background-color: #f1f0f0;
+            align-self: flex-start;
+        }
+        .input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+        }
+        .input-container input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-radius: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .input-container button {
+            border: none;
+            background-color: #25d366;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="messages" id="messages"></div>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Écrivez un message..." />
+            <button onclick="sendMessage()">Envoyer</button>
+        </div>
+    </div>
+
+    <script>
+        const messagesDiv = document.getElementById('messages');
+        let currentStep = 0;
+        const questions = [
+            "Quel est votre nom ?",
+            "Avez-vous déjà suivi une formation en programmation ou en sécurité informatique ?",
+            "Quelle formation vous intéresse le plus parmi celles proposées ?",
+            "Merci pour vos réponses !"
+        ];
+        const userResponses = [];
+
+        function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const userMessage = userInput.value.trim();
+
+            if (userMessage) {
+                addMessage(userMessage, 'user');
+                userResponses[currentStep] = userMessage; // Stocker la réponse de l'utilisateur
+                userInput.value = '';
+                currentStep++;
+
+                if (currentStep < questions.length) {
+                    respondToQuestionnaire(questions[currentStep]);
+                } else {
+                    addMessage(questions[questions.length - 1], 'bot'); // Dernier message
+                }
+            }
+        }
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.textContent = text;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll to the bottom
+        }
+
+        function respondToQuestionnaire(question) {
+            setTimeout(() => {
+                addMessage(question, 'bot');
+            }, 1000);
+        }
+    </script>
+</body>
+          </html>
