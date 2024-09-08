@@ -24,7 +24,8 @@
             justify-content: center;
             background: #333;
             padding: 10px 0;
-            transition: background 0.3s;
+            overflow-x: auto;
+            white-space: nowrap;
         }
         nav a {
             color: white;
@@ -156,6 +157,7 @@
     <a href="#qui-suis-je">Qui suis-je ?</a>
     <a href="#mes-formations">Mes formations</a>
     <a href="#installation-gps">Installation de GPS</a>
+    <a href="#securite-informatique">Sécurité Informatique</a>
     <a href="#pourquoi-me-choisir">Pourquoi me choisir ?</a>
     <a href="#contact">Contact</a>
 </nav>
@@ -214,36 +216,47 @@
         <a href="https://wa.me/237653817752?text=Je%20veux%20installer%20Mon GpS%20aujourd'hui " class="cta-button">installer mon GPS aujourd'hui</a>
     </section>
 
-    <section id="pourquoi-me-choisir">
-        <h2>Pourquoi me choisir ?</h2>
+    <section id="securite-informatique">
+        <h2>Sécurité Informatique</h2>
+        <p>La sécurité informatique est cruciale dans notre monde connecté. Mes services incluent :</p>
         <ul>
-            <li>Formateur passionné et pédagogue avec 3 ans d'expérience</li>
-            <li>Tarifs abordables et garantie satisfait ou remboursé</li>
-            <li>Cours en ligne et en groupe pour un apprentissage optimal</li>
-            <li>Conseils personnalisés pour atteindre vos objectifs</li>
+            <li>Évaluations de la sécurité des systèmes</li>
+            <li>Formation en hacking éthique</li>
+          <section id="securite-informatique">
+        <h2>Sécurité Informatique</h2>
+        <p>La sécurité informatique est cruciale dans notre monde connecté. Mes services incluent :</p>
+        <ul>
+            <li>Évaluations de la sécurité des systèmes</li>
+            <li>Formation en hacking éthique</li>
+            <li>Conseils pour sécuriser vos données personnelles et professionnelles</li>
+            <li>Tests de pénétration pour identifier les vulnérabilités</li>
         </ul>
+        <p>Protégez vos informations sensibles et assurez-vous que vos systèmes sont sécurisés contre les menaces potentielles. Contactez-moi pour plus de détails et pour organiser une consultation.</p>
+        <a href="https://wa.me/237653817752?text=Je%20souhaite%20une%20consultation%20en%20sécurité%20informatique" class="cta-button">Demander une consultation</a>
     </section>
 
-    <section id="evaluation">
-        <h2>Évaluez mes formations</h2>
-        <p>Votre avis compte ! Évaluez votre formation :</p>
-        <input type="email" id="email" class="email-input" placeholder="Entrez votre adresse Gmail" required>
-        <div class="rating">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-        </div>
-        <p id="rating-result"></p>
-        <a href="#" class="submit-button" id="submit-rating">Soumettre l'évaluation</a>
+    <section id="pourquoi-me-choisir">
+        <h2>Pourquoi me choisir ?</h2>
+        <p>Avec mon expertise en construction automobile, mécatronique et sécurité informatique, je propose des services complets et professionnels. Voici quelques raisons pour lesquelles mes clients me font confiance :</p>
+        <ul>
+            <li>Expertise technique et expérience professionnelle</li>
+            <li>Approche personnalisée et solutions adaptées</li>
+            <li>Formation continue et mise à jour régulière des compétences</li>
+            <li>Engagement à fournir des services de qualité</li>
+        </ul>
     </section>
 
     <section id="contact">
         <h2>Contact</h2>
-        <p>N'hésitez pas à me contacter pour toute demande :</p>
-        <p>Téléphone : <strong>+237 653817752</strong><br>
-        Email : <strong>zentronix237@gmail.com</strong></p>
+        <p>Pour toute demande de renseignements, devis ou prise de rendez-vous, veuillez me contacter via WhatsApp ou remplir le formulaire ci-dessous :</p>
+        <a href="https://wa.me/237653817752" class="whatsapp-button">
+            <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="Contactez-moi sur WhatsApp" style="width: 50px; height: 50px;">
+        </a>
+        <form>
+            <input type="email" class="email-input" placeholder="Votre email">
+            <textarea class="email-input" placeholder="Votre message"></textarea>
+            <button type="submit" class="submit-button">Envoyer</button>
+        </form>
     </section>
 </main>
 
@@ -251,53 +264,6 @@
     <p>&copy; 2024 Le Zen. Tous droits réservés.</p>
 </footer>
 
-<script>
-    // JavaScript pour les animations de menu
-    const navLinks = document.querySelectorAll('nav a');
-    navLinks.forEach(link => {
-        link.addEventListener('mouseover', () => {
-            link.style.backgroundColor = '#4CAF50';
-        });
-        link.addEventListener('mouseout', () => {
-            link.style.backgroundColor = 'transparent';
-        });
-    });
-
-    // Évaluation des formations
-    const stars = document.querySelectorAll('.star');
-    const ratingResult = document.getElementById('rating-result');
-    const emailInput = document.getElementById('email');
-    const submitButton = document.getElementById('submit-rating');
-
-    stars.forEach(star => {
-        star.addEventListener('click', () => {
-            const ratingValue = star.getAttribute('data-value');
-            ratingResult.textContent = `Vous avez évalué la formation avec ${ratingValue} étoiles. Merci !`;
-            stars.forEach(s => {
-                s.style.color = s.getAttribute('data-value') <= ratingValue ? '#FFD700' : '#333';
-            });
-            submitButton.style.display = 'inline-block'; // Afficher le bouton de soumission
-        });
-    });
-
-    // Soumission de l'évaluation
-    submitButton.addEventListener('click', () => {
-        const ratingValue = Array.from(stars).find(star => star.style.color === 'rgb(255, 215, 0)').getAttribute('data-value');
-        const email = emailInput.value;
-
-        if (email) {
-            const message = `Évaluation reçue : ${ratingValue} étoiles de ${email}`;
-            const whatsappLink = `https://wa.me/237653817752?text=${encodeURIComponent(message)}`;
-            window.open(whatsappLink, '_blank');
-            ratingResult.textContent = 'Merci pour votre évaluation !';
-            emailInput.value = ''; // Réinitialiser le champ email
-            stars.forEach(s => s.style.color = '#333'); // Réinitialiser les étoiles
-            submitButton.style.display = 'none'; // Cacher le bouton de soumission
-        } else {
-            alert('Veuillez entrer une adresse Gmail valide.');
-        }
-    });
-</script>
-
 </body>
 </html>
+
