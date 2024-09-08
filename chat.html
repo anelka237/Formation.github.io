@@ -51,6 +51,14 @@
         .message.bot {
             background-color: #f1f0f0;
             align-self: flex-start;
+            display: flex;
+            align-items: center;
+        }
+        .message.bot img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
         }
         .message .status {
             margin-left: 10px;
@@ -108,7 +116,7 @@
             "Quel est votre nom ?",
             "Avez-vous déjà suivi une formation en programmation ou en sécurité informatique ?",
             "Quelle formation vous intéresse le plus parmi celles proposées ?",
-            "Merci pour vos réponses !"
+            "Merci pour vos réponses ! Je vous redirige vers WhatsApp pour finaliser la prise de contact."
         ];
         const userResponses = [];
 
@@ -118,7 +126,7 @@
 
             if (userMessage) {
                 addMessage(userMessage, 'user', '✓✓');
-                userResponses[currentStep] = userMessage; // Stocker la réponse de l'utilisateur
+                userResponses[currentStep] = userMessage;
                 userInput.value = '';
                 currentStep++;
 
@@ -127,9 +135,9 @@
                     setTimeout(() => {
                         hideTypingIndicator();
                         respondToQuestionnaire(questions[currentStep]);
-                    }, 4000);
+                    }, 2000);
                 } else {
-                    addMessage(questions[questions.length - 1], 'bot'); // Dernier message
+                    openWhatsApp();
                 }
             }
         }
@@ -137,7 +145,12 @@
         function addMessage(text, sender, status = '') {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
-            messageDiv.textContent = text;
+            if (sender === 'bot') {
+                const botImg = document.createElement('img');
+                botImg.src = 'https://i.ibb.co/HXt8ckq/51-Dy-I2-Lgj4-L-AC-UF894-1000-QL80-prev-ui.png';
+                messageDiv.appendChild(botImg);
+            }
+            messageDiv.appendChild(document.createTextNode(text));
 
             if (status) {
                 const statusSpan = document.createElement('span');
@@ -147,7 +160,7 @@
             }
 
             messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll to the bottom
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
         function showTypingIndicator() {
@@ -159,7 +172,15 @@
         }
 
         function respondToQuestionnaire(question) {
-            addMessage(question, 'bot');
+            if (currentStep < questions.length) {
+                addMessage(question, 'bot');
+            }
+        }
+
+        function openWhatsApp() {
+            const userResponsesString = userResponses.join(', ');
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=237653817752&text=Bonjour,%20j'aimerais%20prendre%20contact%20avec%20vous%20pour%20discuter%20de%20votre%20demande:%20${encodeURIComponent(userResponsesString)}`;
+            window.open(whatsappUrl, '_blank');
         }
     </script>
 </body>
