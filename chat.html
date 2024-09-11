@@ -1,4 +1,4 @@
-I<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -95,6 +95,19 @@ I<!DOCTYPE html>
             margin-left: 10px;
             cursor: pointer;
         }
+        .menu {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .menu a {
+            text-decoration: none;
+            color: white;
+            background-color: #25d366;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 5px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +120,10 @@ I<!DOCTYPE html>
             <button onclick="sendMessage()">Envoyer</button>
         </div>
     </div>
+    
+    <div class="menu">
+        <a href="index.html">Accueil</a>
+    </div>
 
     <script>
         const messagesDiv = document.getElementById('messages');
@@ -115,11 +132,11 @@ I<!DOCTYPE html>
         const questions = [
             "Quel est votre nom ?",
             "Avez-vous déjà suivi une formation en programmation ou en sécurité informatique ?",
-            "Quelle formation vous intéresse le plus parmi celles proposées ?",
-            "Merci pour vos réponses ! Je vous redirige vers WhatsApp pour finaliser la prise de contact entre votre nom."
+            "Quelle formation vous intéresse le plus parmi celles proposées : Python, HTML/CSS, C/C++, PHP/MySQL, ou autre ?",
+            "Merci pour vos réponses ! Je vous redirige vers WhatsApp pour finaliser la prise de contact."
         ];
         const userResponses = [];
-
+        
         function sendMessage() {
             const userInput = document.getElementById('userInput');
             const userMessage = userInput.value.trim();
@@ -134,7 +151,7 @@ I<!DOCTYPE html>
                     showTypingIndicator();
                     setTimeout(() => {
                         hideTypingIndicator();
-                        respondToQuestionnaire(questions[currentStep]);
+                        respondToQuestionnaire(userResponses, currentStep);
                     }, 2000);
                 } else {
                     openWhatsApp();
@@ -171,17 +188,36 @@ I<!DOCTYPE html>
             typingIndicator.style.display = 'none';
         }
 
-        function respondToQuestionnaire(question) {
-            if (currentStep < questions.length) {
-                addMessage(question, 'bot');
+        function respondToQuestionnaire(responses, step) {
+            let botResponse = "";
+
+            if (step === 1) {
+                botResponse = `Enchanté, ${responses[step - 1]}! Avez-vous déjà suivi une formation en programmation ou en sécurité informatique ?`;
+            } else if (step === 2) {
+                const response = responses[step - 1].toLowerCase();
+                if (response.includes("oui")) {
+                    botResponse = "C'est génial ! Quelle formation vous intéresse le plus parmi celles proposées : Python, HTML/CSS, C/C++, PHP/MySQL, ou autre ?";
+                } else if (response.includes("non")) {
+                    botResponse = "Pas de problème ! Quelle formation vous intéresse le plus parmi celles proposées : Python, HTML/CSS, C/C++, PHP/MySQL, ou autre ?";
+                } else {
+                    botResponse = "Je n'ai pas bien compris votre réponse. Avez-vous déjà suivi une formation en programmation ou en sécurité informatique ?";
+                    currentStep--; // Repose la même question
+                }
+            } else if (step === 3) {
+                botResponse = `Merci pour vos réponses ! Nous offrons des formations complètes et adaptées à tous les niveaux en Python, HTML/CSS, C/C++, PHP/MySQL et autres. Je vous redirige vers WhatsApp pour finaliser la prise de contact.`;
             }
+
+            addMessage(botResponse, 'bot');
         }
 
         function openWhatsApp() {
             const userResponsesString = userResponses.join(', ');
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=237653817752&text=Bonjour,%20j'aimerais%20prendre%20contact%20avec%20vous%20pour%20discuter%20de%20 la formation %20 historique de discussion avec Dongle bot:%20${encodeURIComponent(userResponsesString)}`;
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=237653817752&text=Bonjour,%20j'aimerais%20prendre%20contact%20avec%20vous%20pour%20discuter%20de%20votre%20demande:%20${encodeURIComponent(userResponsesString)}`;
             window.open(whatsappUrl, '_blank');
         }
+
+        // Initial bot message
+        addMessage(questions[0], 'bot');
     </script>
 </body>
 </html>
