@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelance Developer</title>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #222;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+        header img {
+            max-width: 100px;
+            margin-right: 20px;
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+            background-image: url('https://i.ibb.co/yhHkQGc/freelancing.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh; 
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .lock-image {
+            width: 100px;
+            margin: 20px 0;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"], input[type="email"], button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 25px; 
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049; 
+        }
+        .vip-message {
+            color: white; 
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://i.ibb.co/rd7Wjwn/FB-IMG-17269485672157075-removebg-preview.png" alt="Logo">
+    <h1>Freelance Developer</h1>
+</header>
+
+<div class="container">
+    <h2>Les portes de la formation sont fermées</h2>
+    <img src="https://i.ibb.co/bWQWYWw/cadenas-et-signal-d-avertissement-19499766-removebg-preview.png" alt="Cadenas" class="lock-image">
+    <p class="vip-message">Pour être au courant de l’ouverture des inscriptions en priorité, inscrivez-vous sur la <strong>liste VIP ci-dessous</strong>.</p>
+    <form id="signup-form">
+        <input type="text" id="name" placeholder="Nom" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <button type="submit">S'inscrire</button>
+    </form>
+</div>
+
+<script>
+    // Initialiser EmailJS
+    (function(){
+        emailjs.init("YOUR_USER_ID"); // Remplacez YOUR_USER_ID par votre ID d'utilisateur EmailJS
+    })();
+
+    document.getElementById('signup-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+
+        // Envoyer l'e-mail
+        emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+            name: name,
+            email: email
+        })
+        .then(function(response) {
+            alert('Inscription réussie !');
+        }, function(error) {
+            alert('Erreur lors de l\'inscription. Veuillez réessayer.');
+        });
+    });
+</script>
+
+</body>
+</html>
