@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code avec Sonzia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            background-color: #000;
+        }
+        header {
+            background-color: #000;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header img {
+            max-width: 150px;
+            width: 100%;
+            height: auto;
+        }
+        header .title {
+            font-size: 2em;
+            animation: fadeIn 3s infinite alternate;
+            margin-left: 20px;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .main-content {
+            background-image: url("https://i.ibb.co/Fx4pGV9/close-up-mains-personne-train-taper-clavier-ordinateur-portable-eclaire-par-ecran-dans-piece-sombre.jpg");
+            background-size: cover;
+            text-align: center;
+            padding: 80px 20px;
+            background-position: center;
+        }
+        .main-content h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .main-content .btn {
+            display: inline-block;
+            margin: 20px;
+            padding: 20px 40px;
+            color: #fff;
+            background-color: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .main-content .btn.secondary {
+            background-color: #fff;
+            color: #000;
+        }
+        .main-content .btn:hover {
+            background-color: #45a049;
+        }
+        .profile {
+            background-color: #111;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .profile {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+        }
+        .profile img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+        .profile .info {
+            text-align: center;
+            margin: 10px 0;
+        }
+        @media (min-width: 768px) {
+            .profile .info {
+                text-align: left;
+            }
+        }
+        .profile .info h3 {
+            margin: 0;
+        }
+        .profile .info a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        address {
+            text-align: center;
+            color: #fff;
+            margin: 20px 0;
+        }
+        footer {
+            background-color: #111;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://i.ibb.co/HDvdvZ8/FB-IMG-17269485672157075.jpg" alt="Logo Code avec Sonzia">
+        <div class="title">Code avec Sonzia</div>
+    </header>
+    <div class="main-content">
+        <h1>Devenez développeur professionnel.</h1>
+        <a href="#" class="btn">Apprendre à coder maintenant</a>
+        <a href="#" class="btn secondary">Devenir développeur freelance</a>
+    </div>
+    <div class="profile">
+        <img src="https://i.ibb.co/F39RrxG/IMG-20240903-202416.jpg" alt="Sonzia">
+        <div class="info">
+            <h3>ngnitedem Sonzia Anelka</h3>
+            <p>Développeur professionnel avec plus de 3 ans d'expérience.</p>
+            <a href="#">Me contacter</a>
+        </div>
+    </div>
+    <address>
+        <p>zentronix237@gmail.com<br>
+        Facebook: zentronix formation<br>
+        TikTok: zentronix0237@gmail.com<br>
+        Tel: +237 692 701958</p>
+        <a href="#" style="color: #4CAF50;">Mentions légales</a>
+    </address>
+    <footer>
+        &copy; 2023 Code avec Sonzia
+    </footer>
+</body>
+</html>
