@@ -11,6 +11,10 @@ header {
     text-align: center;
     padding: 20px 0;
 }
+a{
+    text-decoration: none;
+    color:white;
+}
 
 nav {
     background-color: #6a1b9a;
@@ -130,4 +134,4 @@ button#download-now:hover {
         margin-right: 20px;
         margin-bottom: 0;
     }
-  }
+}
