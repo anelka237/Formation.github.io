@@ -3,164 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formation Hacking Termux</title>
+    <title>Formation Hacking Android avec Termux</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f2f5;
-            color: #333;
+            background-color: #0b0e13;
+            color: #00ff99;
             overflow-x: hidden;
+            text-align: center;
         }
         header {
-            background-color: #282c34;
-            color: #fff;
+            background-color: #0e1b26;
+            color: #00ff99;
             padding: 20px;
             text-align: center;
-            animation: fadeIn 1s ease-in forwards;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        header h1 {
+            font-size: 2rem;
+            text-transform: uppercase;
+            margin: 0;
+            padding: 10px;
         }
-        nav {
-            display: flex;
-            justify-content: center;
-            background-color: #3c4048;
-            padding: 10px 0;
-            flex-wrap: wrap;
-            animation: slideIn 0.5s ease-in forwards;
+        header p {
+            font-size: 1.2rem;
+            color: #cccccc;
         }
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        nav a {
-            color: #fff;
-            margin: 10px;
-            text-decoration: none;
-            transition: color 0.3s, transform 0.3s;
-        }
-        nav a:hover {
-            color: #61dafb;
-            transform: scale(1.1);
-        }
-        section {
-            padding: 20px;
-            margin: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 1;
-            transform: translateY(0);
-            animation: fadeUp 1s ease-in forwards;
-        }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .countdown {
+        .highlight {
             font-size: 1.5rem;
             color: #ffcc00;
-            margin: 20px 0;
             animation: pulse 1s infinite alternate;
         }
         @keyframes pulse {
             0% { transform: scale(1); }
             100% { transform: scale(1.05); }
         }
-        footer {
-            text-align: center;
-            padding: 15px 0;
-            background-color: #282c34;
-            color: #fff;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            animation: fadeIn 1s ease-in forwards;
+        nav {
+            background-color: #1c2733;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
-        form {
+        nav a {
+            color: #00ff99;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #ffcc00;
+        }
+        section {
+            background-color: #1a212c;
+            color: #00ff99;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 153, 0.2);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .section-list li {
+            list-style: none;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        .promo {
+            color: #ffcc00;
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+        .download-btn {
+            background-color: #ffcc00;
+            color: #0b0e13;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+        .download-btn:hover {
+            background-color: #ffd633;
+        }
+        footer {
+            background-color: #0e1b26;
+            color: #00ff99;
+            padding: 15px;
+        }
+        .countdown {
+            font-size: 1.3rem;
+            color: #ffcc00;
+            margin-top: 10px;
+        }
+        .contact-form {
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
-        form label {
-            margin: 10px 0 5px;
-        }
-        form input, form textarea {
+        .contact-form input, .contact-form textarea {
             padding: 10px;
-            border: 1px solid #ccc;
+            border: none;
             border-radius: 4px;
             margin-bottom: 10px;
-            width: 100%;
-            box-sizing: border-box;
+            width: 80%;
+            max-width: 500px;
         }
-        form input[type="submit"] {
-            background-color: #282c34;
-            color: #fff;
-            border: none;
+        .contact-form input[type="submit"] {
+            background-color: #ffcc00;
+            color: #0b0e13;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-weight: bold;
         }
-        form input[type="submit"]:hover {
-            background-color: #3c4048;
+        .contact-form input[type="submit"]:hover {
+            background-color: #ffd633;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Formation Hacking sur Termux</h1>
-        <p>Découvrez les outils et techniques de hacking sur Termux</p>
-        <div class="countdown" id="countdown">Chargement du temps restant...</div>
-        <p><strong>La formation débute en janvier 2025 au lycée technique bilingue Nkolbison, Cameroun !</strong></p>
-        <p><strong>Participez à notre master class de 2 mois pour tous les élèves passionnés de hacking !</strong></p>
+        <h1>Formation Complète : Hacking sur Android avec Termux</h1>
+        <p>Découvrez les secrets du hacking mobile directement depuis votre smartphone !</p>
+        <div class="countdown" id="countdown">Temps restant avant la formation...</div>
+        <p class="highlight">Le 21 novembre 2024</p>
+        <p><strong>Lieu : École publique de Mandong SIC 1</strong></p>
     </header>
     <nav>
-        <a href="#services">Services</a>
-        <a href="#technologies">Technologies</a>
-        <a href="#contact">Contact</a>
+        <a href="#details">Détails</a>
+        <a href="#programme">Programme</a>
+        <a href="#inscription">Inscription</a>
     </nav>
-    <section id="services">
-        <h2>Services</h2>
-        <ul>
-            <li>Introduction au Hacking</li>
-            <li>Utilisation de Termux</li>
-            <li>Développement de scripts</li>
-            <li>Analyse de sécurité</li>
-            <li>Tests de pénétration</li>
+    <section id="details">
+        <h2 class="section-title">Pourquoi choisir cette formation ?</h2>
+        <ul class="section-list">
+            <li>Installation et configuration de Termux</li>
+            <li>Commandes et scripts essentiels pour automatiser des tâches de hacking</li>
+            <li>Pentesting Wi-Fi et réseaux locaux</li>
+            <li>Exploitation de failles et vulnérabilités</li>
+            <li>Développement de scripts Python, Bash et plus</li>
         </ul>
+        <a href="#" class="download-btn">Télécharger les outils nécessaires</a>
     </section>
-    <section id="technologies">
-        <h2>Technologies</h2>
-        <ul>
-            <li>Bash Scripting</li>
-            <li>Python pour Hacking</li>
-            <li>Outils de Hacking</li>
-            <li>Réseaux et Sécurité</li>
+    <section id="programme">
+        <h2 class="section-title">Masterclass complète</h2>
+        <ul class="section-list">
+            <li>4 heures intensives de hacking mobile</li>
+            <li>1 heure d'entrepreneuriat : "Comment monter un projet et gagner de l'argent en ligne"</li>
+            <li>1 heure de rhétorique et séduction : Techniques d’influence pour capter l’attention</li>
+            <li>Support : Accès à un groupe privé pour des échanges et un accompagnement personnalisé</li>
         </ul>
+        <p class="promo">Prix Promo : 5000 FCFA</p>
     </section>
-    <section id="contact">
-        <h2>Contact</h2>
-        <form>
-            <label for="name">Nom:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
+    <section id="inscription">
+        <h2 class="section-title">Contact</h2>
+        <form class="contact-form">
+            <input type="text" id="name" name="name" placeholder="Nom" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <textarea id="message" name="message" rows="4" placeholder="Votre message" required></textarea>
             <input type="submit" value="Envoyer">
         </form>
     </section>
     <footer>
-        <p>&copy; 2024 Formation Hacking Termux</p>
+        <p>&copy; 2024 Formation Hacking sur Android</p>
     </footer>
     <script>
-        // Compte à rebours
         const countdownElement = document.getElementById('countdown');
-        const endDate = new Date('2025-01-01T00:00:00'); // Date de début de la formation
+        const endDate = new Date('2024-11-21T00:00:00');
 
         function updateCountdown() {
             const now = new Date();
@@ -180,20 +195,7 @@
         }
 
         const interval = setInterval(updateCountdown, 1000);
-        updateCountdown(); // Appel initial pour afficher immédiatement le temps restant
-
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            alert('Formulaire soumis !');
-        });
-
-        const navLinks = document.querySelectorAll('nav a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.forEach(link => link.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+        updateCountdown();
     </script>
 </body>
 </html>
