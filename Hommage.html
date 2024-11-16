@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zentronix@gmail.com    </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #000;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header, .footer {
+            text-align: center;
+            background-color: #004080;
+            color: #fff;
+            padding: 20px;
+        }
+        .nav {
+            background-color: #004080;
+            overflow: hidden;
+        }
+        .nav a {
+            float: left;
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav a:hover {
+            background-color: #003366;
+            color: #ffcc00;
+        }
+        .content {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 20px 0;
+        }
+        .content.active {
+            display: flex;
+        }
+        .content .text, .content .image, .content .itinerary {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .content .text {
+            text-align: center;
+        }
+        .content .text h2 {
+            color: #004080;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .content .text p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .content .image img, .itinerary img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .itinerary img {
+            border: 2px solid #004080;
+        }
+        .footer p {
+            margin: 0;
+        }
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="#itineraires" onclick="showContent('itineraires')">Itinéraires</a>
+        <a href="#Faire - Part" onclick="showContent('biographie')">Faire - Part</a>
+        <a href="#Programme" onclick="showContent('famille')">Programme</a>
+        <a href="#photos" onclick="showContent('photos')">Photos</a>
+        <a href="#discours" onclick="showContent('discours')">Discours</a>
+        <a href="#Biographie" onclick="showContent('hommages')">Biographie</a>
+        <a href="#PARCOURS PROFESSIONNEL" onclick="showContent('autre')">PARCOURS PROFESSIONNEL</a>
+    </div>
+    <div class="container">
+        <div class="header">
+        <h2 style="font-family: 'Lucida Calligraphy', cursive; font-size: 5vw; color: yellow; text-align: center; line-height: 1.8; margin: 10% 5%; font-weight: normal;">
+    Moi, Mr NGNITEDEM Patrick, j'ai l'honneur de vous inviter à la Célébration de Vie de notre cher papa , patriarche Ndi Kemto Fofack André, pour rendre hommage à son parcours, sa sagesse et son héritage.<br>
+    Cette cérémonie aura lieu le <strong>28 novembre 2024</strong> à <strong>Banki</strong>
+    Votre présence sera un grand honneur et nous permettra de célébrer ensemble sa mémoire.<br>
+
+    
+</h2>
+        
+        </div>
+        <div class="content" id="itineraires">
+            <div class="itinerary">
+                <h2>Itinéraire</h2>
+                <img src="https://i.ibb.co/QpJtQtV/file-z2-CLK9l-U5-C46-Eyl-Ck-LSngdbz.webp" alt="Itinéraire">
+            </div>
+        </div>
+        <div class="content" id="biographie">
+            <div class="text">
+                <h2>Faire - Part</h2>
+              <p style="font-family: Arial, sans-serif; font-size: 18px; line-height: 1.6; color: #333;">
+    <strong>Faire-Part</strong><br><br>
+
+    <span style="font-weight: bold;">- Sa Majesté Foo MEZAKEU Mathias, Roi des BANKI par FOREKE-DSCHANG</span><br>
+    <span style="font-weight: bold;">- La Grande Famille KEMTO DCHEUNANG</span> à Banki (Foréké Dschang)<br>
+    <span style="font-weight: bold;">- La Grande Famille TENAMELAH</span> à Fonakeukeu (Foto)<br>
+    <span style="font-weight: bold;">- La Grande Famille KEMTONG</span> à Litagli (Foto)<br>
+    <span style="font-weight: bold;">- La Grande Famille FOMEKWET FOGOUANG</span> à Banki (Foréké Dschang)<br>
+    Veuve FOFACK née NGUEFACK Hélène à Banki, les enfants<br>
+    - Mr NOUMEY, Conseiller, et les enfants à BANKI<br>
+    - NDI WAMBA FOLEWOUG TAGUIA Etienne et Mme à BOUDA<br>
+    - La MATRIARCHE NGOULA Suzane et les enfants à PENJA<br>
+    - Mme MANEGOU Jeanette et son ÉPOUX à Douala<br>
+    - Mme MAPONDJOU Collette et son ÉPOUX à Douala<br>
+    - Mr SONNA Bertin et les enfants à Dschang<br>
+    - Mr et Mme NGNITEDEM Patrick à Yaoundé<br>
+    - Mme FOFACK FOUEZEU Célestine et les enfants à Douala<br>
+    - Mme NOUBOUWO Céline et les enfants à Douala<br>
+    - M. et Mme FOFACK DCHEUNANG Benjamin à Douala<br>
+    - M. et Mme FOFACK SONGZIE'H Marcel en Belgique<br>
+    - M. et Mme DJOUATSA François à Douala<br>
+    - M. et Mme FOSSA (TEMGOUA Hélène) à LITIEU<br>
+    - Mr FOFACK FOULIFFO et Mme à Yaoundé<br>
+    - Mr DONFACK Patrice et Mme à Douala<br>
+    - Mr FOFACK FOGOUANG Hervé et Mme au Canada
+</p>
+            </div>
+        </div>
+        <div class="content" id="famille">
+            <div class="text">
+                <h2>Programme</h2>
+               <p>Jeudi 28 Novembre 2024<br>
+08h 00: Lamentations<br>
+20h 00: Veillée jusqu'à l'aube animée par...<br><br>
+
+Vendredi 29 Novembre 2024<br>
+08h00: Lamentations<br>
+10h00: Arrivée des différentes délégations<br>
+15h00: Match de gala d'adieu au patriarche Kemto<br>
+20h00: Messe, différentes animations culturelles jusqu'à l'aube<br><br>
+
+Samedi 30 Novembre 2024<br>
+06h00: Lamentations<br>
+08h00: Arrivée et installation des différentes délégations<br>
+09h00: Arrivée des différentes autorités traditionnelles<br>
+09h15: Arrivée du chef du village et sa suite<br>
+09h30: Témoignages<br>
+11h00: Inhumation dans la stricte intimité familiale<br>
+11h30: Prestation des différents groupes de danse<br>
+13h00: Collation</p>
+            </div>
+        </div>
+        <div class="content" id="photos">
+            <div class="text">
+                <h2>Photos</h2>
+                <p>
+                    <!-- Ajoutez ici les photos -->
+                    <img src="https://i.ibb.co/RN6PCMK/FB-IMG-17317919481535815.jpg" alt="FB-IMG-17317919481535815" alt="Photo 1">
+                    <img src="https://i.ibb.co/ftnPQSY/FB-IMG-17317919313131639.jpg" alt="FB-IMG-17317919313131639" alt="Photo 2">
+                </p>
+            </div>
+        </div>
+        <div class="content" id="discours">
+            <div class="text">
+                <h2>Discours</h2>
+              <p>
+    <strong>Hélène Fofack (Ma’a Litieu)</strong><br>
+    Mon grand-père chéri, non, mon papa, toi qui m'as gardé et donné tout l'amour d'un père, je te remercie d'avoir été là pour moi. 
+    Tout ton amour a fait de moi la femme que je suis aujourd'hui, et je te remercie grandement, papa. Ton départ laisse un grand vide 
+    dans ma vie, et j'espère qu'où tu es, auprès du Très-Haut, tu continueras à veiller sur moi. Va en paix, grand-père, va en paix, 
+    papa, que la terre de nos ancêtres te soit légère.<br><br>
+
+    <strong>Ta petite fille, Gaëlle SONA</strong><br>
+    De là-haut, continue à veiller sur nous.<br><br>
+
+    <strong>Votre fils, Marcel FOFACK SONGZIEH</strong><br>
+    Papa, depuis ton décès, je me sens perdu. J'avais espoir que tu te relèves, mais le Seigneur a décidé autrement. Pour cela, je prie 
+    le Seigneur de t’accueillir dans sa maison et de faire briller sa lumière sur toi pour que tu continues à nous illuminer depuis là 
+    où tu te trouves. Repose en paix, mon papa chéri, que la terre de nos ancêtres te soit légère.<br><br>
+
+    <strong>Ta fille, Tata Célestine</strong><br><br>
+
+    <strong>Patrick NGNITEDEM</strong><br>
+    Papa, patriarche travailleur, rigoureux et assidu, doté d’une exemplarité hors norme. Gestionnaire exemplaire de la société, va et 
+    repose en paix. Je t’aime bien.<br><br>
+
+    <em>Les larmes invisibles qui coulent à l'intérieur de moi sont les plus difficiles à sécher. Vos voix résonnent dans mon cœur, un doux 
+    écho de sagesse et de courage. Les souvenirs de votre amour éclairent mes jours les plus sombres. Papa, maman, votre présence, bien que 
+    manquante, se fait sentir, guidant mes pas chaque jour. Votre amour est le fondement sur lequel je construis ma vie.</em>
+</p>
+            </div>
+        </div>
+        <div class="content" id="hommages">
+            <div class="text">
+                <h2>Biographie</h2>
+               <p>
+    <strong>Biographie</strong><br><br>
+    Né vers <strong>1945</strong> à <strong>Banki</strong>, fils de <strong>KEMTO DCHEUNANG</strong> et de <strong>Ma'a SONA Marceline</strong>, 
+    <strong>NDI KEMTO</strong>, troisième né d'une fratrie de 4 enfants, est très tôt déporté de force par les indépendantistes camerounais 
+    qui luttaient pour un Cameroun indépendant. Après seulement quelques mois passés dans leurs rangs, il réussit l'exploit 
+    de s’échapper et de retrouver ses parents dans son village natal, <strong>Banki</strong>.<br><br>
+    Une fois sur place, conscient que l’éducation et le savoir (lire et écrire) constituent un atout indéniable pour le jeune Camerounais 
+    de demain, il exprime un désir ardent de rejoindre son grand-frère <strong>NOUMEY JEAN</strong> du côté de <strong>Suza</strong>, chez les catholiques, 
+    malgré l’opposition de son père. Ce dernier, grand notable et conseiller spécial du chef <strong>Fowank</strong>, souhaitait voir son fils suivre ses pas 
+    en tant que gardien des traditions et éleveur-agriculteur.<br><br>
+    Son départ pour la métropole en quête de connaissance occidentale fut un choc fatal pour son père, qui décède deux ans après. 
+    Face à cette tragédie, <strong>NDI KEMTO FOFACK André</strong> décide d’abandonner son rêve alors qu’il était en classe de cours élémentaire supérieur 
+    pour revenir auprès de sa mère, désormais veuve.<br><br>
+    Il devient alors héritier du trône et notable <strong>NDI KEMTO FOFACK</strong> du village <strong>Banki</strong>.
+</p>
+            </div>
+        </div>
+        <div class="content" id="autre">
+            <div class="text">
+                <h2>PARCOURS PROFESSIONNEL</h2>
+              <p>
+    <strong>PARCOURS PROFESSIONNEL</strong><br><br>
+    Le rêve de devenir cadre d'administration de la République du Cameroun s'étant brisé, le patriarche 
+    <strong>NDI KEMTO FOFACK André</strong> se réoriente vers le commerce. Très tôt, il croise le chemin de 
+    <strong>papa TSAKENG Martin</strong>, un commerçant expérimenté et passionné, qui va lui transmettre subtilement les 
+    secrets de cet art noble qu'est le commerce.<br><br>
+    Sobre, patient, attentionné, humble et honnête, <strong>NDI KEMTO FOFACK André</strong> passe plusieurs années à apprendre auprès 
+    de son mentor. Cette période lui permet de se forger une personnalité remarquable et un charisme incomparable.<br><br>
+    En <strong>1962</strong>, alors âgé d'environ 17 ans, il s’installe à son propre compte sous l'œil vigilant de son mentor. 
+    Grâce à son dévouement et à son sens aigu des affaires, il se distingue rapidement. Son rôle devient crucial dans le 
+    développement de la communauté <strong>Foreke-Dschang</strong> en général, et de la communauté <strong>Banki</strong> en particulier.<br><br>
+    Il initie et soutient de nombreux projets, tout en formant et accompagnant de nombreux jeunes dans le domaine du commerce, 
+    ainsi qu’en dehors.<br><br>
+    <strong>DISTINCTIONS HONORIFIQUES</strong><br><br>
+    Au cours de sa vie, le patriarche <strong>NDI KEMTO FOFACK André</strong> a été honoré à plusieurs reprises. Parmi ses distinctions 
+    figure celle de <strong>MEILLEUR COMMERÇANT DU DÉPARTEMENT DE LA MENOUA</strong>, qui témoigne de son talent et de son engagement.<br><br>
+    <strong>VIE RELIGIEUSE</strong><br><br>
+    Baptisé et communié, <strong>NDI KEMTO FOFACK André</strong> a toujours été un homme profondément ancré dans ses valeurs spirituelles.
+</p>
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Célébration de Vie du Patriarche Ndi Kemto Fofack André,by anelka[zentronix]</p>
+        </div>
+    </div>
+    <script>
+        function showContent(id) {
+            // Masquer tous les contenus
+            var contents = document.querySelectorAll('.content');
+            contents.forEach(function(content) {
+                content.classList.remove('active');
+            });
+
+            // Afficher le contenu sélectionné
+            var selectedContent = document.getElementById(id);
+            if (selectedContent) {
+                selectedContent.classList.add('active');
+            }
+        }
+
+        // Afficher la section par défaut
+        showContent('itineraires');
+    </script>
+</body>
+</html>
