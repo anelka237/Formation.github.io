@@ -1,272 +1,270 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Zen</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-            scroll-behavior: smooth;
-        }
-        header {
-            background: #4CAF50;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            background: #333;
-            padding: 10px 0;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        nav a:hover {
-            background: #4CAF50;
-        }
-        main {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.5s forwards;
-        }
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        section {
-            margin-bottom: 20px;
-            padding: 15px;
-            border-left: 4px solid #4CAF50;
-        }
-        h2 {
-            color: #4CAF50;
-        }
-        .cta-button {
-            display: inline-block;
-            background: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .cta-button:hover {
-            background: #45a049;
-        }
-        .whatsapp-button {
-            display: inline-block;
-            margin-top: 10px;
-            position: relative; /* Pour l'animation */
-            animation: float 3s infinite;
-        }
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        .stars {
-            color: #FFD700; /* Gold color */
-        }
-        .review {
-            margin-top: 10px;
-            font-style: italic;
-        }
-        .profile-frame {
-            border: 5px solid #4CAF50;
-            border-radius: 10px;
-            overflow: hidden;
-            width: 150px;
-            height: 150px;
-            margin: 20px auto;
-        }
-        .profile-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Ajuste l'image pour remplir le cadre */
-        }
-        footer {
-            text-align: center;
-            padding: 10px 0;
-            background: #4CAF50;
-            color: white;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-        .rating {
-            display: flex;
-            justify-content: center;
-            margin-top: 15px;
-        }
-        .star {
-            cursor: pointer;
-            font-size: 24px;
-            color: #FFD700; /* Gold color */
-        }
-        .email-input {
-            display: block;
-            margin: 10px auto;
-            padding: 10px;
-            width: 80%;
-            max-width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .submit-button {
-            display: inline-block;
-            background: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Zen</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+    .menu-toggle {
+      display: none;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background: #333;
+      padding: 10px 0;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    nav a:hover {
+      background: #4CAF50;
+    }
+    @media screen and (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+      nav {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+      }
+      nav a {
+        margin: 10px 0;
+      }
+    }
+    main {
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.5s forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-left: 4px solid #4CAF50;
+    }
+    h2 {
+      color: #4CAF50;
+    }
+    .cta-button {
+      display: inline-block;
+      background: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .cta-button:hover {
+      background: #45a049;
+    }
+    .whatsapp-button {
+      display: inline-block;
+      margin-top: 10px;
+      animation: float 3s infinite;
+    }
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    .stars {
+      color: #FFD700;
+    }
+    .review {
+      margin-top: 10px;
+      font-style: italic;
+    }
+    .profile-frame {
+      border: 5px solid #4CAF50;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 150px;
+      height: 150px;
+      margin: 20px auto;
+    }
+    .profile-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      background: #4CAF50;
+      color: white;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+    .rating {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .star {
+      cursor: pointer;
+      font-size: 24px;
+      color: #FFD700;
+    }
+    .email-input {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 80%;
+      max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .submit-button {
+      display: inline-block;
+      background: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
 <header>
-    <h1>Bienvenue sur Le Zen !</h1>
+  <h1>Bienvenue sur Le Zen !</h1>
 </header>
 
-<nav>
-    
-    <a href="Root_form.html">Qui suis-je ?</a>
-    <a href="#mes-formations">Mes formations</a>
-    <a href="#installation-gps">Installation de GPS</a>
-    <a href="#securite-informatique">Sécurité Informatique</a>
-    <a href="Root_form.html">formations </a>
-    <a href="#Hommage.html">Contact</a>
-    <a href="chat.html">chat</a>
-    <a href="termux.html"> formation hacking </a>
+<button class="menu-toggle" onclick="toggleMenu()">Menu</button>
+
+<nav id="nav-menu">
+  <a href="Root_form.html">Qui suis-je ?</a>
+  <a href="#mes-formations">Mes formations</a>
+  <a href="#installation-gps">Installation de GPS</a>
+  <a href="#securite-informatique">Sécurité Informatique</a>
+  <a href="Root_form.html">Formations</a>
+  <a href="#contact">Contact</a>
+  <a href="chat.html">Chat</a>
+  <a href="termux.html">Formation hacking</a>
 </nav>
 
 <main>
-    <section id="qui-suis-je">
-        <h2>Qui suis-je ?</h2>
-        <div class="profile-frame">
-            <img src="https://i.ibb.co/F39RrxG/IMG-20240903-202416.jpg" alt="Photo de profil">
-        </div>
-        <p>Titulaire d'un BTS en construction automobile et d'un BTS en mécatronique automobile, je suis un jeune expert technique avec de solides compétences pratiques. Depuis 3 ans, je forme également des jeunes au hacking et à la sécurité informatique, car je crois que la connaissance est essentielle pour naviguer dans le monde numérique d'aujourd'hui.</p>
-        <p>Mon objectif est d'aider les jeunes à développer leurs compétences en informatique et à comprendre les enjeux de la sécurité en ligne. Je propose pour cela :</p>
-        <ul>
-            <li>Des formations en programmation et cybersécurité</li>
-            <li>Des consultations en maintenance et dépannage</li>
-            <li>Des prestations de hacking éthique pour tester la sécurité des sites et applications</li>
-        </ul>
-    </section>
+  <section id="qui-suis-je">
+    <h2>Qui suis-je ?</h2>
+    <div class="profile-frame">
+      <img src="https://i.ibb.co/F39RrxG/IMG-20240903-202416.jpg" alt="Photo de profil">
+    </div>
+    <p>Titulaire d'un BTS en construction automobile et d'un BTS en mécatronique automobile, je suis un jeune expert technique avec de solides compétences pratiques. Depuis 3 ans, je forme également des jeunes au hacking et à la sécurité informatique, car je crois que la connaissance est essentielle pour naviguer dans le monde numérique d'aujourd'hui.</p>
+    <ul>
+      <li>Formations en programmation et cybersécurité</li>
+      <li>Consultations en maintenance et dépannage</li>
+      <li>Prestations de hacking éthique pour tester la sécurité</li>
+    </ul>
+  </section>
 
-    <section id="mes-formations">
-        <h2>Mes formations</h2>
-        <p>Voici quelques-unes de mes formations phares :</p>
-        <ul>
-            <li>
-                <strong>Devenir expert en Python en 30 jours</strong> : apprenez à maîtriser ce langage puissant en un mois seulement! 
-                <span class="stars">★★★★★</span>
-                <div class="review">"Une formation incroyable, très bien expliquée!" - Marie</div>
-                <div class="review">"J'ai beaucoup appris en peu de temps." - Paul</div>
-                <div class="review">"Formation bien structurée!" - Sophie</div>
-                <div class="review">"Je recommande vivement!" - Julien</div>
-                <a href="https://wa.me/237653817752?text=Je%20veux%20débuter%20la%20formation%20Python%20en%2030%20jours" class="cta-button">Débuter la formation aujourd'hui</a>
-            </li>
-            <!-- Ajoutez d'autres formations ici -->
-        </ul>
-        <a href="https://wa.me/237653817752?text=Je%20souhaite%20demander%20un%20devis" class="cta-button">Demandez un devis</a>
-        <a href="https://wa.me/237653817752" class="whatsapp-button">
-            <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="Contactez-moi sur WhatsApp" style="width: 50px; height: 50px;">
-        </a>
-    </section>
+  <section id="mes-formations">
+    <h2>Mes formations</h2>
+    <ul>
+      <li>
+        <strong>Devenir expert en Python en 30 jours</strong> 
+        <span class="stars">★★★★★</span>
+        <div class="review">"Une formation incroyable !" - Marie</div>
+        <div class="review">"Bien structuré." - Paul</div>
+        <a href="https://wa.me/237653817752?text=Je%20veux%20débuter%20la%20formation%20Python%20en%2030%20jours" class="cta-button">Débuter la formation</a>
+      </li>
+    </ul>
+    <a href="https://wa.me/237653817752?text=Je%20souhaite%20demander%20un%20devis" class="cta-button">Demander un devis</a>
+    <a href="https://wa.me/237653817752" class="whatsapp-button">
+      <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="WhatsApp" style="width: 50px; height: 50px;">
+    </a>
+  </section>
 
-    <section id="installation-gps">
-        <h2>Installation de GPS Automobile 🚘</h2>
-        <p>Protégez votre véhicule contre le vol grâce à des systèmes de suivi GPS de haute technologie. Avec mon BTS en mécatronique automobile et mon expérience technique, je vous propose :</p>
-        <ul>
-            <li>Une évaluation personnalisée de vos besoins en sécurité</li>
-            <li>Installation professionnelle de dispositifs GPS adaptés à votre véhicule</li>
-            <li>Conseils sur l'utilisation et la maintenance des systèmes de suivi</li>
-        </ul>
-        <p>Pourquoi choisir un GPS ?</p>
-        <ul>
-            <li>Localisation en temps réel de votre véhicule</li>
-            <li>Alerte immédiate en cas de vol</li>
-            <li>Historique des trajets pour une meilleure gestion de votre véhicule</li>
-        </ul>
-        <p>Ne laissez pas votre véhicule sans protection ! Contactez-moi pour plus d'informations et pour un devis gratuit.</p>
-        <a href="https://wa.me/237653817752?text=Je%20veux%20installer%20Mon GpS%20aujourd'hui " class="cta-button">installer mon GPS aujourd'hui</a>
-    </section>
+  <section id="installation-gps">
+    <h2>Installation de GPS Automobile</h2>
+    <p>Protégez votre véhicule avec des systèmes GPS avancés :</p>
+    <ul>
+      <li>Évaluation personnalisée</li>
+      <li>Installation professionnelle</li>
+      <li>Conseils et maintenance</li>
+    </ul>
+    <a href="https://wa.me/237653817752?text=Je%20veux%20installer%20Mon GpS%20aujourd'hui" class="cta-button">Installer un GPS</a>
+  </section>
 
-    <section id="securite-informatique">
-        <h2>Sécurité Informatique</h2>
-        <p>La sécurité informatique est cruciale dans notre monde connecté. Mes services incluent :</p>
-        <ul>
-            <li>Évaluations de la sécurité des systèmes</li>
-            <li>Formation en hacking éthique</li>
-          <section id="securite-informatique">
-        <h2>Sécurité Informatique</h2>
-        <p>La sécurité informatique est cruciale dans notre monde connecté. Mes services incluent :</p>
-        <ul>
-            <li>Évaluations de la sécurité des systèmes</li>
-            <li>Formation en hacking éthique</li>
-            <li>Conseils pour sécuriser vos données personnelles et professionnelles</li>
-            <li>Tests de pénétration pour identifier les vulnérabilités</li>
-        </ul>
-        <p>Protégez vos informations sensibles et assurez-vous que vos systèmes sont sécurisés contre les menaces potentielles. Contactez-moi pour plus de détails et pour organiser une consultation.</p>
-        <a href="https://wa.me/237653817752?text=Je%20souhaite%20une%20consultation%20en%20sécurité%20informatique" class="cta-button">Demander une consultation</a>
-    </section>
+  <section id="securite-informatique">
+    <h2>Sécurité Informatique</h2>
+    <p>Mes services incluent :</p>
+    <ul>
+      <li>Évaluations de sécurité</li>
+      <li>Formation en hacking éthique</li>
+      <li>Conseils et tests de pénétration</li>
+    </ul>
+    <a href="https://wa.me/237653817752?text=Je%20souhaite%20une%20consultation%20en%20sécurité%20informatique" class="cta-button">Demander une consultation</a>
+  </section>
 
-    <section id="pourquoi-me-choisir">
-        <h2>Pourquoi me choisir ?</h2>
-        <p>Avec mon expertise en construction automobile, mécatronique et sécurité informatique, je propose des services complets et professionnels. Voici quelques raisons pour lesquelles mes clients me font confiance :</p>
-        <ul>
-            <li>Expertise technique et expérience professionnelle</li>
-            <li>Approche personnalisée et solutions adaptées</li>
-            <li>Formation continue et mise à jour régulière des compétences</li>
-            <li>Engagement à fournir des services de qualité</li>
-        </ul>
-    </section>
-
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Pour toute demande de renseignements, devis ou prise de rendez-vous, veuillez me contacter via WhatsApp ou remplir le formulaire ci-dessous :</p>
-        <a href="https://wa.me/237653817752" class="whatsapp-button">
-            <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="Contactez-moi sur WhatsApp" style="width: 50px; height: 50px;">
-        </a>
-        <form>
-            <input type="email" class="email-input" placeholder="Votre email">
-            <textarea class="email-input" placeholder="Votre message"></textarea>
-            <button type="submit" class="submit-button">Envoyer</button>
-        </form>
-    </section>
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Contactez-moi par WhatsApp ou via le formulaire :</p>
+    <a href="https://wa.me/237653817752" class="whatsapp-button">
+      <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="WhatsApp" style="width: 50px; height: 50px;">
+    </a>
+    <form>
+      <input type="email" class="email-input" placeholder="Votre email">
+      <textarea class="email-input" placeholder="Votre message"></textarea>
+      <button type="submit" class="submit-button">Envoyer</button>
+    </form>
+  </section>
 </main>
 
 <footer>
-    <p>&copy; 2024 Le Zen. Tous droits réservés.</p>
+  <p>&copy; 2024 Le Zen. Tous droits réservés.</p>
 </footer>
+
+<script>
+  function toggleMenu() {
+    const nav = document.getElementById("nav-menu");
+    nav.style.display = nav.style.display === "flex" ? "none" : "flex";
+  }
+</script>
 
 </body>
 </html>
-
