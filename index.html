@@ -3,189 +3,477 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Le Zen</title>
+  <title>Le Zen - Expert Tech & Formation</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
-      color: #333;
-      scroll-behavior: smooth;
+      box-sizing: border-box;
     }
+
+    :root {
+      --primary: #00d4aa;
+      --primary-dark: #00b894;
+      --secondary: #6c5ce7;
+      --dark: #2d3436;
+      --light: #dfe6e9;
+      --white: #ffffff;
+      --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-green: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-attachment: fixed;
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Header avec effet glassmorphism */
     header {
-      background: #4CAF50;
-      color: white;
-      padding: 10px 0;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 30px 20px;
       text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
-    .menu-toggle {
-      display: none;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      font-size: 16px;
-      width: 100%;
+
+    header h1 {
+      color: var(--white);
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      animation: slideDown 0.8s ease-out;
     }
-    nav {
-      display: flex;
-      justify-content: center;
-      background: #333;
-      padding: 10px 0;
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-    nav a {
-      color: white;
-      margin: 0 15px;
-      text-decoration: none;
-      padding: 10px;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-    nav a:hover {
-      background: #4CAF50;
-    }
-    @media screen and (max-width: 768px) {
-      .menu-toggle {
-        display: block;
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
       }
-      nav {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-      }
-      nav a {
-        margin: 10px 0;
-      }
-    }
-    main {
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.5s forwards;
-    }
-    @keyframes fadeIn {
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
-    section {
-      margin-bottom: 20px;
+
+    /* Navigation moderne */
+    .menu-toggle {
+      display: none;
+      background: var(--gradient-green);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      cursor: pointer;
+      font-size: 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
+    }
+
+    .menu-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 212, 170, 0.6);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background: rgba(44, 62, 80, 0.95);
+      backdrop-filter: blur(10px);
       padding: 15px;
-      border-left: 4px solid #4CAF50;
+      flex-wrap: wrap;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gradient-green);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+
+    nav a:hover::before {
+      left: 0;
+    }
+
+    nav a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 212, 170, 0.4);
+    }
+
+    /* Container principal avec carte glassmorphism */
+    main {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      margin-bottom: 30px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.4s ease;
+      animation: fadeIn 0.6s ease-out backwards;
+    }
+
+    section:nth-child(1) { animation-delay: 0.1s; }
+    section:nth-child(2) { animation-delay: 0.2s; }
+    section:nth-child(3) { animation-delay: 0.3s; }
+    section:nth-child(4) { animation-delay: 0.4s; }
+    section:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+
     h2 {
-      color: #4CAF50;
+      color: var(--secondary);
+      font-size: 2rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 15px;
     }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--gradient-green);
+      border-radius: 2px;
+    }
+
+    /* Photo de profil avec animation */
+    .profile-frame {
+      width: 180px;
+      height: 180px;
+      margin: 30px auto;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid var(--primary);
+      box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);
+      position: relative;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);
+      }
+      50% {
+        box-shadow: 0 10px 40px rgba(0, 212, 170, 0.6);
+      }
+    }
+
+    .profile-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .profile-frame:hover img {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    /* Boutons modernes */
     .cta-button {
       display: inline-block;
-      background: #4CAF50;
+      background: var(--gradient-green);
       color: white;
-      padding: 10px 15px;
+      padding: 15px 30px;
       text-decoration: none;
-      border-radius: 5px;
-      transition: background 0.3s;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 212, 170, 0.3);
+      margin: 10px 5px;
+      position: relative;
+      overflow: hidden;
     }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .cta-button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
     .cta-button:hover {
-      background: #45a049;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 212, 170, 0.5);
     }
+
+    /* WhatsApp bouton flottant */
     .whatsapp-button {
       display: inline-block;
-      margin-top: 10px;
-      animation: float 3s infinite;
+      margin: 20px 0;
+      animation: float 3s ease-in-out infinite;
+      transition: transform 0.3s ease;
     }
+
+    .whatsapp-button:hover {
+      animation: none;
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .whatsapp-button img {
+      width: 60px;
+      height: 60px;
+      filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+      transition: filter 0.3s ease;
+    }
+
+    .whatsapp-button:hover img {
+      filter: drop-shadow(0 8px 20px rgba(0, 212, 170, 0.6));
+    }
+
     @keyframes float {
       0%, 100% {
         transform: translateY(0);
       }
       50% {
-        transform: translateY(-10px);
+        transform: translateY(-15px);
       }
     }
+
+    /* Étoiles animées */
     .stars {
       color: #FFD700;
-    }
-    .review {
-      margin-top: 10px;
-      font-style: italic;
-    }
-    .profile-frame {
-      border: 5px solid #4CAF50;
-      border-radius: 10px;
-      overflow: hidden;
-      width: 150px;
-      height: 150px;
-      margin: 20px auto;
-    }
-    .profile-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    footer {
-      text-align: center;
-      padding: 10px 0;
-      background: #4CAF50;
-      color: white;
-      position: relative;
-      bottom: 0;
-      width: 100%;
-    }
-    .rating {
-      display: flex;
-      justify-content: center;
-      margin-top: 15px;
-    }
-    .star {
-      cursor: pointer;
-      font-size: 24px;
-      color: #FFD700;
-    }
-    .email-input {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      width: 80%;
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    .submit-button {
+      font-size: 1.2rem;
       display: inline-block;
-      background: #4CAF50;
+      margin-left: 10px;
+    }
+
+    .stars span {
+      display: inline-block;
+      animation: starTwinkle 1.5s infinite;
+    }
+
+    .stars span:nth-child(1) { animation-delay: 0s; }
+    .stars span:nth-child(2) { animation-delay: 0.2s; }
+    .stars span:nth-child(3) { animation-delay: 0.4s; }
+    .stars span:nth-child(4) { animation-delay: 0.6s; }
+    .stars span:nth-child(5) { animation-delay: 0.8s; }
+
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Avis clients */
+    .review {
+      background: rgba(102, 126, 234, 0.1);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border-left: 4px solid var(--secondary);
+      font-style: italic;
+      transition: all 0.3s ease;
+    }
+
+    .review:hover {
+      background: rgba(102, 126, 234, 0.2);
+      transform: translateX(10px);
+    }
+
+    /* Liste stylée */
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      position: relative;
+      padding-left: 30px;
+    }
+
+    ul li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    ul li:last-child {
+      border-bottom: none;
+    }
+
+    /* Formulaire moderne */
+    .email-input, textarea {
+      width: 100%;
+      padding: 15px;
+      margin: 15px 0;
+      border: 2px solid var(--light);
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .email-input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(0, 212, 170, 0.2);
+      transform: translateY(-2px);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .submit-button {
+      background: var(--gradient);
       color: white;
-      padding: 10px 15px;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 10px;
+      padding: 15px 40px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .submit-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    }
+
+    /* Footer moderne */
+    footer {
+      background: rgba(44, 62, 80, 0.95);
+      backdrop-filter: blur(10px);
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: 50px;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    footer p {
+      font-size: 1.1rem;
+    }
+
+    /* Responsive */
+    @media screen and (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      section {
+        padding: 25px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Bienvenue sur Le Zen !</h1>
+  <h1>✨ Bienvenue sur Le Zen ✨</h1>
 </header>
 
-<button class="menu-toggle" onclick="toggleMenu()">Menu</button>
+<button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
 
 <nav id="nav-menu">
-  <a href="Root_form.html">Qui suis-je ?</a>
-  <a href="#mes-formations">Mes formations</a>
-  <a href="#installation-gps">Installation de GPS</a>
-  <a href="#securite-informatique">Sécurité Informatique</a>
-  <a href="Root_form.html">Formations</a>
-  <a href="#contact">Contact</a>
-  <a href="chat.html">Chat</a>
-  <a href="termux.html">Formation hacking</a>
+  <a href="Root_form.html">👤 Qui suis-je ?</a>
+  <a href="#mes-formations">📚 Mes formations</a>
+  <a href="#installation-gps">📍 Installation GPS</a>
+  <a href="#securite-informatique">🔐 Sécurité IT</a>
+  <a href="Root_form.html">🎓 Formations</a>
+  <a href="#contact">📧 Contact</a>
+  <a href="chat.html">💬 Chat</a>
+  <a href="termux.html">🔒 Hacking</a>
 </nav>
 
 <main>
@@ -194,11 +482,13 @@
     <div class="profile-frame">
       <img src="https://i.ibb.co/F39RrxG/IMG-20240903-202416.jpg" alt="Photo de profil">
     </div>
-    <p>Titulaire d'un BTS en construction automobile et d'un BTS en mécatronique automobile, je suis un jeune expert technique avec de solides compétences pratiques. Depuis 3 ans, je forme également des jeunes au hacking et à la sécurité informatique, car je crois que la connaissance est essentielle pour naviguer dans le monde numérique d'aujourd'hui.</p>
+    <p style="text-align: center; font-size: 1.1rem; line-height: 1.8;">
+      Titulaire d'un <strong>BTS en construction automobile</strong> et d'un <strong>BTS en mécatronique automobile</strong>, je suis un jeune expert technique avec de solides compétences pratiques. Depuis <strong>3 ans</strong>, je forme également des jeunes au <strong>hacking et à la sécurité informatique</strong>, car je crois que la connaissance est essentielle pour naviguer dans le monde numérique d'aujourd'hui.
+    </p>
     <ul>
-      <li>Formations en programmation et cybersécurité</li>
-      <li>Consultations en maintenance et dépannage</li>
-      <li>Prestations de hacking éthique pour tester la sécurité</li>
+      <li><strong>Formations en programmation et cybersécurité</strong></li>
+      <li><strong>Consultations en maintenance et dépannage</strong></li>
+      <li><strong>Prestations de hacking éthique pour tester la sécurité</strong></li>
     </ul>
   </section>
 
@@ -206,63 +496,68 @@
     <h2>Mes formations</h2>
     <ul>
       <li>
-        <strong>Devenir expert en Python en 30 jours</strong> 
-        <span class="stars">★★★★★</span>
-        <div class="review">"Une formation incroyable !" - Marie</div>
-        <div class="review">"Bien structuré." - Paul</div>
-        <a href="https://wa.me/237673818077?text=Je%20veux%20débuter%20la%20formation%20Python%20en%2030%20jours" class="cta-button">Débuter la formation</a>
+        <strong style="font-size: 1.2rem; color: var(--secondary);">🐍 Devenir expert en Python en 30 jours</strong> 
+        <span class="stars">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+        </span>
+        <div class="review">"Une formation incroyable ! J'ai appris énormément." - Marie</div>
+        <div class="review">"Bien structuré et facile à suivre." - Paul</div>
+        <a href="https://wa.me/237673818077?text=Je%20veux%20débuter%20la%20formation%20Python%20en%2030%20jours" class="cta-button">🚀 Débuter la formation</a>
       </li>
     </ul>
-    <a href="https://wa.me/237673818077?text=Je%20souhaite%20demander%20un%20devis" class="cta-button">Demander un devis</a>
+    <a href="https://wa.me/237673818077?text=Je%20souhaite%20demander%20un%20devis" class="cta-button">💰 Demander un devis</a>
     <a href="https://wa.me/237673818077" class="whatsapp-button">
-      <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="WhatsApp" style="width: 50px; height: 50px;">
+      <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="WhatsApp">
     </a>
   </section>
 
   <section id="installation-gps">
     <h2>Installation de GPS Automobile</h2>
-    <p>Protégez votre véhicule avec des systèmes GPS avancés :</p>
+    <p style="font-size: 1.1rem;">Protégez votre véhicule avec des systèmes GPS avancés :</p>
     <ul>
-      <li>Évaluation personnalisée</li>
-      <li>Installation professionnelle</li>
-      <li>Conseils et maintenance</li>
+      <li><strong>Évaluation personnalisée</strong> de vos besoins</li>
+      <li><strong>Installation professionnelle</strong> et discrète</li>
+      <li><strong>Conseils et maintenance</strong> continus</li>
     </ul>
-    <a href="https://wa.me/237653817752?text=Je%20veux%20installer%20Mon GpS%20aujourd'hui" class="cta-button">Installer un GPS</a>
+    <a href="https://wa.me/237653817752?text=Je%20veux%20installer%20Mon%20GPS%20aujourd'hui" class="cta-button">📍 Installer un GPS</a>
   </section>
 
   <section id="securite-informatique">
     <h2>Sécurité Informatique</h2>
-    <p>Mes services incluent :</p>
+    <p style="font-size: 1.1rem;">Mes services incluent :</p>
     <ul>
-      <li>Évaluations de sécurité</li>
-      <li>Formation en hacking éthique</li>
-      <li>Conseils et tests de pénétration</li>
+      <li><strong>Évaluations de sécurité</strong> complètes</li>
+      <li><strong>Formation en hacking éthique</strong></li>
+      <li><strong>Conseils et tests de pénétration</strong></li>
     </ul>
-    <a href="https://wa.me/237673818077?text=Je%20souhaite%20une%20consultation%20en%20sécurité%20informatique" class="cta-button">Demander une consultation</a>
+    <a href="https://wa.me/237673818077?text=Je%20souhaite%20une%20consultation%20en%20sécurité%20informatique" class="cta-button">🔐 Demander une consultation</a>
   </section>
 
   <section id="contact">
     <h2>Contact</h2>
-    <p>Contactez-moi par WhatsApp ou via le formulaire :</p>
-    <a href="https://wa.me/237673818077" class="whatsapp-button">
-      <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="WhatsApp" style="width: 50px; height: 50px;">
-    </a>
+    <p style="font-size: 1.1rem; text-align: center;">Contactez-moi par WhatsApp ou via le formulaire :</p>
+    <div style="text-align: center;">
+      <a href="https://wa.me/237673818077" class="whatsapp-button">
+        <img src="https://i.ibb.co/QY3jm2J/2062095-application-chat-communication-logo-whatsapp-icon-svg-prev-ui.png" alt="WhatsApp">
+      </a>
+    </div>
     <form>
-      <input type="email" class="email-input" placeholder="Votre email">
-      <textarea class="email-input" placeholder="Votre message"></textarea>
-      <button type="submit" class="submit-button">Envoyer</button>
+      <input type="email" class="email-input" placeholder="📧 Votre email" required>
+      <textarea class="email-input" placeholder="✍️ Votre message" required></textarea>
+      <button type="submit" class="submit-button">📤 Envoyer le message</button>
     </form>
   </section>
 </main>
 
 <footer>
-  <p>&copy; 2024 Le Zen. Tous droits réservés.</p>
+  <p>© 2024 Le Zen. Tous droits réservés. ✨</p>
+  <p style="margin-top: 10px; font-size: 0.9rem;">Fait avec ❤️ pour vous</p>
 </footer>
 
 <script>
   function toggleMenu() {
     const nav = document.getElementById("nav-menu");
-    nav.style.display = nav.style.display === "flex" ? "none" : "flex";
+    nav.classList.toggle('active');
   }
 </script>
 
