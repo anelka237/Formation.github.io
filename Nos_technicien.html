@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zentronix - Réseau de Techniciens Experts au Cameroun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00ff88;
+      --primary-dark: #00cc6a;
+      --primary-light: #00ffaa;
+      --bg-dark: #0a0a0a;
+      --bg-card: #121212;
+      --bg-card-hover: #1a1a1a;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --text-muted: #808080;
+      --border: #1f1f1f;
+      --shadow: rgba(0, 255, 136, 0.1);
+      --shadow-hover: rgba(0, 255, 136, 0.25);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* === Navigation === */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1000;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    nav.scrolled {
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* === Hero Section === */
+    header {
+      margin-top: 80px;
+      padding: 6rem 2rem 4rem;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(0, 255, 136, 0.03) 0%, transparent 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 0.5rem 1.2rem;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 50px;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #ffffff 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+    }
+
+    header p {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      line-height: 1.8;
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      font-weight: 400;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      margin-top: 3rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    /* === Search Bar === */
+    .search-section {
+      max-width: 1200px;
+      margin: -2rem auto 4rem;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .search-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .search-bar:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 10px 40px var(--shadow-hover);
+    }
+
+    .search-icon {
+      color: var(--text-muted);
+      padding-left: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 1rem 0.5rem;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-btn {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.3px;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--shadow-hover);
+    }
+
+    /* === Section === */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* === Cards Grid === */
+    .technician-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .tech-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .tech-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 60px var(--shadow-hover);
+      background: var(--bg-card-hover);
+    }
+
+    .card-image {
+      position: relative;
+      width: 100%;
+      height: 280px;
+      overflow: hidden;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .tech-card:hover .card-image img {
+      transform: scale(1.08);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    .card-body {
+      padding: 1.8rem;
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .card-description {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .experience-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--primary);
+      color: #000;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .contact-btn:hover {
+      background: var(--primary-light);
+      transform: translateX(3px);
+      box-shadow: 0 4px 15px var(--shadow-hover);
+    }
+
+    /* === CTA Section === */
+    .cta-section {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 255, 136, 0.02) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 4rem 3rem;
+      text-align: center;
+      margin: 5rem auto;
+      max-width: 900px;
+    }
+
+    .cta-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-section h3 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .cta-section p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .vip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1.2rem 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #000;
+      font-weight: 800;
+      font-size: 1rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px var(--shadow);
+    }
+
+    .vip-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px var(--shadow-hover);
+    }
+
+    /* === Footer === */
+    footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 4rem 2rem 2rem;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .footer-brand p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-section h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.7rem;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 255, 136, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: var(--primary);
+      color: #000;
+      transform: translateY(-3px);
+    }
+
+    /* === Responsive === */
+    @media (max-width: 1024px) {
+      .footer-content {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        padding: 1rem;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 280px;
+        height: calc(100vh - 70px);
+        background: rgba(18, 18, 18, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1.5rem;
+        align-items: flex-start;
+        border-left: 1px solid var(--border);
+        transition: right 0.4s ease;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+      }
+
+      header p {
+        font-size: 1rem;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .search-bar {
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      .search-btn {
+        width: 100%;
+      }
+
+      .technician-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+      }
+
+      .cta-section {
+        padding: 3rem 1.5rem;
+      }
+    }
+
+    /* === Animations === */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .tech-card {
+      animation: fadeInUp 0.6s ease backwards;
+    }
+
+    .tech-card:nth-child(1) { animation-delay: 0.1s; }
+    .tech-card:nth-child(2) { animation-delay: 0.2s; }
+    .tech-card:nth-child(3) { animation-delay: 0.3s; }
+    .tech-card:nth-child(4) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <nav id="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        Zentronix
+      </div>
+      <button class="menu-btn" aria-label="Menu">☰</button>
+      <ul class="nav-links">
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#techniciens">Techniciens</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#vip">VIP</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header id="accueil">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <span class="hero-badge">🇨🇲 Réseau Professionnel Camerounais</span>
+      <h1>La Référence des Techniciens Experts au Cameroun</h1>
+      <p>Connectez-vous avec des professionnels certifiés dans tous les domaines techniques : électricité, mécanique, informatique, froid, énergie solaire et bien plus. Excellence garantie, disponibilité assurée.</p>
+      
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">50+</span>
+          <span class="stat-label">Techniciens Experts</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Projets Réalisés</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">98%</span>
+          <span class="stat-label">Satisfaction Client</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="search-section">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Rechercher par nom, spécialité ou domaine...">
+      <button class="search-btn" onclick="filterTechnicians()">Rechercher</button>
+    </div>
+  </div>
+
+  <section id="techniciens">
+    <div class="section-header">
+      <h2 class="section-title">Nos Techniciens Certifiés</h2>
+      <p class="section-subtitle">Découvrez notre équipe d'experts qualifiés, soigneusement sélectionnés pour leur expertise technique et leur professionnalisme. Chaque technicien est vérifié et certifié.</p>
+    </div>
+
+    <div class="technician-grid" id="technicianList">
+      <div class="tech-card" data-name="mba fonkou électronicien mécatronicien gps maintenance">
+        <div class="card-image">
+          <img src="https://i.ibb.co/8gxjn8CH/FB-IMG-17607891493429445.jpg" alt="FB-IMG-17607891493429445" border="0"" alt="MBA Fonkou - Électronicien Industriel">
+          <span class="card-badge">⚡ Électronique</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">MBA Fonkou</h3>
+          <p class="card-description">Électronicien industriel et résidentiel, spécialiste en maintenance préventive et installations de systèmes GPS. Expert en dépannage électronique avec 3 ans d'expérience terrain.</p>
+          <div class="card-footer">
+            <span class="experience-badge">
+              <span>⏱</span> 3 ans d'expérience
+            </span>
+            <a href="https://wa.me/2376818077" class="contact-btn">
+              <span>📞</span> Contacter
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-card" data-name="zentronix informaticien développeur web formateur mécatronicien fondateur">
+        <div class="card-image">
+          <img src="https://i.ibb.co/F39RrxG/IMG-20240903-202416.jpg" alt="Zentronix - Fondateur & Expert Informatique">
+          <span class="card-badge">💻 Informatique</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">⚡entronix </h3>
+          <p class="card-description">Fondateur de Zentronix Formation. Informaticien polyvalent, développeur web full-stack, formateur certifié et mécatronicien. Pionnier dans l'accompagnement et la formation de la nouvelle génération de talents techniques.</p>
+          <div class="card-footer">
+            <span class="experience-badge">
+              <span>⭐</span> Fondateur
+            </span>
+            <a href="https://wa.me/237698765432" class="contact-btn">
+              <span>📞</span> Contacter
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-card" data-name="hervé talla informaticien réseau serveur cybersécurité maintenance">
+        <div class="card-image">
+          <img src="https://i.imgur.com/M0p8BBO.jpg" alt="Hervé Talla - Expert Informatique">
+          <span class="card-badge">🔒 Cybersécurité</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Hervé Talla</h3>
+          <p class="card-description">Expert informatique spécialisé en infrastructure réseau, administration de serveurs et sécurité informatique. Intervention rapide pour installation, maintenance et sécurisation de systèmes d'information.</p>
+          <div class="card-footer">
+            <span class="experience-badge">
+              <span>⏱</span> Expert certifié
+            </span>
+            <a href="https://wa.me/237670987654" class="contact-btn">
+              <span>📞</span> Contacter
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-card" data-name="brice nono solaire énergie panneau photovoltaïque installation autonome">
+        <div class="card-image">
+          <img src="https://i.imgur.com/yAZ6K9Q.jpg" alt="Brice Nono - Spécialiste Énergie Solaire">
+          <span class="card-badge">☀️ Solaire</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Brice Nono</h3>
+          <p class="card-description">Spécialiste certifié en énergie solaire photovoltaïque. Conception, installation et maintenance de systèmes autonomes résidentiels et industriels. Solutions énergétiques durables et économiques.</p>
+          <div class="card-footer">
+            <span class="experience-badge">
+              <span>⏱</span> Certifié solaire
+            </span>
+            <a href="https://wa.me/237699123456" class="contact-btn">
+              <span>📞</span> Contacter
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-section" id="vip">
+    <div class="cta-icon">👑</div>
+    <h3>Rejoignez Notre Réseau VIP</h3>
+    <p>Accédez à notre communauté exclusive de techniciens professionnels. Collaborez sur des projets ambitieux, partagez votre expertise et développez votre réseau professionnel.</p>
+    <a href="https://chat.whatsapp.com/FBioPKhNpqtCvcBJNrloHj?mode=wwt" class="vip-btn">
+      <span>💎</span> Accéder au Groupe VIP
+    </a>
+  </div>
+
+  <footer id="contact">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>Zentronix</h3>
+        <p>Le premier réseau professionnel de techniciens experts au Cameroun. Nous connectons l'excellence technique avec vos besoins.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="WhatsApp">📱</a>
+          <a href="#" class="social-link" aria-label="Facebook">👥</a>
+          <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
+          <a href="#" class="social-link" aria-label="Instagram">📷</a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Services</h4>
+        <ul class="footer-links">
+          <li><a href="#">Électricité</a></li>
+          <li><a href="#">Informatique</a></li>
+          <li><a href="#">Mécanique</a></li>
+          <li><a href="#">Énergie Solaire</a></li>
+          <li><a href="#">Froid & Climatisation</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Entreprise</h4>
+        <ul class="footer-links">
+          <li><a href="#">À propos</a></li>
+          <li><a href="#">Notre équipe</a></li>
+          <li><a href="#">Devenir membre</a></li>
+          <li><a href="#">Carrières</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:zentronix237@gmail.com">📧 zentronix237@gmail.com</a></li>
+          <li><a href="#">📍 Yaoundé, Cameroun</a></li>
+          <li><a href="#">📞 +237 677818077</a></li>
+          <li><a href="#">⏰ Lun-Sam: 8h-18h</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2025 Zentronix. Tous droits réservés.</p>
+      <div class="footer-legal">
+        <a href="#">Conditions d'utilisation</a>
+        <span style="color: var(--border); margin: 0 0.5rem;">|</span>
+        <a href="#">Politique de confidentialité</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking on a link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+        navLinks.classList.remove('active');
+      }
+    });
+
+    // Search functionality with improved filtering
+    function filterTechnicians() {
+      const input = document.getElementById('searchInput').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.tech-card');
+      let visibleCount = 0;
+      
+      cards.forEach(card => {
+        const searchData = card.getAttribute('data-name').toLowerCase();
+        const isMatch = searchData.includes(input);
+        
+        if (isMatch || input === '') {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Show message if no results
+      const existingMessage = document.querySelector('.no-results-message');
+      if (existingMessage) {
+        existingMessage.remove();
+      }
+
+      if (visibleCount === 0 && input !== '') {
+        const message = document.createElement('div');
+        message.className = 'no-results-message';
+        message.style.cssText = 'text-align: center; padding: 3rem; color: var(--text-secondary); grid-column: 1/-1;';
+        message.innerHTML = `
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+          <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--text-primary);">Aucun technicien trouvé</h3>
+          <p>Essayez avec d'autres mots-clés comme "électricien", "informatique", "solaire"...</p>
+        `;
+        document.getElementById('technicianList').appendChild(message);
+      }
+    }
+
+    // Enable search on Enter key
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        filterTechnicians();
+      }
+    });
+
+    // Real-time search (optional - activates after 300ms of no typing)
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(filterTechnicians, 300);
+    });
+
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offsetTop = target.offsetTop - 80;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe all cards for animation
+    document.querySelectorAll('.tech-card').forEach(card => {
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>
