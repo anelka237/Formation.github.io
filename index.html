@@ -20,10 +20,11 @@
       --white: #ffffff;
       --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       --gradient-green: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
+      --facebook-blue: #1877f2;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       background-attachment: fixed;
       color: var(--dark);
@@ -31,7 +32,6 @@
       overflow-x: hidden;
     }
 
-    /* Header avec effet glassmorphism */
     header {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
@@ -63,7 +63,6 @@
       }
     }
 
-    /* Navigation moderne */
     .menu-toggle {
       display: none;
       background: var(--gradient-green);
@@ -126,7 +125,6 @@
       box-shadow: 0 5px 15px rgba(0, 212, 170, 0.4);
     }
 
-    /* Container principal avec carte glassmorphism */
     main {
       max-width: 1200px;
       margin: 40px auto;
@@ -162,6 +160,7 @@
     section:nth-child(3) { animation-delay: 0.3s; }
     section:nth-child(4) { animation-delay: 0.4s; }
     section:nth-child(5) { animation-delay: 0.5s; }
+    section:nth-child(6) { animation-delay: 0.6s; }
 
     @keyframes fadeIn {
       from {
@@ -198,7 +197,6 @@
       border-radius: 2px;
     }
 
-    /* Photo de profil avec animation */
     .profile-frame {
       width: 180px;
       height: 180px;
@@ -231,7 +229,78 @@
       transform: scale(1.1) rotate(5deg);
     }
 
-    /* Boutons modernes */
+    /* Style Facebook pour les services */
+    .service-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      border: 1px solid #e4e6eb;
+    }
+
+    .service-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      transform: translateY(-3px);
+    }
+
+    .service-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e4e6eb;
+    }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      background: var(--gradient-green);
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+    }
+
+    .service-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .service-image {
+      width: 100%;
+      height: 250px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin: 15px 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #050505;
+      margin: 15px 0;
+    }
+
+    .service-features {
+      background: #f7f8fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+
+    .service-features li {
+      padding: 8px 0;
+      color: #1c1e21;
+    }
+
     .cta-button {
       display: inline-block;
       background: var(--gradient-green);
@@ -270,7 +339,6 @@
       box-shadow: 0 8px 25px rgba(0, 212, 170, 0.5);
     }
 
-    /* WhatsApp bouton flottant */
     .whatsapp-button {
       display: inline-block;
       margin: 20px 0;
@@ -303,7 +371,6 @@
       }
     }
 
-    /* Étoiles animées */
     .stars {
       color: #FFD700;
       font-size: 1.2rem;
@@ -327,7 +394,6 @@
       50% { opacity: 0.5; transform: scale(0.8); }
     }
 
-    /* Avis clients */
     .review {
       background: rgba(102, 126, 234, 0.1);
       padding: 15px;
@@ -343,7 +409,6 @@
       transform: translateX(10px);
     }
 
-    /* Liste stylée */
     ul {
       list-style: none;
       padding: 0;
@@ -369,7 +434,6 @@
       border-bottom: none;
     }
 
-    /* Formulaire moderne */
     .email-input, textarea {
       width: 100%;
       padding: 15px;
@@ -411,7 +475,6 @@
       box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
     }
 
-    /* Footer moderne */
     footer {
       background: rgba(44, 62, 80, 0.95);
       backdrop-filter: blur(10px);
@@ -426,7 +489,6 @@
       font-size: 1.1rem;
     }
 
-    /* Responsive */
     @media screen and (max-width: 768px) {
       .menu-toggle {
         display: block;
@@ -454,6 +516,10 @@
       h2 {
         font-size: 1.5rem;
       }
+
+      .service-image {
+        height: 200px;
+      }
     }
   </style>
 </head>
@@ -466,15 +532,12 @@
 <button class="menu-toggle" onclick="toggleMenu()">☰ Menu</button>
 
 <nav id="nav-menu">
-  <a href="Nos_technicien.html">👤 Nos techniciens </a>
-  <a href="Root_form.html">👤 Qui suis-je ?</a>
-  <a href="#mes-formations">📚 Mes formations</a>
-  <a href="#installation-gps">📍 Installation GPS</a>
+  <a href="#nos-services">🔧 Nos Services</a>
+  <a href="#qui-suis-je">👤 Qui suis-je ?</a>
+  <a href="#mes-formations">📚 Formations</a>
+  <a href="#installation-gps">📍 GPS Auto</a>
   <a href="#securite-informatique">🔐 Sécurité IT</a>
-  <a href="Root_form.html">🎓 Formations</a>
   <a href="#contact">📧 Contact</a>
-  <a href="chat.html">💬 Chat</a>
-  <a href="termux.html">🔒 Hacking</a>
 </nav>
 
 <main>
@@ -484,7 +547,7 @@
       <img src="https://i.ibb.co/F39RrxG/IMG-20240903-202416.jpg" alt="Photo de profil">
     </div>
     <p style="text-align: center; font-size: 1.1rem; line-height: 1.8;">
-      Titulaire d'un <strong>BT en Maintenance &  construction de véhicules poids lourds </strong> et d'une expertise solide  <strong> en mécatronique automobile</strong>, je suis un jeune expert technique avec de solides compétences pratiques. Depuis <strong>3 ans</strong>, je forme également des jeunes au <strong>hacking et à la sécurité informatique</strong>, car je crois que la connaissance est essentielle pour naviguer dans le monde numérique d'aujourd'hui.
+      Titulaire d'un <strong>BT en Maintenance & construction de véhicules poids lourds</strong> et d'une expertise solide en <strong>mécatronique automobile</strong>, je suis un jeune expert technique avec de solides compétences pratiques. Depuis <strong>3 ans</strong>, je forme également des jeunes au <strong>hacking et à la sécurité informatique</strong>, car je crois que la connaissance est essentielle pour naviguer dans le monde numérique d'aujourd'hui.
     </p>
     <ul>
       <li><strong>Formations en programmation et cybersécurité</strong></li>
@@ -493,16 +556,102 @@
     </ul>
   </section>
 
+  <section id="nos-services">
+    <h2>Nos Services Techniques</h2>
+    
+    <!-- Bypass iCloud -->
+    <div class="service-card">
+      <div class="service-header">
+        <div class="service-icon">🍎</div>
+        <div>
+          <div class="service-title">Bypass iCloud & Déblocage iPhone</div>
+          <span class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></span>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=800&h=400&fit=crop" alt="iPhone bloqué iCloud" class="service-image">
+      <div class="service-description">
+        <strong>Votre iPhone est bloqué par iCloud ?</strong> Ne le jetez pas ! Je propose un service professionnel de déblocage et bypass iCloud pour tous les modèles d'iPhone. Que ce soit un iPhone bloqué après une réinitialisation, un achat d'occasion verrouillé, ou un appareil avec activation lock, j'ai la solution.
+      </div>
+      <div class="service-features">
+        <ul>
+          <li><strong>✓ Bypass iCloud</strong> - Déblocage permanent de l'activation iCloud</li>
+          <li><strong>✓ Déblocage réseau</strong> - Libérez votre iPhone de tout opérateur</li>
+          <li><strong>✓ Réparation IMEI</strong> - Restauration d'IMEI bloqué ou blacklisté</li>
+          <li><strong>✓ Suppression MDM</strong> - Retrait du Mobile Device Management</li>
+          <li><strong>✓ Tous modèles</strong> - iPhone 6 à iPhone 15 Pro Max</li>
+          <li><strong>✓ Service rapide</strong> - Déblocage en 24-72h selon le modèle</li>
+        </ul>
+      </div>
+      <div class="review">"J'avais un iPhone 12 bloqué iCloud depuis 6 mois. Le Zen l'a débloqué en 48h ! Incroyable !" - David K.</div>
+      <div class="review">"Service professionnel et prix correct. Mon iPhone XS fonctionne parfaitement maintenant." - Sarah M.</div>
+      <a href="https://wa.me/237673818077?text=Je%20veux%20débloquer%20mon%20iPhone%20bloqué%20iCloud" class="cta-button">🔓 Débloquer mon iPhone</a>
+    </div>
+
+    <!-- Déblocage Android -->
+    <div class="service-card">
+      <div class="service-header">
+        <div class="service-icon">🤖</div>
+        <div>
+          <div class="service-title">Déblocage & Root Android</div>
+          <span class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></span>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800&h=400&fit=crop" alt="Smartphone Android" class="service-image">
+      <div class="service-description">
+        <strong>Téléphone Android bloqué ?</strong> Je propose des solutions complètes pour tous vos problèmes de blocage : compte Google (FRP), schéma oublié, mot de passe, Knox Samsung, etc. Je réalise également le root et l'installation de ROMs custom pour optimiser votre appareil.
+      </div>
+      <div class="service-features">
+        <ul>
+          <li><strong>✓ Bypass FRP</strong> - Déblocage compte Google (Factory Reset Protection)</li>
+          <li><strong>✓ Déverrouillage bootloader</strong> - Pour tous les modèles Android</li>
+          <li><strong>✓ Root système</strong> - Accès root complet avec Magisk</li>
+          <li><strong>✓ Installation ROM custom</strong> - LineageOS, Pixel Experience, etc.</li>
+          <li><strong>✓ Suppression bloatware</strong> - Nettoyage applications pré-installées</li>
+          <li><strong>✓ Déblocage réseau</strong> - Tous opérateurs (Samsung, Huawei, Xiaomi, etc.)</li>
+        </ul>
+      </div>
+      <div class="review">"Mon Samsung Galaxy était bloqué par le compte Google précédent. Problème résolu en 1h !" - Jean-Pierre L.</div>
+      <div class="review">"Root de mon Xiaomi + ROM custom, maintenant mon téléphone est 3x plus rapide !" - Marie T.</div>
+      <a href="https://wa.me/237673818077?text=Je%20veux%20débloquer%20mon%20téléphone%20Android" class="cta-button">🔓 Débloquer mon Android</a>
+    </div>
+
+    <!-- Réparation Mobile -->
+    <div class="service-card">
+      <div class="service-header">
+        <div class="service-icon">🔧</div>
+        <div>
+          <div class="service-title">Réparation & Maintenance Mobile</div>
+          <span class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></span>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=800&h=400&fit=crop" alt="Réparation smartphone" class="service-image">
+      <div class="service-description">
+        <strong>Votre téléphone est endommagé ?</strong> Écran cassé, batterie faible, problème de charge, eau infiltrée... Je répare tous types de smartphones avec des pièces de qualité et une garantie sur les réparations.
+      </div>
+      <div class="service-features">
+        <ul>
+          <li><strong>✓ Remplacement écran</strong> - LCD, OLED, AMOLED toutes marques</li>
+          <li><strong>✓ Changement batterie</strong> - Batteries haute capacité disponibles</li>
+          <li><strong>✓ Réparation carte mère</strong> - Microsoudure et reballing</li>
+          <li><strong>✓ Problèmes logiciels</strong> - Flashage, mise à jour, désimlock</li>
+          <li><strong>✓ Récupération données</strong> - Extraction de données après panne</li>
+          <li><strong>✓ Diagnostic gratuit</strong> - Évaluation complète offerte</li>
+        </ul>
+      </div>
+      <a href="https://wa.me/237673818077?text=Je%20veux%20réparer%20mon%20smartphone" class="cta-button">🔧 Réparer mon téléphone</a>
+    </div>
+  </section>
+
   <section id="mes-formations">
-    <h2>Mes formations</h2>
+    <h2>Mes Formations</h2>
     <ul>
       <li>
         <strong style="font-size: 1.2rem; color: var(--secondary);">🐍 Devenir expert en Python en 30 jours</strong> 
         <span class="stars">
           <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
         </span>
-        <div class="review">"Une formation incroyable ! J'ai appris énormément." - Marie</div>
-        <div class="review">"Bien structuré et facile à suivre." - Paul</div>
+        <div class="review">"Une formation incroyable ! J'ai appris énormément en un mois." - Marie</div>
+        <div class="review">"Bien structuré et facile à suivre. Je recommande !" - Paul</div>
         <a href="https://wa.me/237673818077?text=Je%20veux%20débuter%20la%20formation%20Python%20en%2030%20jours" class="cta-button">🚀 Débuter la formation</a>
       </li>
     </ul>
@@ -518,18 +667,23 @@
     <ul>
       <li><strong>Évaluation personnalisée</strong> de vos besoins</li>
       <li><strong>Installation professionnelle</strong> et discrète</li>
+      <li><strong>Suivi en temps réel</strong> via application mobile</li>
+      <li><strong>Alertes géolocalisées</strong> et historique des trajets</li>
       <li><strong>Conseils et maintenance</strong> continus</li>
     </ul>
-    <a href="https://wa.me/237653817752?text=Je%20veux%20installer%20Mon%20GPS%20aujourd'hui" class="cta-button">📍 Installer un GPS</a>
+    <a href="https://wa.me/237653817752?text=Je%20veux%20installer%20un%20GPS%20sur%20mon%20véhicule" class="cta-button">📍 Installer un GPS</a>
   </section>
 
   <section id="securite-informatique">
     <h2>Sécurité Informatique</h2>
-    <p style="font-size: 1.1rem;">Mes services incluent :</p>
+    <p style="font-size: 1.1rem;">Mes services de cybersécurité incluent :</p>
     <ul>
-      <li><strong>Évaluations de sécurité</strong> complètes</li>
-      <li><strong>Formation en hacking éthique</strong></li>
-      <li><strong>Conseils et tests de pénétration</strong></li>
+      <li><strong>Évaluations de sécurité</strong> complètes de vos systèmes</li>
+      <li><strong>Formation en hacking éthique</strong> et pentesting</li>
+      <li><strong>Tests de pénétration</strong> et audits de sécurité</li>
+      <li><strong>Sécurisation réseaux</strong> et infrastructure</li>
+      <li><strong>Récupération après attaque</strong> et forensics</li>
+      <li><strong>Conseils personnalisés</strong> pour votre entreprise</li>
     </ul>
     <a href="https://wa.me/237673818077?text=Je%20souhaite%20une%20consultation%20en%20sécurité%20informatique" class="cta-button">🔐 Demander une consultation</a>
   </section>
@@ -551,16 +705,4 @@
 </main>
 
 <footer>
-  <p>© 2024 Le Zen. Tous droits réservés. ✨</p>
-  <p style="margin-top: 10px; font-size: 0.9rem;">Fait avec ❤️ pour vous</p>
-</footer>
-
-<script>
-  function toggleMenu() {
-    const nav = document.getElementById("nav-menu");
-    nav.classList.toggle('active');
-  }
-</script>
-
-</body>
-</html>
+  <p>© 2024 Le Zen. Tous droits réservés. ✨
