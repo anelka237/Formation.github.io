@@ -75,6 +75,9 @@
       font-weight: 600;
       transition: all 0.3s ease;
       box-shadow: 0 4px 15px rgba(0, 212, 170, 0.4);
+      margin: 10px auto;
+      width: calc(100% - 40px);
+      max-width: 300px;
     }
 
     .menu-toggle:hover {
@@ -91,6 +94,7 @@
       flex-wrap: wrap;
       gap: 10px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
     }
 
     nav a {
@@ -492,17 +496,25 @@
     @media screen and (max-width: 768px) {
       .menu-toggle {
         display: block;
-        width: 100%;
-        margin: 10px 0;
       }
 
       nav {
         display: none;
         flex-direction: column;
+        max-height: 0;
+        overflow: hidden;
       }
 
       nav.active {
         display: flex;
+        max-height: 1000px;
+        padding: 15px;
+      }
+
+      nav a {
+        width: 100%;
+        text-align: center;
+        padding: 15px;
       }
 
       header h1 {
@@ -537,6 +549,7 @@
   <a href="#mes-formations">📚 Formations</a>
   <a href="#installation-gps">📍 GPS Auto</a>
   <a href="#securite-informatique">🔐 Sécurité IT</a>
+  <a href="#maintenance-info">💻 Maintenance PC</a>
   <a href="#contact">📧 Contact</a>
 </nav>
 
@@ -640,6 +653,89 @@
       </div>
       <a href="https://wa.me/237673818077?text=Je%20veux%20réparer%20mon%20smartphone" class="cta-button">🔧 Réparer mon téléphone</a>
     </div>
+
+    <!-- Maintenance Informatique -->
+    <div class="service-card">
+      <div class="service-header">
+        <div class="service-icon">💻</div>
+        <div>
+          <div class="service-title">Maintenance Informatique Complète</div>
+          <span class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></span>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&h=400&fit=crop" alt="Maintenance ordinateur" class="service-image">
+      <div class="service-description">
+        <strong>Votre ordinateur est lent ou défectueux ?</strong> Je propose un service complet de maintenance informatique pour PC et Mac : nettoyage système, optimisation, réparation matérielle, installation logiciels, récupération de données et bien plus. Que ce soit pour un usage personnel ou professionnel, je redonne vie à votre machine !
+      </div>
+      <div class="service-features">
+        <ul>
+          <li><strong>✓ Nettoyage & Optimisation</strong> - Suppression virus, malwares, programmes inutiles</li>
+          <li><strong>✓ Upgrade matériel</strong> - SSD, RAM, carte graphique, refroidissement</li>
+          <li><strong>✓ Réparation PC/Mac</strong> - Diagnostic et réparation toutes pannes</li>
+          <li><strong>✓ Installation système</strong> - Windows 10/11, Linux, macOS</li>
+          <li><strong>✓ Récupération données</strong> - Disque dur endommagé, fichiers supprimés</li>
+          <li><strong>✓ Configuration réseau</strong> - Wi-Fi, routeur, serveur domestique</li>
+        </ul>
+      </div>
+      <div class="review">"Mon PC de 6 ans était devenu inutilisable. Après intervention du Zen : comme neuf ! SSD installé, Windows optimisé, c'est un autre ordinateur." - Thomas B.</div>
+      <div class="review">"J'avais perdu toutes mes photos après un crash. Il a récupéré 95% de mes données. Un magicien !" - Fatima R.</div>
+      <a href="https://wa.me/237673818077?text=J'ai%20besoin%20d'une%20maintenance%20informatique" class="cta-button">💻 Maintenance PC/Mac</a>
+    </div>
+
+    <!-- Assemblage PC sur mesure -->
+    <div class="service-card">
+      <div class="service-header">
+        <div class="service-icon">🖥️</div>
+        <div>
+          <div class="service-title">Assemblage PC Gamer & Pro sur Mesure</div>
+          <span class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></span>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=800&h=400&fit=crop" alt="PC Gamer RGB" class="service-image">
+      <div class="service-description">
+        <strong>Vous rêvez d'un PC performant adapté à vos besoins ?</strong> Je conçois et assemble des configurations PC sur mesure selon votre budget et utilisation : gaming haute performance, montage vidéo, design graphique, station de travail professionnelle. Chaque composant est soigneusement sélectionné pour optimiser les performances.
+      </div>
+      <div class="service-features">
+        <ul>
+          <li><strong>✓ PC Gaming</strong> - RTX 4070/4080, processeurs haute performance, RGB</li>
+          <li><strong>✓ Workstation Pro</strong> - Montage vidéo 4K, rendu 3D, CAO</li>
+          <li><strong>✓ PC Bureautique</strong> - Solutions économiques et efficaces</li>
+          <li><strong>✓ Watercooling</strong> - Refroidissement liquide custom pour overclocking</li>
+          <li><strong>✓ Conseil personnalisé</strong> - Choix des composants selon budget</li>
+          <li><strong>✓ Garantie & Support</strong> - SAV et assistance technique inclus</li>
+        </ul>
+      </div>
+      <div class="review">"Configuration gaming AMD Ryzen 7 + RTX 4070 assemblée parfaitement. Je tourne tous mes jeux en Ultra à 144 FPS !" - Kevin M.</div>
+      <div class="review">"Station de travail pour mon studio vidéo. Rendu Premiere Pro 3x plus rapide ! Investissement rentabilisé." - Sophie D.</div>
+      <a href="https://wa.me/237673818077?text=Je%20veux%20un%20PC%20sur%20mesure" class="cta-button">🖥️ Commander mon PC</a>
+    </div>
+
+    <!-- Support IT à distance -->
+    <div class="service-card">
+      <div class="service-header">
+        <div class="service-icon">🌐</div>
+        <div>
+          <div class="service-title">Support IT & Dépannage à Distance</div>
+          <span class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></span>
+        </div>
+      </div>
+      <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=400&fit=crop" alt="Support informatique" class="service-image">
+      <div class="service-description">
+        <strong>Besoin d'aide informatique urgente ?</strong> Je propose un service de support technique à distance rapide et efficace. Connexion sécurisée à votre ordinateur pour résoudre vos problèmes sans déplacement : bugs Windows, problèmes logiciels, configuration email, imprimante, sauvegarde, sécurité...
+      </div>
+      <div class="service-features">
+        <ul>
+          <li><strong>✓ Dépannage immédiat</strong> - Intervention rapide par TeamViewer/AnyDesk</li>
+          <li><strong>✓ Installation logiciels</strong> - Office, Adobe, Antivirus, VPN, etc.</li>
+          <li><strong>✓ Problèmes Windows</strong> - Écran bleu, erreurs système, lenteurs</li>
+          <li><strong>✓ Configuration matériel</strong> - Imprimante, scanner, périphériques</li>
+          <li><strong>✓ Formation utilisateur</strong> - Cours particuliers à distance</li>
+          <li><strong>✓ Tarif à la demande</strong> - Facturation horaire ou forfait mensuel</li>
+        </ul>
+      </div>
+      <div class="review">"Mon imprimante ne fonctionnait plus depuis 2 semaines. Problème résolu en 15 minutes par connexion à distance !" - Marc L.</div>
+      <a href="https://wa.me/237673818077?text=J'ai%20besoin%20d'un%20support%20technique%20à%20distance" class="cta-button">🌐 Support à distance</a>
+    </div>
   </section>
 
   <section id="mes-formations">
@@ -705,4 +801,262 @@
 </main>
 
 <footer>
-  <p>© 2024 Le Zen. Tous droits réservés. ✨
+  <p>© 2024 Le Zen. Tous droits réservés. ✨</p>
+  <p style="margin-top: 10px; font-size: 0.9rem;">Fait avec ❤️ pour vous</p>
+  <p style="margin-top: 15px; font-size: 0.85rem;">
+    📞 WhatsApp: +237 673 818 077 | 📧 Contact professionnel disponible 7j/7
+  </p>
+</footer>
+
+<script>
+  function toggleMenu() {
+    const nav = document.getElementById("nav-menu");
+    nav.classList.toggle('active');
+  }
+
+  // Animation au scroll
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.service-card').forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    card.style.transition = 'all 0.6s ease';
+    observer.observe(card);
+  });
+
+  // Smooth scroll pour les liens de navigation
+  document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+          // Fermer le menu mobile après clic
+          const nav = document.getElementById("nav-menu");
+          nav.classList.remove('active');
+        }
+      }
+    });
+  });
+
+  // Animation des étoiles au survol
+  document.querySelectorAll('.stars').forEach(stars => {
+    stars.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.2)';
+    });
+    stars.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+  });
+
+  // Effet de compteur pour les statistiques (peut être ajouté plus tard)
+  function animateCounter(element, target, duration) {
+    let start = 0;
+    const increment = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= target) {
+        element.textContent = Math.floor(target);
+        clearInterval(timer);
+      } else {
+        element.textContent = Math.floor(start);
+      }
+    }, 16);
+  }
+
+  // Gestion du formulaire de contact
+  const contactForm = document.querySelector('form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = this.querySelector('input[type="email"]').value;
+      const message = this.querySelector('textarea').value;
+      
+      // Redirection vers WhatsApp avec le message
+      const whatsappMessage = `Nouveau message de ${email}:%0A%0A${encodeURIComponent(message)}`;
+      window.open(`https://wa.me/237673818077?text=${whatsappMessage}`, '_blank');
+      
+      // Message de confirmation
+      alert('Merci ! Vous allez être redirigé vers WhatsApp pour envoyer votre message.');
+      this.reset();
+    });
+  }
+
+  // Effet parallaxe léger sur le header
+  window.addEventListener('scroll', function() {
+    const header = document.querySelector('header');
+    const scrolled = window.pageYOffset;
+    if (header) {
+      header.style.transform = `translateY(${scrolled * 0.3}px)`;
+    }
+  });
+
+  // Ajout d'un badge "NOUVEAU" sur les services récents
+  const nouveauBadge = document.createElement('span');
+  nouveauBadge.style.cssText = `
+    background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 10px;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
+    animation: bounce 1s infinite;
+  `;
+  nouveauBadge.textContent = 'NOUVEAU';
+
+  // Ajouter le badge aux services iPhone et Android
+  const iPhoneService = document.querySelector('.service-card:first-child .service-title');
+  const androidService = document.querySelector('.service-card:nth-child(2) .service-title');
+  if (iPhoneService) iPhoneService.appendChild(nouveauBadge.cloneNode(true));
+  if (androidService) androidService.appendChild(nouveauBadge.cloneNode(true));
+
+  // Badge spécial "POPULAIRE" pour la maintenance informatique
+  const populaireBadge = document.createElement('span');
+  populaireBadge.style.cssText = `
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 10px;
+    box-shadow: 0 2px 8px rgba(245, 87, 108, 0.4);
+  `;
+  populaireBadge.textContent = 'POPULAIRE';
+  
+  const maintenanceService = document.querySelectorAll('.service-card')[3]?.querySelector('.service-title');
+  if (maintenanceService) maintenanceService.appendChild(populaireBadge);
+
+  // Animation de bounce pour le badge NOUVEAU
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Compteur de visiteurs (simulation)
+  const visitorCount = Math.floor(Math.random() * 500) + 1200;
+  const statsSection = document.createElement('div');
+  statsSection.style.cssText = `
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 30px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  `;
+  
+  statsSection.innerHTML = `
+    <div style="padding: 20px;">
+      <div style="font-size: 3rem; font-weight: 700; color: var(--primary);" id="clients-count">0</div>
+      <div style="font-size: 1.1rem; color: var(--dark); margin-top: 10px;">Clients Satisfaits</div>
+    </div>
+    <div style="padding: 20px;">
+      <div style="font-size: 3rem; font-weight: 700; color: var(--secondary);" id="repairs-count">0</div>
+      <div style="font-size: 1.1rem; color: var(--dark); margin-top: 10px;">Réparations Réussies</div>
+    </div>
+    <div style="padding: 20px;">
+      <div style="font-size: 3rem; font-weight: 700; color: var(--primary-dark);" id="students-count">0</div>
+      <div style="font-size: 1.1rem; color: var(--dark); margin-top: 10px;">Étudiants Formés</div>
+    </div>
+  `;
+
+  const firstSection = document.querySelector('#nos-services');
+  if (firstSection) {
+    firstSection.appendChild(statsSection);
+    
+    // Animer les compteurs au chargement
+    setTimeout(() => {
+      animateCounter(document.getElementById('clients-count'), 450, 2000);
+      animateCounter(document.getElementById('repairs-count'), 1200, 2500);
+      animateCounter(document.getElementById('students-count'), 180, 2200);
+    }, 500);
+  }
+
+  // Bouton "Retour en haut" flottant
+  const backToTop = document.createElement('button');
+  backToTop.innerHTML = '↑';
+  backToTop.style.cssText = `
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--gradient-green);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 212, 170, 0.4);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 999;
+  `;
+  document.body.appendChild(backToTop);
+
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      backToTop.style.opacity = '1';
+      backToTop.style.transform = 'translateY(0)';
+    } else {
+      backToTop.style.opacity = '0';
+      backToTop.style.transform = 'translateY(20px)';
+    }
+  });
+
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  backToTop.addEventListener('mouseenter', function() {
+    this.style.transform = 'scale(1.1) translateY(0)';
+  });
+
+  backToTop.addEventListener('mouseleave', function() {
+    this.style.transform = 'scale(1) translateY(0)';
+  });
+
+  // Message de bienvenue personnalisé
+  window.addEventListener('load', () => {
+    const hour = new Date().getHours();
+    let greeting = 'Bienvenue';
+    
+    if (hour < 12) greeting = 'Bonjour';
+    else if (hour < 18) greeting = 'Bon après-midi';
+    else greeting = 'Bonsoir';
+    
+    console.log(`${greeting} sur Le Zen ! 🌟`);
+    console.log('Besoin d\'aide ? Contactez-nous sur WhatsApp : +237 673 818 077');
+  });
+</script>
+
+</body>
+</html>
