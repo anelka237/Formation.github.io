@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -60,6 +59,21 @@
             font-size: 1.8rem;
         }
 
+        .security-info {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            color: #2e7d32;
+        }
+
+        .security-info strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
         .login-group {
             margin-bottom: 20px;
         }
@@ -86,42 +100,24 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .role-selector {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .role-btn {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .role-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .admin-badge {
+            display: inline-block;
+            background: #4caf50;
             color: white;
-            border-color: #667eea;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
         }
 
-        .role-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: #1976d2;
+        .user-badge {
+            display: inline-block;
+            background: #2196f3;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
         }
 
         /* Upload Section (Admin Only) */
@@ -142,26 +138,6 @@
             color: #667eea;
             margin-bottom: 20px;
             font-size: 1.5rem;
-        }
-
-        .admin-badge {
-            display: inline-block;
-            background: #4caf50;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-left: 10px;
-        }
-
-        .user-badge {
-            display: inline-block;
-            background: #2196f3;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-left: 10px;
         }
 
         .upload-options {
@@ -288,6 +264,25 @@
             margin-bottom: 25px;
             font-size: 1.8rem;
             text-align: center;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .welcome-banner h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            font-size: 0.95rem;
         }
 
         .image-container {
@@ -509,32 +504,27 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎯 Pronobet</h1>
-            <p>Plateforme sécurisée de pronostics sportifs</p>
+            <h1>🎯 Pronostics du Jour</h1>
+            <p>Plateforme sécurisée - Authentification renforcée</p>
         </header>
 
         <!-- Login Section -->
         <div class="login-section" id="loginSection">
-            <h2>🔐 Connexion</h2>
+            <h2>🔐 Connexion Sécurisée</h2>
             
-            <div class="role-selector">
-                <button class="role-btn active" onclick="selectRole('user')" id="userBtn">
-                    👥 Utilisateur
-                </button>
-                <button class="role-btn" onclick="selectRole('admin')" id="adminBtn">
-                    👑 Admin
-                </button>
+            <div class="security-info">
+                <strong>🛡️ Authentification renforcée</strong>
+                Nom d'utilisateur ET mot de passe requis pour accéder aux pronostics
             </div>
 
-            <div class="info-box" id="infoBox">
-                💡 Mode Utilisateur : Accès aux pronostics publiés avec mot de passe
+            <div class="login-group">
+                <label for="username">👤 Nom d'utilisateur</label>
+                <input type="text" id="username" placeholder="Entrez votre nom d'utilisateur" autocomplete="username">
             </div>
 
-            <div id="loginForm">
-                <div class="login-group">
-                    <label for="password" id="passwordLabel">🔑 Mot de passe Utilisateur</label>
-                    <input type="password" id="password" placeholder="Entrez le mot de passe">
-                </div>
+            <div class="login-group">
+                <label for="password">🔑 Mot de passe</label>
+                <input type="password" id="password" placeholder="Entrez votre mot de passe" autocomplete="current-password">
             </div>
 
             <div class="btn-container">
@@ -578,9 +568,14 @@
             <div class="coupon-list" id="couponList"></div>
         </div>
 
-        <!-- Display Section (Users & Admin) -->
+        <!-- Display Section (Users) -->
         <div class="display-section" id="displaySection">
-            <h2>🏆 Pronostics Disponibles <span class="user-badge" id="userBadge">UTILISATEUR</span></h2>
+            <div class="welcome-banner">
+                <h3 id="welcomeText">Bienvenue !</h3>
+                <p id="welcomeSubtext">Accès aux pronostics du jour</p>
+            </div>
+            
+            <h2>🏆 Pronostics Disponibles</h2>
             
             <div class="loading" id="loading">
                 <div class="spinner"></div>
@@ -617,13 +612,58 @@
 
     <script>
         // ========================================
-        // CONFIGURATION - CHANGE TES MOTS DE PASSE ICI
+        // ⚠️ CONFIGURATION - LISTE DES UTILISATEURS AUTORISÉS
         // ========================================
-        const ADMIN_PASSWORD = "Admin2026";        // ⚠️ Mot de passe ADMIN
-        const USER_PASSWORD = "Prono2026";         // ⚠️ Mot de passe UTILISATEURS
+        
+        const AUTHORIZED_USERS = {
+            // ADMINISTRATEUR
+            'admin': {
+                password: 'AdminSecure2026',
+                role: 'admin',
+                name: 'Administrateur'
+            },
+            
+            // UTILISATEURS AUTORISÉS - Ajoute ici tes abonnés
+            'jean.dupont': {
+                password: 'Jean123!',
+                role: 'user',
+                name: 'Jean Dupont'
+            },
+            'marie.martin': {
+                password: 'Marie456!',
+                role: 'user',
+                name: 'Marie Martin'
+            },
+            'paul.bernard': {
+                password: 'Paul789!',
+                role: 'user',
+                name: 'Paul Bernard'
+            },
+            'sophie.dubois': {
+                password: 'Sophie2026!',
+                role: 'user',
+                name: 'Sophie Dubois'
+            },
+            'luc.moreau': {
+                password: 'Luc999!',
+                role: 'user',
+                name: 'Luc Moreau'
+            }
+            
+            // Pour ajouter un nouvel utilisateur, copie le format ci-dessus :
+            // 'nom.utilisateur': {
+            //     password: 'MotDePasse123!',
+            //     role: 'user',
+            //     name: 'Nom Complet'
+            // },
+        };
 
-        let currentRole = 'user';
-        let isAuthenticated = false;
+        // ========================================
+        // SYSTÈME DE SÉCURITÉ
+        // ========================================
+        
+        let currentUser = null;
+        let sessionToken = null;
 
         // Initialisation
         updateDate();
@@ -635,34 +675,14 @@
             document.getElementById('currentDate').textContent = today;
         }
 
-        function selectRole(role) {
-            currentRole = role;
-            const userBtn = document.getElementById('userBtn');
-            const adminBtn = document.getElementById('adminBtn');
-            const passwordLabel = document.getElementById('passwordLabel');
-            const infoBox = document.getElementById('infoBox');
-            
-            userBtn.classList.remove('active');
-            adminBtn.classList.remove('active');
-            
-            if (role === 'admin') {
-                adminBtn.classList.add('active');
-                passwordLabel.innerHTML = '👑 Mot de passe Admin';
-                infoBox.innerHTML = '⚡ Mode Admin : Publier et gérer les pronostics';
-                infoBox.style.borderColor = '#4caf50';
-                infoBox.style.background = '#e8f5e9';
-                infoBox.style.color = '#2e7d32';
-            } else {
-                userBtn.classList.add('active');
-                passwordLabel.innerHTML = '🔑 Mot de passe Utilisateur';
-                infoBox.innerHTML = '💡 Mode Utilisateur : Accès aux pronostics publiés avec mot de passe';
-                infoBox.style.borderColor = '#2196f3';
-                infoBox.style.background = '#e3f2fd';
-                infoBox.style.color = '#1976d2';
-            }
+        // Générer un token de session unique
+        function generateSessionToken() {
+            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
+        // Fonction de connexion sécurisée
         function login() {
+            const username = document.getElementById('username').value.trim().toLowerCase();
             const password = document.getElementById('password').value;
             const loginError = document.getElementById('loginError');
             const loginSuccess = document.getElementById('loginSuccess');
@@ -670,78 +690,150 @@
             loginError.classList.remove('active');
             loginSuccess.classList.remove('active');
 
-            if (!password) {
-                showLoginError('Veuillez entrer le mot de passe');
+            // Validation des champs
+            if (!username || !password) {
+                showLoginError('Veuillez remplir tous les champs');
                 return;
             }
 
-            if (currentRole === 'admin') {
-                if (password !== ADMIN_PASSWORD) {
-                    showLoginError('Mot de passe admin incorrect !');
-                    return;
-                }
-
-                // Connexion admin réussie
-                isAuthenticated = true;
-                sessionStorage.setItem('userRole', 'admin');
-                sessionStorage.setItem('isAuthenticated', 'true');
-                
-                showLoginSuccess('Bienvenue Admin ! 👑');
-                
-                setTimeout(() => {
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('uploadSection').classList.add('active');
-                    loadCouponsForAdmin();
-                }, 1000);
-
-            } else {
-                // Vérification mot de passe utilisateur
-                if (password !== USER_PASSWORD) {
-                    showLoginError('Mot de passe utilisateur incorrect !');
-                    return;
-                }
-
-                // Connexion utilisateur réussie
-                isAuthenticated = true;
-                sessionStorage.setItem('userRole', 'user');
-                sessionStorage.setItem('isAuthenticated', 'true');
-                
-                showLoginSuccess('Connexion réussie ! Chargement des pronostics...');
-                
-                setTimeout(() => {
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('displaySection').classList.add('active');
-                    loadCouponsForPublic();
-                }, 1000);
+            // Vérifier si l'utilisateur existe dans la liste
+            if (!AUTHORIZED_USERS[username]) {
+                showLoginError('Nom d\'utilisateur non autorisé !');
+                logFailedLogin(username, 'Utilisateur non autorisé');
+                return;
             }
-        }
 
-        function checkStoredAuth() {
-            const storedAuth = sessionStorage.getItem('isAuthenticated');
-            const storedRole = sessionStorage.getItem('userRole');
+            // Vérifier le mot de passe
+            const user = AUTHORIZED_USERS[username];
+            if (user.password !== password) {
+                showLoginError('Mot de passe incorrect !');
+                logFailedLogin(username, 'Mot de passe incorrect');
+                return;
+            }
 
-            if (storedAuth === 'true' && storedRole) {
-                isAuthenticated = true;
-                currentRole = storedRole;
+            // ✅ CONNEXION RÉUSSIE !
+            currentUser = {
+                username: username,
+                name: user.name,
+                role: user.role
+            };
+
+            // Générer un token de session
+            sessionToken = generateSessionToken();
+
+            // Enregistrer la session
+            sessionStorage.setItem('sessionToken', sessionToken);
+            sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+            sessionStorage.setItem('loginTime', new Date().toISOString());
+
+            // Logger la connexion réussie
+            logSuccessfulLogin(username, user.role);
+
+            // Message de bienvenue
+            showLoginSuccess(`Bienvenue ${user.name} ! ${user.role === 'admin' ? '👑' : '🎯'}`);
+
+            // Rediriger vers la bonne interface
+            setTimeout(() => {
                 document.getElementById('loginSection').style.display = 'none';
 
-                if (storedRole === 'admin') {
+                if (user.role === 'admin') {
                     document.getElementById('uploadSection').classList.add('active');
                     loadCouponsForAdmin();
                 } else {
+                    document.getElementById('welcomeText').textContent = `Bienvenue ${user.name} ! 🎯`;
+                    document.getElementById('welcomeSubtext').textContent = `Connecté en tant qu'utilisateur`;
                     document.getElementById('displaySection').classList.add('active');
-                    document.getElementById('userBadge').style.display = 'inline-block';
+                    loadCouponsForPublic();
+                }
+            }, 1000);
+        }
+
+        // Vérifier l'authentification stockée
+        function checkStoredAuth() {
+            const storedToken = sessionStorage.getItem('sessionToken');
+            const storedUser = sessionStorage.getItem('currentUser');
+            const loginTime = sessionStorage.getItem('loginTime');
+
+            if (storedToken && storedUser) {
+                // Vérifier que la session n'est pas trop vieille (24h max)
+                const loginDate = new Date(loginTime);
+                const now = new Date();
+                const hoursDiff = (now - loginDate) / (1000 * 60 * 60);
+
+                if (hoursDiff > 24) {
+                    // Session expirée
+                    logout();
+                    return;
+                }
+
+                currentUser = JSON.parse(storedUser);
+                sessionToken = storedToken;
+
+                document.getElementById('loginSection').style.display = 'none';
+
+                if (currentUser.role === 'admin') {
+                    document.getElementById('uploadSection').classList.add('active');
+                    loadCouponsForAdmin();
+                } else {
+                    document.getElementById('welcomeText').textContent = `Bienvenue ${currentUser.name} ! 🎯`;
+                    document.getElementById('welcomeSubtext').textContent = `Connecté en tant qu'utilisateur`;
+                    document.getElementById('displaySection').classList.add('active');
                     loadCouponsForPublic();
                 }
             }
         }
 
+        // Déconnexion
         function logout() {
-            isAuthenticated = false;
+            if (currentUser) {
+                logLogout(currentUser.username);
+            }
+            currentUser = null;
+            sessionToken = null;
             sessionStorage.clear();
             location.reload();
         }
 
+        // Système de logs (pour traçabilité)
+        function logSuccessfulLogin(username, role) {
+            let logs = JSON.parse(localStorage.getItem('loginLogs') || '[]');
+            logs.push({
+                type: 'success',
+                username: username,
+                role: role,
+                timestamp: new Date().toISOString(),
+                message: 'Connexion réussie'
+            });
+            // Garder seulement les 100 derniers logs
+            if (logs.length > 100) logs = logs.slice(-100);
+            localStorage.setItem('loginLogs', JSON.stringify(logs));
+        }
+
+        function logFailedLogin(username, reason) {
+            let logs = JSON.parse(localStorage.getItem('loginLogs') || '[]');
+            logs.push({
+                type: 'failed',
+                username: username,
+                timestamp: new Date().toISOString(),
+                message: reason
+            });
+            if (logs.length > 100) logs = logs.slice(-100);
+            localStorage.setItem('loginLogs', JSON.stringify(logs));
+        }
+
+        function logLogout(username) {
+            let logs = JSON.parse(localStorage.getItem('loginLogs') || '[]');
+            logs.push({
+                type: 'logout',
+                username: username,
+                timestamp: new Date().toISOString(),
+                message: 'Déconnexion'
+            });
+            if (logs.length > 100) logs = logs.slice(-100);
+            localStorage.setItem('loginLogs', JSON.stringify(logs));
+        }
+
+        // Messages d'erreur/succès
         function showLoginError(message) {
             const errorDiv = document.getElementById('loginError');
             errorDiv.textContent = '⚠️ ' + message;
@@ -769,8 +861,14 @@
             setTimeout(() => successDiv.classList.remove('active'), 4000);
         }
 
-        // Publier un coupon (Admin)
+        // Publier un coupon (Admin uniquement)
         function publishCoupon() {
+            // Vérification de sécurité
+            if (!currentUser || currentUser.role !== 'admin') {
+                showUploadError('Accès non autorisé !');
+                return;
+            }
+
             const title = document.getElementById('couponTitle').value.trim();
             const fileInput = document.getElementById('fileInput');
             const urlInput = document.getElementById('urlInput').value.trim();
@@ -785,7 +883,6 @@
                 return;
             }
 
-            // Récupérer les coupons existants
             let coupons = JSON.parse(localStorage.getItem('coupons') || '[]');
 
             if (fileInput.files[0]) {
@@ -802,7 +899,8 @@
                         id: Date.now(),
                         title: title,
                         imageData: e.target.result,
-                        date: new Date().toLocaleString('fr-FR')
+                        date: new Date().toLocaleString('fr-FR'),
+                        publishedBy: currentUser.name
                     };
 
                     coupons.push(coupon);
@@ -818,7 +916,8 @@
                     id: Date.now(),
                     title: title,
                     imageUrl: urlInput,
-                    date: new Date().toLocaleString('fr-FR')
+                    date: new Date().toLocaleString('fr-FR'),
+                    publishedBy: currentUser.name
                 };
 
                 coupons.push(coupon);
@@ -920,7 +1019,13 @@
             });
         }
 
-        // Permettre connexion avec touche Entrée
+        // Connexion avec touche Entrée
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('password').focus();
+            }
+        });
+
         document.getElementById('password').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 login();
@@ -928,4 +1033,4 @@
         });
     </script>
 </body>
-              </html>
+    </html>
