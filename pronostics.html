@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronostics du Jour 🎯</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Login Section */
+        .login-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .login-section h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .login-group {
+            margin-bottom: 20px;
+        }
+
+        .login-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .login-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .role-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .role-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #1976d2;
+        }
+
+        /* Upload Section (Admin Only) */
+        .upload-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .upload-section.active {
+            display: block;
+        }
+
+        .upload-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .user-badge {
+            display: inline-block;
+            background: #2196f3;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .upload-options {
+            display: grid;
+            gap: 20px;
+        }
+
+        .upload-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .upload-group label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        input[type="file"],
+        input[type="url"],
+        input[type="text"] {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        input[type="file"]:hover,
+        input[type="url"]:hover,
+        input[type="text"]:hover {
+            border-color: #667eea;
+            background: white;
+        }
+
+        input[type="url"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 150px;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        /* Display Section */
+        .display-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+        }
+
+        .display-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .display-section h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+
+        .info-message {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        .info-message::before {
+            content: "📊";
+            display: block;
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .error-message,
+        .success-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error-message {
+            background: #ffe5e5;
+            color: #d32f2f;
+            border-left: 4px solid #d32f2f;
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .error-message.active,
+        .success-message.active {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .coupon-list {
+            margin-top: 20px;
+        }
+
+        .coupon-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #667eea;
+        }
+
+        .coupon-item-info {
+            flex: 1;
+        }
+
+        .coupon-item-info h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .coupon-item-info p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .coupon-item button {
+            padding: 8px 15px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .coupon-item button:hover {
+            background: #d32f2f;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .upload-section,
+            .display-section,
+            .login-section {
+                padding: 20px;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            .upload-section h2,
+            .display-section h2 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Pronobet</h1>
+            <p>Plateforme sécurisée de pronostics sportifs</p>
+        </header>
+
+        <!-- Login Section -->
+        <div class="login-section" id="loginSection">
+            <h2>🔐 Connexion</h2>
+            
+            <div class="role-selector">
+                <button class="role-btn active" onclick="selectRole('user')" id="userBtn">
+                    👥 Utilisateur
+                </button>
+                <button class="role-btn" onclick="selectRole('admin')" id="adminBtn">
+                    👑 Admin
+                </button>
+            </div>
+
+            <div class="info-box" id="infoBox">
+                💡 Mode Utilisateur : Accès aux pronostics publiés avec mot de passe
+            </div>
+
+            <div id="loginForm">
+                <div class="login-group">
+                    <label for="password" id="passwordLabel">🔑 Mot de passe Utilisateur</label>
+                    <input type="password" id="password" placeholder="Entrez le mot de passe">
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="login()">✅ Se Connecter</button>
+            </div>
+
+            <div class="error-message" id="loginError"></div>
+            <div class="success-message" id="loginSuccess"></div>
+        </div>
+
+        <!-- Upload Section (Admin Only) -->
+        <div class="upload-section" id="uploadSection">
+            <h2>📤 Charger un nouveau coupon <span class="admin-badge">ADMIN</span></h2>
+            
+            <div class="upload-options">
+                <div class="upload-group">
+                    <label for="couponTitle">📝 Titre du pronostic</label>
+                    <input type="text" id="couponTitle" placeholder="Ex: Pronostics Ligue 1 - 12/02/2026">
+                </div>
+
+                <div class="upload-group">
+                    <label for="fileInput">📁 Uploader une image (PNG, JPG, etc.)</label>
+                    <input type="file" id="fileInput" accept="image/*">
+                </div>
+
+                <div class="upload-group">
+                    <label for="urlInput">🔗 Ou entrer un lien URL d'image</label>
+                    <input type="url" id="urlInput" placeholder="https://exemple.com/image.png">
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="publishCoupon()">✅ Publier le Pronostic</button>
+                <button class="btn btn-danger" onclick="logout()">🚪 Déconnexion</button>
+            </div>
+
+            <div class="error-message" id="uploadError"></div>
+            <div class="success-message" id="uploadSuccess"></div>
+
+            <!-- Liste des coupons publiés -->
+            <div class="coupon-list" id="couponList"></div>
+        </div>
+
+        <!-- Display Section (Users & Admin) -->
+        <div class="display-section" id="displaySection">
+            <h2>🏆 Pronostics Disponibles <span class="user-badge" id="userBadge">UTILISATEUR</span></h2>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 15px; color: #667eea;">Chargement en cours...</p>
+            </div>
+
+            <div id="couponsDisplay"></div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <h3 id="totalCoupons">0</h3>
+                    <p>Pronostics publiés</p>
+                </div>
+                <div class="stat-card">
+                    <h3>💯</h3>
+                    <p>Bonne chance !</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="currentDate">--</h3>
+                    <p>Date du jour</p>
+                </div>
+            </div>
+
+            <div class="btn-container" style="margin-top: 30px;">
+                <button class="btn btn-secondary" onclick="logout()">🚪 Déconnexion</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>🌟 Pronostics du Jour - Tous droits réservés 2026</p>
+            <p style="font-size: 0.9rem; margin-top: 5px;">Jouez responsablement</p>
+        </footer>
+    </div>
+
+    <script>
+        // ========================================
+        // CONFIGURATION - CHANGE TES MOTS DE PASSE ICI
+        // ========================================
+        const ADMIN_PASSWORD = "Admin2026";        // ⚠️ Mot de passe ADMIN
+        const USER_PASSWORD = "Prono2026";         // ⚠️ Mot de passe UTILISATEURS
+
+        let currentRole = 'user';
+        let isAuthenticated = false;
+
+        // Initialisation
+        updateDate();
+        checkStoredAuth();
+
+        function updateDate() {
+            const options = { day: '2-digit', month: '2-digit' };
+            const today = new Date().toLocaleDateString('fr-FR', options);
+            document.getElementById('currentDate').textContent = today;
+        }
+
+        function selectRole(role) {
+            currentRole = role;
+            const userBtn = document.getElementById('userBtn');
+            const adminBtn = document.getElementById('adminBtn');
+            const passwordLabel = document.getElementById('passwordLabel');
+            const infoBox = document.getElementById('infoBox');
+            
+            userBtn.classList.remove('active');
+            adminBtn.classList.remove('active');
+            
+            if (role === 'admin') {
+                adminBtn.classList.add('active');
+                passwordLabel.innerHTML = '👑 Mot de passe Admin';
+                infoBox.innerHTML = '⚡ Mode Admin : Publier et gérer les pronostics';
+                infoBox.style.borderColor = '#4caf50';
+                infoBox.style.background = '#e8f5e9';
+                infoBox.style.color = '#2e7d32';
+            } else {
+                userBtn.classList.add('active');
+                passwordLabel.innerHTML = '🔑 Mot de passe Utilisateur';
+                infoBox.innerHTML = '💡 Mode Utilisateur : Accès aux pronostics publiés avec mot de passe';
+                infoBox.style.borderColor = '#2196f3';
+                infoBox.style.background = '#e3f2fd';
+                infoBox.style.color = '#1976d2';
+            }
+        }
+
+        function login() {
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('loginError');
+            const loginSuccess = document.getElementById('loginSuccess');
+            
+            loginError.classList.remove('active');
+            loginSuccess.classList.remove('active');
+
+            if (!password) {
+                showLoginError('Veuillez entrer le mot de passe');
+                return;
+            }
+
+            if (currentRole === 'admin') {
+                if (password !== ADMIN_PASSWORD) {
+                    showLoginError('Mot de passe admin incorrect !');
+                    return;
+                }
+
+                // Connexion admin réussie
+                isAuthenticated = true;
+                sessionStorage.setItem('userRole', 'admin');
+                sessionStorage.setItem('isAuthenticated', 'true');
+                
+                showLoginSuccess('Bienvenue Admin ! 👑');
+                
+                setTimeout(() => {
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('uploadSection').classList.add('active');
+                    loadCouponsForAdmin();
+                }, 1000);
+
+            } else {
+                // Vérification mot de passe utilisateur
+                if (password !== USER_PASSWORD) {
+                    showLoginError('Mot de passe utilisateur incorrect !');
+                    return;
+                }
+
+                // Connexion utilisateur réussie
+                isAuthenticated = true;
+                sessionStorage.setItem('userRole', 'user');
+                sessionStorage.setItem('isAuthenticated', 'true');
+                
+                showLoginSuccess('Connexion réussie ! Chargement des pronostics...');
+                
+                setTimeout(() => {
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('displaySection').classList.add('active');
+                    loadCouponsForPublic();
+                }, 1000);
+            }
+        }
+
+        function checkStoredAuth() {
+            const storedAuth = sessionStorage.getItem('isAuthenticated');
+            const storedRole = sessionStorage.getItem('userRole');
+
+            if (storedAuth === 'true' && storedRole) {
+                isAuthenticated = true;
+                currentRole = storedRole;
+                document.getElementById('loginSection').style.display = 'none';
+
+                if (storedRole === 'admin') {
+                    document.getElementById('uploadSection').classList.add('active');
+                    loadCouponsForAdmin();
+                } else {
+                    document.getElementById('displaySection').classList.add('active');
+                    document.getElementById('userBadge').style.display = 'inline-block';
+                    loadCouponsForPublic();
+                }
+            }
+        }
+
+        function logout() {
+            isAuthenticated = false;
+            sessionStorage.clear();
+            location.reload();
+        }
+
+        function showLoginError(message) {
+            const errorDiv = document.getElementById('loginError');
+            errorDiv.textContent = '⚠️ ' + message;
+            errorDiv.classList.add('active');
+            setTimeout(() => errorDiv.classList.remove('active'), 4000);
+        }
+
+        function showLoginSuccess(message) {
+            const successDiv = document.getElementById('loginSuccess');
+            successDiv.textContent = '✅ ' + message;
+            successDiv.classList.add('active');
+        }
+
+        function showUploadError(message) {
+            const errorDiv = document.getElementById('uploadError');
+            errorDiv.textContent = '⚠️ ' + message;
+            errorDiv.classList.add('active');
+            setTimeout(() => errorDiv.classList.remove('active'), 4000);
+        }
+
+        function showUploadSuccess(message) {
+            const successDiv = document.getElementById('uploadSuccess');
+            successDiv.textContent = '✅ ' + message;
+            successDiv.classList.add('active');
+            setTimeout(() => successDiv.classList.remove('active'), 4000);
+        }
+
+        // Publier un coupon (Admin)
+        function publishCoupon() {
+            const title = document.getElementById('couponTitle').value.trim();
+            const fileInput = document.getElementById('fileInput');
+            const urlInput = document.getElementById('urlInput').value.trim();
+
+            if (!title) {
+                showUploadError('Veuillez entrer un titre pour le pronostic');
+                return;
+            }
+
+            if (!fileInput.files[0] && !urlInput) {
+                showUploadError('Veuillez uploader un fichier ou entrer une URL d\'image');
+                return;
+            }
+
+            // Récupérer les coupons existants
+            let coupons = JSON.parse(localStorage.getItem('coupons') || '[]');
+
+            if (fileInput.files[0]) {
+                const file = fileInput.files[0];
+                
+                if (!file.type.startsWith('image/')) {
+                    showUploadError('Veuillez uploader un fichier image valide');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const coupon = {
+                        id: Date.now(),
+                        title: title,
+                        imageData: e.target.result,
+                        date: new Date().toLocaleString('fr-FR')
+                    };
+
+                    coupons.push(coupon);
+                    localStorage.setItem('coupons', JSON.stringify(coupons));
+                    
+                    showUploadSuccess('Pronostic publié avec succès ! 🎉');
+                    clearUploadForm();
+                    loadCouponsForAdmin();
+                };
+                reader.readAsDataURL(file);
+            } else if (urlInput) {
+                const coupon = {
+                    id: Date.now(),
+                    title: title,
+                    imageUrl: urlInput,
+                    date: new Date().toLocaleString('fr-FR')
+                };
+
+                coupons.push(coupon);
+                localStorage.setItem('coupons', JSON.stringify(coupons));
+                
+                showUploadSuccess('Pronostic publié avec succès ! 🎉');
+                clearUploadForm();
+                loadCouponsForAdmin();
+            }
+        }
+
+        function clearUploadForm() {
+            document.getElementById('couponTitle').value = '';
+            document.getElementById('fileInput').value = '';
+            document.getElementById('urlInput').value = '';
+        }
+
+        function deleteCoupon(id) {
+            if (!confirm('Êtes-vous sûr de vouloir supprimer ce pronostic ?')) {
+                return;
+            }
+
+            let coupons = JSON.parse(localStorage.getItem('coupons') || '[]');
+            coupons = coupons.filter(c => c.id !== id);
+            localStorage.setItem('coupons', JSON.stringify(coupons));
+            
+            showUploadSuccess('Pronostic supprimé');
+            loadCouponsForAdmin();
+        }
+
+        function loadCouponsForAdmin() {
+            const coupons = JSON.parse(localStorage.getItem('coupons') || '[]');
+            const couponList = document.getElementById('couponList');
+
+            if (coupons.length === 0) {
+                couponList.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Aucun pronostic publié pour le moment</p>';
+                return;
+            }
+
+            couponList.innerHTML = '<h3 style="color: #667eea; margin: 20px 0 15px 0;">📋 Coupons publiés (' + coupons.length + ')</h3>';
+            
+            coupons.reverse().forEach(coupon => {
+                const item = document.createElement('div');
+                item.className = 'coupon-item';
+                item.innerHTML = `
+                    <div class="coupon-item-info">
+                        <h4>${coupon.title}</h4>
+                        <p>Publié le ${coupon.date}</p>
+                    </div>
+                    <button onclick="deleteCoupon(${coupon.id})">🗑️ Supprimer</button>
+                `;
+                couponList.appendChild(item);
+            });
+        }
+
+        function loadCouponsForPublic() {
+            const coupons = JSON.parse(localStorage.getItem('coupons') || '[]');
+            const display = document.getElementById('couponsDisplay');
+            const totalCoupons = document.getElementById('totalCoupons');
+
+            totalCoupons.textContent = coupons.length;
+
+            if (coupons.length === 0) {
+                display.innerHTML = '<div class="info-message">Aucun pronostic disponible pour le moment</div>';
+                return;
+            }
+
+            display.innerHTML = '';
+            
+            coupons.reverse().forEach(coupon => {
+                const container = document.createElement('div');
+                container.style.marginBottom = '30px';
+                
+                const title = document.createElement('h3');
+                title.style.color = '#667eea';
+                title.style.marginBottom = '15px';
+                title.textContent = coupon.title;
+                
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'image-container';
+                
+                const img = document.createElement('img');
+                img.src = coupon.imageData || coupon.imageUrl;
+                img.alt = coupon.title;
+                
+                imageContainer.appendChild(img);
+                container.appendChild(title);
+                container.appendChild(imageContainer);
+                
+                const dateInfo = document.createElement('p');
+                dateInfo.style.textAlign = 'center';
+                dateInfo.style.color = '#999';
+                dateInfo.style.marginTop = '10px';
+                dateInfo.style.fontSize = '0.9rem';
+                dateInfo.textContent = 'Publié le ' + coupon.date;
+                container.appendChild(dateInfo);
+                
+                display.appendChild(container);
+            });
+        }
+
+        // Permettre connexion avec touche Entrée
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+    </script>
+</body>
+</html>
