@@ -19,15 +19,70 @@
             color: #333;
         }
 
-        .container {
+        /* Écran de chargement Firebase */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Contenu principal */
+        .main-container {
+            display: none;
             max-width: 1200px;
             margin: 0 auto;
         }
 
+        .main-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
         header {
             text-align: center;
             color: white;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             padding: 20px;
         }
 
@@ -42,88 +97,61 @@
             opacity: 0.9;
         }
 
-        /* Login Section */
-        .login-section {
+        /* Barre utilisateur */
+        .user-bar {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 450px;
-            margin: 0 auto;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-        }
-
-        .login-section h2 {
-            color: #667eea;
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 1.8rem;
-        }
-
-        .login-group {
-            margin-bottom: 20px;
-        }
-
-        .login-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .login-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .login-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .role-selector {
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
             display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .role-btn {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .user-email {
+            color: #667eea;
             font-weight: 600;
-            color: #555;
+            font-size: 0.95rem;
         }
 
-        .role-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .admin-badge {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
             color: white;
-            border-color: #667eea;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
         }
 
-        .role-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 12px 15px;
+        .logout-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%);
+            color: white;
+            border: none;
             border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            color: #1976d2;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
         }
 
-        /* Upload Section (Admin Only) */
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+        }
+
+        /* Section Upload (Admin uniquement) */
         .upload-section {
             background: white;
             border-radius: 20px;
@@ -139,28 +167,11 @@
 
         .upload-section h2 {
             color: #667eea;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-        }
-
-        .admin-badge {
-            display: inline-block;
-            background: #4caf50;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-left: 10px;
-        }
-
-        .user-badge {
-            display: inline-block;
-            background: #2196f3;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-left: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .upload-options {
@@ -180,9 +191,9 @@
             font-size: 0.95rem;
         }
 
-        input[type="file"],
+        input[type="text"],
         input[type="url"],
-        input[type="text"] {
+        input[type="file"] {
             padding: 12px 15px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
@@ -191,18 +202,16 @@
             background: #f9f9f9;
         }
 
-        input[type="file"]:hover,
-        input[type="url"]:hover,
-        input[type="text"]:hover {
-            border-color: #667eea;
-            background: white;
-        }
-
-        input[type="url"]:focus,
-        input[type="text"]:focus {
+        input[type="text"]:focus,
+        input[type="url"]:focus {
             outline: none;
             border-color: #667eea;
+            background: white;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input[type="file"] {
+            cursor: pointer;
         }
 
         .btn-container {
@@ -237,49 +246,116 @@
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
 
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #555;
-        }
-
-        .btn-secondary:hover {
-            background: #e0e0e0;
-            transform: translateY(-2px);
-        }
-
         .btn-danger {
-            background: #f44336;
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
         }
 
         .btn-danger:hover {
-            background: #d32f2f;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(244, 67, 54, 0.6);
         }
 
-        /* Display Section */
-        .display-section {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        /* Messages */
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
             display: none;
+            animation: slideIn 0.3s ease;
         }
 
-        .display-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
+        @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(-10px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        .message.active {
+            display: block;
+        }
+
+        .message.error {
+            background: #ffe5e5;
+            color: #d32f2f;
+            border-left: 4px solid #d32f2f;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        /* Liste des coupons admin */
+        .coupon-list {
+            margin-top: 30px;
+        }
+
+        .coupon-list h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .coupon-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #667eea;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .coupon-item-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .coupon-item-info h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .coupon-item-info p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .coupon-item button {
+            padding: 8px 15px;
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(244, 67, 54, 0.3);
+        }
+
+        .coupon-item button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.5);
+        }
+
+        /* Section Display (Users) */
+        .display-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
 
         .display-section h2 {
@@ -289,16 +365,55 @@
             text-align: center;
         }
 
+        .welcome-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .welcome-banner h3 {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        /* Affichage des pronostics */
+        #couponsDisplay {
+            margin-top: 20px;
+        }
+
+        .coupon-display-item {
+            margin-bottom: 40px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            background: white;
+        }
+
+        .coupon-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
         .image-container {
+            background: #f9f9f9;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 300px;
-            background: #f9f9f9;
-            border-radius: 15px;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
         }
 
         .image-container img {
@@ -313,52 +428,29 @@
             transform: scale(1.02);
         }
 
+        .coupon-date {
+            text-align: center;
+            color: #999;
+            padding: 15px;
+            font-size: 0.9rem;
+            background: #fafafa;
+        }
+
         .info-message {
             text-align: center;
-            padding: 40px;
+            padding: 60px 20px;
             color: #999;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .info-message::before {
             content: "📊";
             display: block;
-            font-size: 4rem;
-            margin-bottom: 15px;
+            font-size: 5rem;
+            margin-bottom: 20px;
         }
 
-        .error-message,
-        .success-message {
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .error-message {
-            background: #ffe5e5;
-            color: #d32f2f;
-            border-left: 4px solid #d32f2f;
-        }
-
-        .success-message {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-left: 4px solid #4caf50;
-        }
-
-        .error-message.active,
-        .success-message.active {
-            display: block;
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
+        /* Statistiques */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -368,100 +460,43 @@
 
         .stat-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
             color: white;
             text-align: center;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
 
         .stat-card h3 {
-            font-size: 2rem;
-            margin-bottom: 5px;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
         }
 
         .stat-card p {
             opacity: 0.9;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .coupon-list {
-            margin-top: 20px;
-        }
-
-        .coupon-item {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid #667eea;
-        }
-
-        .coupon-item-info {
-            flex: 1;
-        }
-
-        .coupon-item-info h4 {
-            color: #667eea;
-            margin-bottom: 5px;
-        }
-
-        .coupon-item-info p {
-            color: #777;
-            font-size: 0.9rem;
-        }
-
-        .coupon-item button {
-            padding: 8px 15px;
-            background: #f44336;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .coupon-item button:hover {
-            background: #d32f2f;
-        }
-
+        /* Footer */
         footer {
             text-align: center;
             color: white;
-            margin-top: 40px;
+            margin-top: 50px;
             padding: 20px;
             opacity: 0.8;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
             header h1 {
                 font-size: 2rem;
             }
@@ -471,8 +506,7 @@
             }
 
             .upload-section,
-            .display-section,
-            .login-section {
+            .display-section {
                 padding: 20px;
             }
 
@@ -482,18 +516,46 @@
 
             .btn {
                 width: 100%;
+                min-width: auto;
             }
 
             .stats {
                 grid-template-columns: 1fr;
             }
+
+            .user-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .user-info {
+                justify-content: center;
+            }
+
+            .logout-btn {
+                width: 100%;
+            }
+
+            .coupon-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .coupon-item button {
+                width: 100%;
+            }
+
+            .coupon-title {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+
+            .welcome-banner h3 {
+                font-size: 1.3rem;
+            }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
             header h1 {
                 font-size: 1.5rem;
             }
@@ -502,56 +564,45 @@
             .display-section h2 {
                 font-size: 1.3rem;
             }
+
+            .stat-card h3 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Écran de chargement Firebase -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="spinner"></div>
+        <div class="loading-text">Vérification de l'authentification...</div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="main-container" id="mainContainer">
         <header>
-            <h1>🎯 Pronobet</h1>
-            <p>Plateforme sécurisée de pronostics sportifs</p>
+            <h1>🎯 Pronostics du Jour</h1>
+            <p id="headerSubtitle">Plateforme sécurisée</p>
         </header>
 
-        <!-- Login Section -->
-        <div class="login-section" id="loginSection">
-            <h2>🔐 Connexion</h2>
-            
-            <div class="role-selector">
-                <button class="role-btn active" onclick="selectRole('user')" id="userBtn">
-                    👥 Utilisateur
-                </button>
-                <button class="role-btn" onclick="selectRole('admin')" id="adminBtn">
-                    👑 Admin
-                </button>
+        <!-- Barre utilisateur -->
+        <div class="user-bar">
+            <div class="user-info">
+                <span>👤</span>
+                <span class="user-email" id="userEmail">utilisateur@email.com</span>
+                <span class="admin-badge" id="adminBadge" style="display: none;">👑 ADMINISTRATEUR</span>
             </div>
-
-            <div class="info-box" id="infoBox">
-                💡 Mode Utilisateur : Accès aux pronostics publiés avec mot de passe
-            </div>
-
-            <div id="loginForm">
-                <div class="login-group">
-                    <label for="password" id="passwordLabel">🔑 Mot de passe Utilisateur</label>
-                    <input type="password" id="password" placeholder="Entrez le mot de passe">
-                </div>
-            </div>
-
-            <div class="btn-container">
-                <button class="btn btn-primary" onclick="login()">✅ Se Connecter</button>
-            </div>
-
-            <div class="error-message" id="loginError"></div>
-            <div class="success-message" id="loginSuccess"></div>
+            <button class="logout-btn" id="logoutBtn">🚪 Déconnexion</button>
         </div>
 
-        <!-- Upload Section (Admin Only) -->
+        <!-- Section Upload (Admin uniquement) -->
         <div class="upload-section" id="uploadSection">
-            <h2>📤 Charger un nouveau coupon <span class="admin-badge">ADMIN</span></h2>
+            <h2>📤 Publier un nouveau pronostic</h2>
             
             <div class="upload-options">
                 <div class="upload-group">
                     <label for="couponTitle">📝 Titre du pronostic</label>
-                    <input type="text" id="couponTitle" placeholder="Ex: Pronostics Ligue 1 - 12/02/2026">
+                    <input type="text" id="couponTitle" placeholder="Ex: Pronostics Ligue 1 - 15/02/2026">
                 </div>
 
                 <div class="upload-group">
@@ -567,25 +618,24 @@
 
             <div class="btn-container">
                 <button class="btn btn-primary" onclick="publishCoupon()">✅ Publier le Pronostic</button>
-                <button class="btn btn-danger" onclick="logout()">🚪 Déconnexion</button>
             </div>
 
-            <div class="error-message" id="uploadError"></div>
-            <div class="success-message" id="uploadSuccess"></div>
+            <div class="message error" id="uploadError"></div>
+            <div class="message success" id="uploadSuccess"></div>
 
             <!-- Liste des coupons publiés -->
             <div class="coupon-list" id="couponList"></div>
         </div>
 
-        <!-- Display Section (Users & Admin) -->
+        <!-- Section Display -->
         <div class="display-section" id="displaySection">
-            <h2>🏆 Pronostics Disponibles <span class="user-badge" id="userBadge">UTILISATEUR</span></h2>
-            
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p style="margin-top: 15px; color: #667eea;">Chargement en cours...</p>
+            <div class="welcome-banner">
+                <h3 id="welcomeText">Bienvenue !</h3>
+                <p id="welcomeSubtext">Accès aux pronostics du jour</p>
             </div>
-
+            
+            <h2>🏆 Pronostics Disponibles</h2>
+            
             <div id="couponsDisplay"></div>
 
             <div class="stats">
@@ -602,174 +652,138 @@
                     <p>Date du jour</p>
                 </div>
             </div>
-
-            <div class="btn-container" style="margin-top: 30px;">
-                <button class="btn btn-secondary" onclick="logout()">🚪 Déconnexion</button>
-            </div>
         </div>
 
         <footer>
-            <p>🌟 Pronostics du Jour - Tous droits réservés 2026</p>
+            <p>🌟 Pronostics du Jour - Protégé par Firebase</p>
             <p style="font-size: 0.9rem; margin-top: 5px;">Jouez responsablement</p>
         </footer>
     </div>
 
-    <script>
-        // ========================================
-        // CONFIGURATION - CHANGE TES MOTS DE PASSE ICI
-        // ========================================
-        const ADMIN_PASSWORD = "Admin2026";        // ⚠️ Mot de passe ADMIN
-        const USER_PASSWORD = "Prono2026";         // ⚠️ Mot de passe UTILISATEURS
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut 
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
-        let currentRole = 'user';
-        let isAuthenticated = false;
+        // ============================================
+        // CONFIGURATION FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDeGoKxmSqOG-OGFljWi4jH4fTteZAWCyE",
+            authDomain: "monsitesecurise-72b95.firebaseapp.com",
+            projectId: "monsitesecurise-72b95",
+            storageBucket: "monsitesecurise-72b95.firebasestorage.app",
+            messagingSenderId: "272682007515",
+            appId: "1:272682007515:web:212a04d2759d14a47885fe",
+            measurementId: "G-3T74CV0XET"
+        };
 
-        // Initialisation
-        updateDate();
-        checkStoredAuth();
+        // ⚠️ EMAIL ADMINISTRATEUR
+        const ADMIN_EMAIL = "charledegol24@gmail.com";
 
+        // Initialisation Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Variables globales
+        let isAdmin = false;
+        let currentUser = null;
+
+        // Éléments DOM
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContainer = document.getElementById('mainContainer');
+        const userEmailSpan = document.getElementById('userEmail');
+        const adminBadge = document.getElementById('adminBadge');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const uploadSection = document.getElementById('uploadSection');
+        const displaySection = document.getElementById('displaySection');
+        const welcomeText = document.getElementById('welcomeText');
+        const welcomeSubtext = document.getElementById('welcomeSubtext');
+        const headerSubtitle = document.getElementById('headerSubtitle');
+
+        // ============================================
+        // VÉRIFICATION DE L'AUTHENTIFICATION
+        // ============================================
+        onAuthStateChanged(auth, (user) => {
+            loadingScreen.style.display = 'none';
+            
+            if (user) {
+                // ✅ UTILISATEUR CONNECTÉ
+                console.log('Utilisateur connecté:', user.email);
+                currentUser = user;
+                
+                mainContainer.classList.add('active');
+                userEmailSpan.textContent = user.email;
+                
+                // Vérifier si c'est l'admin
+                if (user.email === ADMIN_EMAIL) {
+                    // 👑 MODE ADMINISTRATEUR
+                    isAdmin = true;
+                    adminBadge.style.display = 'inline-block';
+                    uploadSection.classList.add('active');
+                    headerSubtitle.textContent = 'Panneau Administrateur';
+                    welcomeText.textContent = `Bienvenue Administrateur ! 👑`;
+                    welcomeSubtext.textContent = `Connecté en tant que ${user.email}`;
+                    
+                    loadCouponsForAdmin();
+                    loadCouponsForPublic();
+                    
+                } else {
+                    // 👤 MODE UTILISATEUR
+                    isAdmin = false;
+                    adminBadge.style.display = 'none';
+                    uploadSection.classList.remove('active');
+                    headerSubtitle.textContent = 'Espace Membre';
+                    welcomeText.textContent = `Bienvenue ! 🎯`;
+                    welcomeSubtext.textContent = `Connecté en tant que ${user.email}`;
+                    
+                    loadCouponsForPublic();
+                }
+                
+                updateDate();
+                
+            } else {
+                // ❌ UTILISATEUR NON CONNECTÉ
+                console.log('Aucun utilisateur connecté, redirection...');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // ============================================
+        // GESTION DE LA DÉCONNEXION
+        // ============================================
+        logoutBtn.addEventListener('click', async () => {
+            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+                try {
+                    await signOut(auth);
+                    console.log('Déconnexion réussie');
+                } catch (error) {
+                    console.error('Erreur lors de la déconnexion:', error);
+                    alert('Erreur lors de la déconnexion');
+                }
+            }
+        });
+
+        // ============================================
+        // FONCTIONS DE GESTION DES PRONOSTICS
+        // ============================================
+        
         function updateDate() {
             const options = { day: '2-digit', month: '2-digit' };
             const today = new Date().toLocaleDateString('fr-FR', options);
             document.getElementById('currentDate').textContent = today;
         }
 
-        function selectRole(role) {
-            currentRole = role;
-            const userBtn = document.getElementById('userBtn');
-            const adminBtn = document.getElementById('adminBtn');
-            const passwordLabel = document.getElementById('passwordLabel');
-            const infoBox = document.getElementById('infoBox');
-            
-            userBtn.classList.remove('active');
-            adminBtn.classList.remove('active');
-            
-            if (role === 'admin') {
-                adminBtn.classList.add('active');
-                passwordLabel.innerHTML = '👑 Mot de passe Admin';
-                infoBox.innerHTML = '⚡ Mode Admin : Publier et gérer les pronostics';
-                infoBox.style.borderColor = '#4caf50';
-                infoBox.style.background = '#e8f5e9';
-                infoBox.style.color = '#2e7d32';
-            } else {
-                userBtn.classList.add('active');
-                passwordLabel.innerHTML = '🔑 Mot de passe Utilisateur';
-                infoBox.innerHTML = '💡 Mode Utilisateur : Accès aux pronostics publiés avec mot de passe';
-                infoBox.style.borderColor = '#2196f3';
-                infoBox.style.background = '#e3f2fd';
-                infoBox.style.color = '#1976d2';
-            }
-        }
-
-        function login() {
-            const password = document.getElementById('password').value;
-            const loginError = document.getElementById('loginError');
-            const loginSuccess = document.getElementById('loginSuccess');
-            
-            loginError.classList.remove('active');
-            loginSuccess.classList.remove('active');
-
-            if (!password) {
-                showLoginError('Veuillez entrer le mot de passe');
+        window.publishCoupon = function() {
+            if (!isAdmin) {
+                showUploadError('Accès non autorisé !');
                 return;
             }
 
-            if (currentRole === 'admin') {
-                if (password !== ADMIN_PASSWORD) {
-                    showLoginError('Mot de passe admin incorrect !');
-                    return;
-                }
-
-                // Connexion admin réussie
-                isAuthenticated = true;
-                sessionStorage.setItem('userRole', 'admin');
-                sessionStorage.setItem('isAuthenticated', 'true');
-                
-                showLoginSuccess('Bienvenue Admin ! 👑');
-                
-                setTimeout(() => {
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('uploadSection').classList.add('active');
-                    loadCouponsForAdmin();
-                }, 1000);
-
-            } else {
-                // Vérification mot de passe utilisateur
-                if (password !== USER_PASSWORD) {
-                    showLoginError('Mot de passe utilisateur incorrect !');
-                    return;
-                }
-
-                // Connexion utilisateur réussie
-                isAuthenticated = true;
-                sessionStorage.setItem('userRole', 'user');
-                sessionStorage.setItem('isAuthenticated', 'true');
-                
-                showLoginSuccess('Connexion réussie ! Chargement des pronostics...');
-                
-                setTimeout(() => {
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('displaySection').classList.add('active');
-                    loadCouponsForPublic();
-                }, 1000);
-            }
-        }
-
-        function checkStoredAuth() {
-            const storedAuth = sessionStorage.getItem('isAuthenticated');
-            const storedRole = sessionStorage.getItem('userRole');
-
-            if (storedAuth === 'true' && storedRole) {
-                isAuthenticated = true;
-                currentRole = storedRole;
-                document.getElementById('loginSection').style.display = 'none';
-
-                if (storedRole === 'admin') {
-                    document.getElementById('uploadSection').classList.add('active');
-                    loadCouponsForAdmin();
-                } else {
-                    document.getElementById('displaySection').classList.add('active');
-                    document.getElementById('userBadge').style.display = 'inline-block';
-                    loadCouponsForPublic();
-                }
-            }
-        }
-
-        function logout() {
-            isAuthenticated = false;
-            sessionStorage.clear();
-            location.reload();
-        }
-
-        function showLoginError(message) {
-            const errorDiv = document.getElementById('loginError');
-            errorDiv.textContent = '⚠️ ' + message;
-            errorDiv.classList.add('active');
-            setTimeout(() => errorDiv.classList.remove('active'), 4000);
-        }
-
-        function showLoginSuccess(message) {
-            const successDiv = document.getElementById('loginSuccess');
-            successDiv.textContent = '✅ ' + message;
-            successDiv.classList.add('active');
-        }
-
-        function showUploadError(message) {
-            const errorDiv = document.getElementById('uploadError');
-            errorDiv.textContent = '⚠️ ' + message;
-            errorDiv.classList.add('active');
-            setTimeout(() => errorDiv.classList.remove('active'), 4000);
-        }
-
-        function showUploadSuccess(message) {
-            const successDiv = document.getElementById('uploadSuccess');
-            successDiv.textContent = '✅ ' + message;
-            successDiv.classList.add('active');
-            setTimeout(() => successDiv.classList.remove('active'), 4000);
-        }
-
-        // Publier un coupon (Admin)
-        function publishCoupon() {
             const title = document.getElementById('couponTitle').value.trim();
             const fileInput = document.getElementById('fileInput');
             const urlInput = document.getElementById('urlInput').value.trim();
@@ -784,7 +798,6 @@
                 return;
             }
 
-            // Récupérer les coupons existants
             let coupons = JSON.parse(localStorage.getItem('coupons') || '[]');
 
             if (fileInput.files[0]) {
@@ -801,7 +814,8 @@
                         id: Date.now(),
                         title: title,
                         imageData: e.target.result,
-                        date: new Date().toLocaleString('fr-FR')
+                        date: new Date().toLocaleString('fr-FR'),
+                        publishedBy: currentUser.email
                     };
 
                     coupons.push(coupon);
@@ -810,14 +824,17 @@
                     showUploadSuccess('Pronostic publié avec succès ! 🎉');
                     clearUploadForm();
                     loadCouponsForAdmin();
+                    loadCouponsForPublic();
                 };
                 reader.readAsDataURL(file);
+                
             } else if (urlInput) {
                 const coupon = {
                     id: Date.now(),
                     title: title,
                     imageUrl: urlInput,
-                    date: new Date().toLocaleString('fr-FR')
+                    date: new Date().toLocaleString('fr-FR'),
+                    publishedBy: currentUser.email
                 };
 
                 coupons.push(coupon);
@@ -826,8 +843,9 @@
                 showUploadSuccess('Pronostic publié avec succès ! 🎉');
                 clearUploadForm();
                 loadCouponsForAdmin();
+                loadCouponsForPublic();
             }
-        }
+        };
 
         function clearUploadForm() {
             document.getElementById('couponTitle').value = '';
@@ -835,7 +853,12 @@
             document.getElementById('urlInput').value = '';
         }
 
-        function deleteCoupon(id) {
+        window.deleteCoupon = function(id) {
+            if (!isAdmin) {
+                alert('Accès non autorisé !');
+                return;
+            }
+
             if (!confirm('Êtes-vous sûr de vouloir supprimer ce pronostic ?')) {
                 return;
             }
@@ -844,22 +867,23 @@
             coupons = coupons.filter(c => c.id !== id);
             localStorage.setItem('coupons', JSON.stringify(coupons));
             
-            showUploadSuccess('Pronostic supprimé');
+            showUploadSuccess('Pronostic supprimé avec succès');
             loadCouponsForAdmin();
-        }
+            loadCouponsForPublic();
+        };
 
         function loadCouponsForAdmin() {
             const coupons = JSON.parse(localStorage.getItem('coupons') || '[]');
             const couponList = document.getElementById('couponList');
 
             if (coupons.length === 0) {
-                couponList.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">Aucun pronostic publié pour le moment</p>';
+                couponList.innerHTML = '<p style="text-align: center; color: #999; padding: 20px; margin-top: 20px;">Aucun pronostic publié pour le moment</p>';
                 return;
             }
 
-            couponList.innerHTML = '<h3 style="color: #667eea; margin: 20px 0 15px 0;">📋 Coupons publiés (' + coupons.length + ')</h3>';
+            couponList.innerHTML = '<h3>📋 Coupons publiés (' + coupons.length + ')</h3>';
             
-            coupons.reverse().forEach(coupon => {
+            coupons.slice().reverse().forEach(coupon => {
                 const item = document.createElement('div');
                 item.className = 'coupon-item';
                 item.innerHTML = `
@@ -887,13 +911,12 @@
 
             display.innerHTML = '';
             
-            coupons.reverse().forEach(coupon => {
+            coupons.slice().reverse().forEach(coupon => {
                 const container = document.createElement('div');
-                container.style.marginBottom = '30px';
+                container.className = 'coupon-display-item';
                 
-                const title = document.createElement('h3');
-                title.style.color = '#667eea';
-                title.style.marginBottom = '15px';
+                const title = document.createElement('div');
+                title.className = 'coupon-title';
                 title.textContent = coupon.title;
                 
                 const imageContainer = document.createElement('div');
@@ -902,29 +925,50 @@
                 const img = document.createElement('img');
                 img.src = coupon.imageData || coupon.imageUrl;
                 img.alt = coupon.title;
+                img.onerror = function() {
+                    this.style.display = 'none';
+                    imageContainer.innerHTML = '<p style="color: #999;">Image non disponible</p>';
+                };
                 
                 imageContainer.appendChild(img);
+                
+                const dateInfo = document.createElement('div');
+                dateInfo.className = 'coupon-date';
+                dateInfo.textContent = '📅 Publié le ' + coupon.date;
+                
                 container.appendChild(title);
                 container.appendChild(imageContainer);
-                
-                const dateInfo = document.createElement('p');
-                dateInfo.style.textAlign = 'center';
-                dateInfo.style.color = '#999';
-                dateInfo.style.marginTop = '10px';
-                dateInfo.style.fontSize = '0.9rem';
-                dateInfo.textContent = 'Publié le ' + coupon.date;
                 container.appendChild(dateInfo);
                 
                 display.appendChild(container);
             });
         }
 
-        // Permettre connexion avec touche Entrée
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                login();
-            }
+        function showUploadError(message) {
+            const errorDiv = document.getElementById('uploadError');
+            errorDiv.textContent = '⚠️ ' + message;
+            errorDiv.classList.add('active');
+            setTimeout(() => errorDiv.classList.remove('active'), 4000);
+        }
+
+        function showUploadSuccess(message) {
+            const successDiv = document.getElementById('uploadSuccess');
+            successDiv.textContent = '✅ ' + message;
+            successDiv.classList.add('active');
+            setTimeout(() => successDiv.classList.remove('active'), 4000);
+        }
+
+        // ============================================
+        // PROTECTION SUPPLÉMENTAIRE
+        // ============================================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (!mainContainer.classList.contains('active')) {
+                    window.location.href = 'login.html';
+                }
+            }, 5000);
         });
     </script>
 </body>
 </html>
+
