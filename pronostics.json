@@ -1,6 +1,10 @@
 {
-  "id": 2,
-  "titre": "Votre titre",
-  "imageUrl": "https://i.ibb.co/xxxxx/image.png",
-  "date": "15/02/2026 20:00:00"
-},
+  "pronostics": [
+    {
+      "id": 1,
+      "titre": "Test",
+      "imageUrl": "https://i.ibb.co/N2c6FT8T/69312a50964c8de328d84cae2c1dff66.png",
+      "date": "15/02/2026 21:00:00"
+    }
+  ]
+}
