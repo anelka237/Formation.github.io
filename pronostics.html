@@ -515,26 +515,9 @@
                     <li>🎉 Le pronostic apparaît pour tout le monde !</li>
                 </ol>
 
-                <a href="https://github.com" target="_blank" class="github-link">
-                    🌐 Ouvrir GitHub
+                <a href="https://github.com/anelka237/Formation.github.io/blob/main/pronostics.json" target="_blank" class="github-link">
+                    🌐 Éditer pronostics.json sur GitHub
                 </a>
-            </div>
-
-            <!-- Configuration URL GitHub -->
-            <div class="config-section">
-                <h4>⚙️ Configuration du lien GitHub</h4>
-                <div class="config-group">
-                    <label for="githubUrl">URL Raw de votre fichier pronostics.json :</label>
-                    <input 
-                        type="url" 
-                        id="githubUrl" 
-                        placeholder="https://raw.githubusercontent.com/username/repo/main/pronostics.json"
-                        value=""
-                    >
-                </div>
-                <button class="btn-save" onclick="saveGithubUrl()">💾 Sauvegarder l'URL</button>
-                <div class="message success" id="successMsg"></div>
-                <div class="message error" id="errorMsg"></div>
             </div>
         </div>
 
@@ -591,7 +574,11 @@
             measurementId: "G-3T74CV0XET"
         };
 
-        const ADMIN_EMAIL = "charledegol24@gmail.com";
+        const ADMIN_EMAIL = "zentronix237@gmail.com";
+        
+        // ⚠️ IMPORTANT : URL DE VOTRE FICHIER JSON SUR GITHUB
+        // Remplacez cette URL par la vôtre !
+        const GITHUB_JSON_URL = "https://raw.githubusercontent.com/anelka237/Formation.github.io/main/pronostics.json";
 
         // Init Firebase
         const app = initializeApp(firebaseConfig);
@@ -628,12 +615,6 @@
                     headerSubtitle.textContent = 'Panneau Administrateur';
                     welcomeText.textContent = `Bienvenue Administrateur ! 👑`;
                     welcomeSubtext.textContent = `Gérez vos pronostics sur GitHub`;
-                    
-                    // Charger l'URL GitHub sauvegardée
-                    const savedGithubUrl = localStorage.getItem('githubJsonUrl');
-                    if (savedGithubUrl) {
-                        document.getElementById('githubUrl').value = savedGithubUrl;
-                    }
                 } else {
                     isAdmin = false;
                     adminSection.classList.remove('active');
@@ -687,10 +668,11 @@
 
         // Charger pronostics depuis GitHub
         async function loadPronostics() {
-            const githubUrl = localStorage.getItem('githubJsonUrl') || document.getElementById('githubUrl')?.value.trim();
+            // Utiliser l'URL codée en dur (accessible par TOUS les utilisateurs)
+            const githubUrl = GITHUB_JSON_URL;
             
             if (!githubUrl) {
-                document.getElementById('couponsDisplay').innerHTML = '<div class="info-message">Configuration GitHub requise (Admin uniquement)</div>';
+                document.getElementById('couponsDisplay').innerHTML = '<div class="info-message">URL GitHub non configurée</div>';
                 document.getElementById('totalCoupons').textContent = '0';
                 return;
             }
@@ -802,4 +784,3 @@
     </script>
 </body>
 </html>
-l
