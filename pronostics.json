@@ -1,10 +1,53 @@
+
 {
   "pronostics": [
     {
       "id": 1,
-      "titre": "coupon cote de 15 disponible dev prono\n en cours",
-      "imageUrl": "https://i.ibb.co/x8Cc5QbC/file-000000008fec720a854485fb3b9c25d4-1.png",
-      "date": "15/02/2026 21:00:00"
+      "titre": "Paris SG vs Marseille — Double Chance",
+      "imageUrl": "https://i.ibb.co/xxx/coupon1.png",
+      "appreciation": "HOT",
+      "date": "18/02/2026 20:00",
+      "pronostiqueur": {
+        "nom": "Le Prophète",
+        "photoUrl": "https://i.ibb.co/xxx/avatar1.png",
+        "etoiles": 4
+      }
+    },
+    {
+      "id": 2,
+      "titre": "Real Madrid vs Bayern — 1X",
+      "imageUrl": "https://i.ibb.co/xxx/coupon2.png",
+      "appreciation": "SURE",
+      "date": "18/02/2026 21:00",
+      "pronostiqueur": {
+        "nom": "Expert Ball",
+        "photoUrl": "https://i.ibb.co/xxx/avatar2.png",
+        "etoiles": 5
+      }
+    },
+    {
+      "id": 3,
+      "titre": "Manchester City vs Arsenal — Over 2.5",
+      "imageUrl": "https://i.ibb.co/xxx/coupon3.png",
+      "appreciation": "TOP",
+      "date": "18/02/2026 19:00",
+      "pronostiqueur": {
+        "nom": "King Prono",
+        "photoUrl": "https://i.ibb.co/xxx/avatar3.png",
+        "etoiles": 3
+      }
+    },
+    {
+      "id": 4,
+      "titre": "Barça vs Atletico — BTTS",
+      "imageUrl": "https://i.ibb.co/xxx/coupon4.png",
+      "appreciation": "RISQUE",
+      "date": "18/02/2026 18:00",
+      "pronostiqueur": {
+        "nom": "Master Tips",
+        "photoUrl": "https://i.ibb.co/xxx/avatar4.png",
+        "etoiles": 2
+      }
     }
   ]
 }
