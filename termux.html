@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -563,7 +563,7 @@
         <div class="score-seg ok" id="s-seg2"></div>
       </div>
       <center>
-        <a class="whatsapp-btn" href="https://chat.whatsapp.com/HiyeNh5NiP96L6PJiI7Unc?mode=gi_t" target="_blank">
+        <a class="whatsapp-btn" href="https://chat.whatsapp.com/EWzv3lsGbxgHWC29MQd8Pb?mode=gi_t" target="_blank">
           <span class="wa-icon">
             <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
               <path d="M14 2C7.373 2 2 7.373 2 14c0 2.157.575 4.18 1.578 5.924L2 26l6.232-1.547A11.938 11.938 0 0014 26c6.627 0 12-5.373 12-12S20.627 2 14 2z" fill="#25D366"/>
@@ -578,18 +578,64 @@
   </div>
 
   <!-- ÉCHEC -->
-  <div id="fail-screen">
+  <div id="fail-screen" style="display:none;">
     <div class="card">
       <div class="fail-icon">📚</div>
       <div class="fail-title">Accès refusé</div>
       <div class="fail-msg">
-        Vous n'avez pas obtenu le score requis. <strong>Entraînez-vous encore</strong> pour intégrer la Zone de Contrôle 140. Relisez attentivement le Manuel de l'Agent Recenseur avant de retenter votre chance.
+        Vous n'avez pas obtenu le score requis. Votre accès est <strong>suspendu pendant 2 heures</strong>.<br>Mettez ce temps à profit pour relire attentivement votre Manuel de l'Agent Recenseur.
       </div>
-      <center>
-        <button class="btn-retry" onclick="restart()">
-          🔄 Réessayer
-        </button>
-      </center>
+      <div id="countdown-box" style="
+        margin: 0 auto 24px;
+        background: rgba(239,68,68,0.08);
+        border: 1px solid rgba(239,68,68,0.25);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+      ">
+        <div style="font-family:'DM Mono',monospace; font-size:11px; color:#f87171; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">Prochain essai disponible dans</div>
+        <div id="countdown-timer" style="font-family:'Playfair Display',serif; font-size:42px; font-weight:900; color:#fca5a5; letter-spacing:4px;">02:00:00</div>
+        <div style="font-family:'DM Mono',monospace; font-size:11px; color:#7a93b8; margin-top:8px;">Profitez de ce temps pour lire votre manuel 📖</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOQUÉ (revient après échec dans les 2h) -->
+  <div id="blocked-screen" style="display:none;">
+    <div class="card">
+      <div class="fail-icon">⏳</div>
+      <div class="fail-title">Accès temporairement bloqué</div>
+      <div class="fail-msg">
+        Vous avez échoué au test précédent. Vous devez <strong>patienter 2h</strong> le temps de lire votre manuel avant de pouvoir retenter.
+      </div>
+      <div style="
+        margin: 0 auto 24px;
+        background: rgba(239,68,68,0.08);
+        border: 1px solid rgba(239,68,68,0.25);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+      ">
+        <div style="font-family:'DM Mono',monospace; font-size:11px; color:#f87171; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">Accès disponible dans</div>
+        <div id="blocked-timer" style="font-family:'Playfair Display',serif; font-size:42px; font-weight:900; color:#fca5a5; letter-spacing:4px;">--:--:--</div>
+        <div style="font-family:'DM Mono',monospace; font-size:11px; color:#7a93b8; margin-top:8px;">📖 Relisez le Manuel de l'Agent Recenseur</div>
+      </div>
+      <div style="
+        background: rgba(245,158,11,0.06);
+        border: 1px solid rgba(245,158,11,0.2);
+        border-radius: 10px;
+        padding: 16px;
+        font-size: 13px;
+        color: #fde68a;
+        line-height: 1.7;
+        text-align: left;
+      ">
+        <strong style="display:block; margin-bottom:6px;">💡 Conseils de révision :</strong>
+        Chapitre 1 — Définitions : ménage, résidence, nuit de référence<br>
+        Chapitre 3 — Numérotation GC, codes XXX et XX<br>
+        Chapitre 5 — Algorithme P04 : RP / RA / Visiteur<br>
+        Chapitre 6 — Ménages collectifs, prisons, dortoirs
+      </div>
     </div>
   </div>
 
@@ -602,6 +648,11 @@
 </div><!-- end wrapper -->
 
 <script>
+// ── CONFIG ──
+const WA_LINK = 'https://chat.whatsapp.com/EWzv3lsGbxgHWC29MQd8Pb?mode=gi_t';
+const LOCK_KEY = 'zc140_lockout';
+const LOCK_DURATION = 2 * 60 * 60 * 1000; // 2 heures en ms
+
 // ── PARTICLES ──
 (function(){
   const container = document.getElementById('particles');
@@ -609,18 +660,94 @@
     const p = document.createElement('div');
     p.className = 'particle';
     const size = Math.random()*4+2;
-    p.style.cssText = `
-      width:${size}px; height:${size}px;
-      left:${Math.random()*100}%;
-      animation-duration:${Math.random()*12+8}s;
-      animation-delay:${Math.random()*8}s;
-    `;
+    p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*8}s;`;
     container.appendChild(p);
   }
 })();
 
+// ── LOCKOUT SYSTEM ──
+function getLockout() {
+  try {
+    const raw = localStorage.getItem(LOCK_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch(e) { return null; }
+}
+
+function setLockout() {
+  try {
+    localStorage.setItem(LOCK_KEY, JSON.stringify({ until: Date.now() + LOCK_DURATION }));
+  } catch(e) {}
+}
+
+function clearLockout() {
+  try { localStorage.removeItem(LOCK_KEY); } catch(e) {}
+}
+
+function isLocked() {
+  const lock = getLockout();
+  if (!lock) return false;
+  if (Date.now() >= lock.until) { clearLockout(); return false; }
+  return true;
+}
+
+function getRemainingMs() {
+  const lock = getLockout();
+  if (!lock) return 0;
+  return Math.max(0, lock.until - Date.now());
+}
+
+function formatTime(ms) {
+  const total = Math.floor(ms / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+// ── COUNTDOWN TICKER ──
+let countdownInterval = null;
+
+function startCountdown(elementId, onExpire) {
+  if (countdownInterval) clearInterval(countdownInterval);
+  const el = document.getElementById(elementId);
+  countdownInterval = setInterval(() => {
+    const rem = getRemainingMs();
+    if (rem <= 0) {
+      clearInterval(countdownInterval);
+      clearLockout();
+      if (onExpire) onExpire();
+      return;
+    }
+    if (el) el.textContent = formatTime(rem);
+  }, 1000);
+}
+
+// ── INIT : vérifier dès le chargement ──
+function init() {
+  if (isLocked()) {
+    showBlocked();
+  }
+  // Mettre à jour le timer bloqué en temps réel
+}
+
+function showBlocked() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('header-section') && (document.getElementById('header-section').style.display = 'none');
+  document.getElementById('blocked-screen').style.display = 'block';
+  document.getElementById('blocked-timer').textContent = formatTime(getRemainingMs());
+  startCountdown('blocked-timer', () => {
+    // Quand le timer expire → débloquer
+    document.getElementById('blocked-screen').style.display = 'none';
+    document.getElementById('quiz-section').style.display = '';
+    resetQuizState();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 // ── QUIZ LOGIC ──
-const CORRECT = { 1: 1, 2: 1 }; // index des bonnes réponses
+const CORRECT = { 1: 1, 2: 1 };
 
 const FEEDBACK = {
   1: {
@@ -641,9 +768,7 @@ function selectOpt(q, idx) {
   if (answered[q]) return;
   selected[q] = idx;
   const opts = document.querySelectorAll(`#opts${q} .opt`);
-  opts.forEach((o, i) => {
-    o.classList.toggle('selected', i === idx);
-  });
+  opts.forEach((o, i) => o.classList.toggle('selected', i === idx));
   document.getElementById(`btn${q}`).classList.add('show');
 }
 
@@ -662,14 +787,11 @@ function validate(q) {
   const fb = document.getElementById(`fb${q}`);
   fb.innerHTML = isCorrect ? FEEDBACK[q].correct : FEEDBACK[q].wrong;
   fb.className = `feedback show ${isCorrect ? '' : 'error'}`;
-
   document.getElementById(`btn${q}`).classList.remove('show');
 
-  // Update score seg
   const seg = document.getElementById(`seg${q}`);
   seg.classList.add(isCorrect ? 'ok' : 'ko');
 
-  // Update dots
   const dot = document.getElementById(`dot${q}`);
   dot.classList.remove('active');
   dot.classList.add(isCorrect ? 'done' : 'error');
@@ -677,59 +799,65 @@ function validate(q) {
   if (isCorrect) score++;
 
   if (q === 1) {
-    // Délai puis afficher Q2
     setTimeout(() => {
       document.getElementById('card-q2').classList.remove('hidden');
       document.getElementById('dot2').classList.add('active');
       document.getElementById('card-q2').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 1800);
   } else if (q === 2) {
-    // Résultat final
     setTimeout(() => {
       document.getElementById('quiz-section').style.display = 'none';
       if (score === 2) {
+        // SUCCÈS — on ouvre directement WhatsApp
         document.getElementById('success-screen').classList.add('active');
+        // Auto-redirect après 3 secondes
+        setTimeout(() => { window.location.href = WA_LINK; }, 3000);
       } else {
-        document.getElementById('fail-screen').classList.add('active');
+        // ÉCHEC — poser le verrou 2h
+        setLockout();
+        document.getElementById('fail-screen').style.display = 'block';
+        // Lancer le countdown sur l'écran d'échec
+        document.getElementById('countdown-timer').textContent = formatTime(getRemainingMs());
+        startCountdown('countdown-timer', () => {
+          // Quand expire depuis l'écran d'échec → permettre réessai
+          document.getElementById('fail-screen').style.display = 'none';
+          document.getElementById('quiz-section').style.display = '';
+          resetQuizState();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 2000);
   }
 }
 
-function restart() {
+function resetQuizState() {
   selected = { 1: null, 2: null };
   answered = { 1: false, 2: false };
   score = 0;
 
-  // Reset Q1
-  document.querySelectorAll('#opts1 .opt').forEach(o => {
-    o.disabled = false;
-    o.className = 'opt';
-  });
+  document.querySelectorAll('#opts1 .opt').forEach(o => { o.disabled = false; o.className = 'opt'; });
   document.getElementById('fb1').className = 'feedback';
   document.getElementById('btn1').classList.remove('show');
   document.getElementById('seg1').className = 'score-seg';
   document.getElementById('dot1').className = 'dot active';
 
-  // Reset Q2
-  document.querySelectorAll('#opts2 .opt').forEach(o => {
-    o.disabled = false;
-    o.className = 'opt';
-  });
+  document.querySelectorAll('#opts2 .opt').forEach(o => { o.disabled = false; o.className = 'opt'; });
   document.getElementById('fb2').className = 'feedback';
   document.getElementById('btn2').classList.remove('show');
   document.getElementById('seg2').className = 'score-seg';
   document.getElementById('dot2').className = 'dot';
   document.getElementById('card-q2').classList.add('hidden');
 
-  // Show quiz, hide result screens
-  document.getElementById('quiz-section').style.display = '';
   document.getElementById('success-screen').classList.remove('active');
-  document.getElementById('fail-screen').classList.remove('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('fail-screen').style.display = 'none';
+  document.getElementById('blocked-screen').style.display = 'none';
 }
+
+// ── LANCEMENT ──
+init();
 </script>
 
 </body>
 </html>
+
