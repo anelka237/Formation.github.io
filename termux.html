@@ -14,6 +14,7 @@
   --blue:#185FA5;--blue-l:#E6F1FB;
   --teal:#0F6E56;--teal-l:#E1F5EE;
   --coral:#993C1D;--coral-l:#FAECE7;
+  --red:#C0392B;--red-l:#FDECEA;
   --radius:14px;--radius-sm:9px;
   --shadow:0 2px 12px rgba(0,0,0,0.08);
 }
@@ -53,10 +54,35 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .av-g{background:rgba(201,168,76,0.28);color:var(--gold-l)}
 .u-role{font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px}
 .l-sep{border:none;border-top:1px solid rgba(255,255,255,0.09);margin:1.1rem 0}
+
+/* ── PASSWORD FIELD ── */
+.pwd-wrap{
+  position:relative;display:flex;align-items:center;
+  margin-top:10px;
+}
+.pwd-wrap input{
+  width:100%;padding:11px 44px 11px 14px;
+  border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius-sm);
+  background:rgba(255,255,255,0.07);color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:14px;outline:none;
+  transition:border .15s;
+}
+.pwd-wrap input::placeholder{color:rgba(255,255,255,0.3)}
+.pwd-wrap input:focus{border-color:rgba(201,168,76,0.6);background:rgba(255,255,255,0.1)}
+.pwd-wrap input.shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.pwd-eye{
+  position:absolute;right:12px;background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,0.4);font-size:16px;padding:4px;line-height:1;
+}
+.pwd-eye:hover{color:rgba(255,255,255,0.8)}
+.pwd-err{font-size:11px;color:#F08080;margin-top:5px;display:none}
+
 .login-btn{
   width:100%;padding:13px;background:var(--gold);color:#0D1B2A;
   border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;
   font-size:14px;font-weight:700;cursor:pointer;transition:opacity .15s;letter-spacing:.2px;
+  margin-top:14px;
 }
 .login-btn:hover{opacity:.88}
 .login-btn:active{opacity:.75;transform:scale(.99)}
@@ -136,6 +162,8 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .hn-lab{font-size:9px;color:var(--muted)}
 .edit-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--muted);transition:all .15s;white-space:nowrap}
 .edit-btn:hover{border-color:var(--blue);color:var(--blue)}
+.del-btn{background:var(--red-l);border:1px solid rgba(192,57,43,0.25);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--red);transition:all .15s;white-space:nowrap}
+.del-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
 .empty{text-align:center;color:var(--muted);font-size:13px;padding:2rem;font-style:italic}
 
 /* ── CHEF ── */
@@ -172,6 +200,20 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .prog-fill{height:100%;border-radius:5px;transition:width .6s ease}
 .last-entry{font-size:11px;color:var(--muted);margin-top:9px;padding-top:9px;border-top:.5px solid var(--border)}
 
+/* ── DELETE ALL ZONE ── */
+.danger-zone{background:var(--red-l);border:1px solid rgba(192,57,43,0.2);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1rem}
+.dz-title{font-size:12px;font-weight:700;color:var(--red);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.dz-desc{font-size:11px;color:#7a3030;margin-bottom:12px}
+.dz-btns{display:flex;gap:8px;flex-wrap:wrap}
+.dz-btn{
+  padding:9px 16px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;
+  cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all .15s;
+}
+.dz-btn.all{background:var(--red);color:#fff}
+.dz-btn.all:hover{background:#A93226}
+.dz-btn.ag{background:rgba(192,57,43,0.12);color:var(--red);border:1px solid rgba(192,57,43,0.25)}
+.dz-btn.ag:hover{background:var(--red);color:#fff}
+
 .sync-badge{font-size:10px;color:var(--muted);text-align:center;padding:.75rem;font-style:italic}
 
 /* ── MODAL ── */
@@ -186,6 +228,9 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
 .modal-cancel{flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;color:var(--muted)}
 .modal-save{flex:1;padding:10px;background:var(--navy2);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
 .modal-save:disabled{opacity:.5;cursor:not-allowed}
+/* confirm delete modal */
+.modal-del{flex:1;padding:10px;background:var(--red);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.modal-del:hover{background:#A93226}
 
 /* ── TOAST ── */
 .toast{
@@ -217,6 +262,7 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
   .tb-user{display:none}
   .hist-nums{gap:6px}
   .hn-val{font-size:13px}
+  .dz-btns{flex-direction:column}
 }
 @media(max-width:360px){
   .stats-row{grid-template-columns:1fr 1fr;gap:6px}
@@ -252,13 +298,23 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
     </div>
 
     <hr class="l-sep">
-    <div class="l-section">Chef d'équipes</div>
+    <div class="l-section">Administrateur</div>
     <div class="user-grid">
       <button class="user-btn" onclick="selectUser('chef',this)">
-        <div class="u-av av-g">D</div>
-        <div><div>Dongle</div><div class="u-role">Chef d'équipes · Accès complet</div></div>
+        <div class="u-av av-g">NS</div>
+        <div><div>Ngnitedem Sonzia</div><div class="u-role">Administrateur · Accès complet</div></div>
       </button>
     </div>
+
+    <!-- Champ mot de passe (affiché selon sélection) -->
+    <div id="pwd-section" style="display:none;margin-top:4px">
+      <div class="pwd-wrap">
+        <input type="password" id="pwd-input" placeholder="Mot de passe requis…" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="pwd-eye" onclick="togglePwd()" id="eye-btn" type="button">👁</button>
+      </div>
+      <div class="pwd-err" id="pwd-err">Mot de passe incorrect. Réessayez.</div>
+    </div>
+
     <hr class="l-sep">
     <button class="login-btn" onclick="doLogin()">Accéder à mon espace →</button>
   </div>
@@ -293,6 +349,18 @@ html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);colo
   </div>
 </div>
 
+<!-- ══ MODAL CONFIRM DELETE ══ -->
+<div class="modal-bg" id="confirm-modal" style="display:none">
+  <div class="modal">
+    <div class="modal-title" id="confirm-title">Confirmer la suppression</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="confirm-msg">Cette action est irréversible.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeConfirm()">Annuler</button>
+      <button class="modal-del" id="confirm-ok-btn" onclick="confirmAction()">Supprimer</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -302,19 +370,30 @@ const API_KEY = '$2a$10$phoNGUlUffuXacxn2E8r5.yFLfQ3L/bQ9SshS7i2amo4X3CaR4fz6';
 const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 const HEADERS = {'Content-Type':'application/json','X-Master-Key':API_KEY,'X-Bin-Versioning':'false'};
 
-// ══ AGENTS ══
-const AGENTS = {
-  pauline:  {name:'Melingui Bomba Pauline Marie', short:'Pauline M.',  ini:'PM', av:'av-b', hav:'rgba(24,95,165,0.2)',  hat:'#85B7EB',  prog:'#185FA5', lbl:'blue'},
-  innocent: {name:'Margaba Batouri Innocent',      short:'Innocent M.', ini:'BI', av:'av-t', hav:'rgba(15,110,86,0.2)', hat:'#5DCAA5',  prog:'#0F6E56', lbl:'teal'},
-  jeanne:   {name:'Messina Messi Jeanne',          short:'Jeanne M.M.', ini:'JM', av:'av-c', hav:'rgba(153,60,29,0.2)',hat:'#F0997B',  prog:'#993C1D', lbl:'coral'},
-  chef:     {name:'Dongle',                        short:'Dongle',      ini:'D',  av:'av-g', hav:'rgba(201,168,76,0.2)',hat:'#F0D98A', prog:'#C9A84C', lbl:'gold'}
+// ══ MOTS DE PASSE ══
+const PASSWORDS = {
+  pauline:  'Root(255)',
+  innocent: 'Root(265)',
+  jeanne:   'Root(266)',
+  chef:     'import os24'
 };
 
-let currentUser = null;
-let selectedBtn = null;
-let editingId   = null;
-let remoteData  = {entries:[]};
-let isSaving    = false;
+// Utilisateurs nécessitant un mot de passe
+const NEEDS_PWD = ['pauline','innocent','jeanne','chef'];
+
+// ══ AGENTS ══
+const AGENTS = {
+  pauline:  {name:'Melingui Bomba Pauline Marie', short:'Pauline M.',    ini:'PM', av:'av-b', hav:'rgba(24,95,165,0.2)',   hat:'#85B7EB', prog:'#185FA5', lbl:'blue'},
+  innocent: {name:'Margaba Batouri Innocent',      short:'Innocent M.',  ini:'BI', av:'av-t', hav:'rgba(15,110,86,0.2)',  hat:'#5DCAA5', prog:'#0F6E56', lbl:'teal'},
+  jeanne:   {name:'Messina Messi Jeanne',          short:'Jeanne M.M.',  ini:'JM', av:'av-c', hav:'rgba(153,60,29,0.2)', hat:'#F0997B', prog:'#993C1D', lbl:'coral'},
+  chef:     {name:'Ngnitedem Sonzia',              short:'Ngnitedem S.', ini:'NS', av:'av-g', hav:'rgba(201,168,76,0.2)',hat:'#F0D98A', prog:'#C9A84C', lbl:'gold'}
+};
+
+let currentUser  = null;
+let editingId    = null;
+let remoteData   = {entries:[]};
+let isSaving     = false;
+let pendingAction = null; // {type, payload}
 
 // ══ JSONBIN API ══
 async function fetchData(){
@@ -332,42 +411,82 @@ async function pushData(){
 
 function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 
-// ══ LOGIN ══
-function selectUser(id,btn){
-  currentUser=id;
+// ══ LOGIN / SECURITE ══
+function selectUser(id, btn){
+  currentUser = id;
   document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
+
+  const pwdSection = document.getElementById('pwd-section');
+  const pwdInput   = document.getElementById('pwd-input');
+  const pwdErr     = document.getElementById('pwd-err');
+
+  if(NEEDS_PWD.includes(id)){
+    pwdSection.style.display = 'block';
+    pwdInput.value = '';
+    pwdErr.style.display = 'none';
+    pwdInput.removeAttribute('data-valid');
+    setTimeout(()=>pwdInput.focus(), 80);
+  } else {
+    pwdSection.style.display = 'none';
+  }
+}
+
+function togglePwd(){
+  const inp = document.getElementById('pwd-input');
+  const eye = document.getElementById('eye-btn');
+  if(inp.type==='password'){inp.type='text';eye.textContent='🙈';}
+  else{inp.type='password';eye.textContent='👁';}
 }
 
 async function doLogin(){
   if(!currentUser){showToast('Sélectionnez un utilisateur','err');return;}
+
+  // Vérification mot de passe
+  if(NEEDS_PWD.includes(currentUser)){
+    const pwd    = document.getElementById('pwd-input').value;
+    const pwdErr = document.getElementById('pwd-err');
+    if(pwd !== PASSWORDS[currentUser]){
+      pwdErr.style.display='block';
+      const inp=document.getElementById('pwd-input');
+      inp.classList.remove('shake');
+      void inp.offsetWidth; // reflow
+      inp.classList.add('shake');
+      inp.select();
+      return;
+    }
+    pwdErr.style.display='none';
+  }
+
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='flex';
   document.getElementById('app-screen').style.flexDirection='column';
-  document.getElementById('tb-name').textContent=AGENTS[currentUser].short;
+  document.getElementById('tb-name').textContent = AGENTS[currentUser].short;
   document.getElementById('main').innerHTML='<div class="loader"><div class="loader-spinner"></div>Chargement des données…</div>';
   await fetchData();
   if(currentUser==='chef') renderChef(); else renderAgent();
 }
 
 function logout(){
-  currentUser=null;selectedBtn=null;
+  currentUser=null;
   document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('pwd-section').style.display='none';
+  document.getElementById('pwd-input').value='';
   document.getElementById('app-screen').style.display='none';
   document.getElementById('login-screen').style.display='flex';
 }
 
 // ══ AGENT VIEW ══
 function renderAgent(){
-  const a = AGENTS[currentUser];
+  const a       = AGENTS[currentUser];
   const entries = remoteData.entries.filter(e=>e.agentId===currentUser);
-  const totalS = entries.reduce((s,e)=>s+(e.structures||0),0);
-  const totalN = entries.reduce((s,e)=>s+(e.numbered||0),0);
-  const totalM = entries.reduce((s,e)=>s+(e.menages||0),0);
-  const days   = new Set(entries.map(e=>e.date)).size;
-  const today  = new Date().toISOString().split('T')[0];
-  const todayE = entries.find(e=>e.date===today);
-  const sorted = [...entries].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,15);
+  const totalS  = entries.reduce((s,e)=>s+(e.structures||0),0);
+  const totalN  = entries.reduce((s,e)=>s+(e.numbered||0),0);
+  const totalM  = entries.reduce((s,e)=>s+(e.menages||0),0);
+  const days    = new Set(entries.map(e=>e.date)).size;
+  const today   = new Date().toISOString().split('T')[0];
+  const todayE  = entries.find(e=>e.date===today);
+  const sorted  = [...entries].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,15);
 
   document.getElementById('main').innerHTML=`
     <div class="agent-hero">
@@ -479,6 +598,73 @@ async function saveEdit(){
   if(currentUser==='chef') renderChef(); else renderAgent();
 }
 
+// ══ MODAL CONFIRM (SUPPRESSION) ══
+function openConfirm(title, msg, action){
+  pendingAction = action;
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-msg').textContent   = msg;
+  document.getElementById('confirm-modal').style.display='flex';
+}
+function closeConfirm(){
+  document.getElementById('confirm-modal').style.display='none';
+  pendingAction=null;
+}
+async function confirmAction(){
+  if(!pendingAction) return;
+  const btn=document.getElementById('confirm-ok-btn');
+  btn.disabled=true; btn.textContent='…';
+  await pendingAction();
+  btn.disabled=false; btn.textContent='Supprimer';
+  closeConfirm();
+}
+
+// ══ SUPPRESSIONS (ADMIN UNIQUEMENT) ══
+function adminDeleteEntry(id){
+  const e=remoteData.entries.find(x=>x.id===id);
+  if(!e) return;
+  const a=AGENTS[e.agentId];
+  const dl=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'long'});
+  openConfirm(
+    'Supprimer cette saisie',
+    `Supprimer la saisie du ${dl} pour ${a.short} (${e.structures||0} structures, ${e.menages||0} ménages) ?`,
+    async()=>{
+      await fetchData();
+      remoteData.entries=remoteData.entries.filter(x=>x.id!==id);
+      try{ await pushData(); showToast('Saisie supprimée','ok'); } catch(err){ showToast('Erreur réseau','err'); }
+      renderChef();
+    }
+  );
+}
+
+function adminDeleteAgent(agentId){
+  const a=AGENTS[agentId];
+  const count=remoteData.entries.filter(e=>e.agentId===agentId).length;
+  openConfirm(
+    `Supprimer les données de ${a.short}`,
+    `Supprimer les ${count} saisie${count>1?'s':''} de ${a.name} ? Cette action est irréversible.`,
+    async()=>{
+      await fetchData();
+      remoteData.entries=remoteData.entries.filter(e=>e.agentId!==agentId);
+      try{ await pushData(); showToast(`Données de ${a.short} supprimées`,'ok'); } catch(err){ showToast('Erreur réseau','err'); }
+      renderChef();
+    }
+  );
+}
+
+function adminDeleteAll(){
+  const count=remoteData.entries.length;
+  if(count===0){showToast('Aucune donnée à supprimer','err');return;}
+  openConfirm(
+    'Supprimer TOUTES les données',
+    `Supprimer la totalité des ${count} saisie${count>1?'s':''} de tous les agents ? Action irréversible.`,
+    async()=>{
+      remoteData.entries=[];
+      try{ await pushData(); showToast('Toutes les données supprimées','ok'); } catch(err){ showToast('Erreur réseau','err'); }
+      renderChef();
+    }
+  );
+}
+
 // ══ CHEF VIEW ══
 function renderChef(){
   const all=remoteData.entries;
@@ -499,10 +685,34 @@ function renderChef(){
     const pct=Math.min(100,Math.round((s/50)*100));
     const last=[...ents].sort((a,b)=>b.date.localeCompare(a.date))[0];
     const lastLbl=last?new Date(last.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})+(last.zd?' · ZD '+last.zd:''):'Aucune saisie';
+
+    // saisies détaillées de cet agent (5 dernières)
+    const agSorted=[...ents].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+    const saisiesHtml=agSorted.length===0?'':`
+      <div style="margin-top:10px;padding-top:10px;border-top:.5px solid var(--border)">
+        <div style="font-size:10px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Saisies récentes</div>
+        ${agSorted.map(e=>{
+          const dl=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+          return`<div class="hist-item" style="padding:7px 0">
+            <div style="min-width:90px">
+              <div class="hist-date">${dl}</div>
+              ${e.zd?`<span class="hist-zd">ZD ${e.zd}</span>`:''}
+            </div>
+            <div class="hist-nums">
+              <div class="hn"><div class="hn-val">${e.structures||0}</div><div class="hn-lab">struct.</div></div>
+              <div class="hn"><div class="hn-val">${e.numbered||0}</div><div class="hn-lab">num.</div></div>
+              <div class="hn"><div class="hn-val">${e.menages||0}</div><div class="hn-lab">mén.</div></div>
+            </div>
+            <button class="del-btn" onclick="adminDeleteEntry('${e.id}')">🗑</button>
+          </div>`;
+        }).join('')}
+      </div>`;
+
     return`<div class="ap-card">
       <div class="ap-top">
         <div class="ap-av" style="background:${a.hav};color:${a.hat}">${a.ini}</div>
-        <div><div class="ap-name">${a.name}</div><div class="ap-days">${d} jour${d>1?'s':''} de terrain</div></div>
+        <div style="flex:1"><div class="ap-name">${a.name}</div><div class="ap-days">${d} jour${d>1?'s':''} de terrain · ${ents.length} saisie${ents.length>1?'s':''}</div></div>
+        <button class="del-btn" onclick="adminDeleteAgent('${id}')" title="Supprimer toutes les saisies de ${a.short}" style="font-size:10px">🗑 Agent</button>
       </div>
       <div class="ap-nums">
         <div class="an"><div class="an-val" style="color:${a.prog}">${s}</div><div class="an-lab">identifiées</div></div>
@@ -512,14 +722,13 @@ function renderChef(){
       <div class="prog-meta"><span>Progression</span><span>${pct}%</span></div>
       <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${a.prog}"></div></div>
       <div class="last-entry">Dernière saisie : ${lastLbl}${last?' · '+last.structures+' structures':''}</div>
+      ${saisiesHtml}
     </div>`;
   }).join('');
 
-  const recent=[...all].sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)).slice(0,10);
-
   document.getElementById('main').innerHTML=`
     <div class="chef-header">
-      <div><div class="chef-title">Tableau de bord</div><div class="chef-sub">4e RGPH / RGAE · Chef d'équipes</div></div>
+      <div><div class="chef-title">Tableau de bord</div><div class="chef-sub">4e RGPH / RGAE · Ngnitedem Sonzia</div></div>
       <button class="refresh-btn" onclick="doRefresh()"><span id="ref-ico">↻</span> Actualiser</button>
     </div>
 
@@ -529,24 +738,21 @@ function renderChef(){
       <div class="cs"><div class="cs-num">${daysSet.size}</div><div class="cs-lbl">Jours terrain</div></div>
     </div>
 
-    <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Progression par agent</div>
+    <!-- ZONE DANGER -->
+    <div class="danger-zone">
+      <div class="dz-title">🛡 Zone d'administration — Suppression de données</div>
+      <div class="dz-desc">Ces actions sont irréversibles. Une confirmation sera demandée avant chaque suppression.</div>
+      <div class="dz-btns">
+        <button class="dz-btn all" onclick="adminDeleteAll()">🗑 Supprimer TOUTES les données</button>
+        <button class="dz-btn ag" onclick="adminDeleteAgent('pauline')">Pauline M.</button>
+        <button class="dz-btn ag" onclick="adminDeleteAgent('innocent')">Innocent M.</button>
+        <button class="dz-btn ag" onclick="adminDeleteAgent('jeanne')">Jeanne M.M.</button>
+      </div>
+    </div>
+
+    <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Progression &amp; saisies par agent</div>
     ${agCards}
 
-    <div class="card" style="margin-top:.5rem">
-      <div class="card-title"><span class="card-dot"></span>Dernières mises à jour</div>
-      ${recent.length===0?'<div class="empty">Aucune saisie enregistrée.</div>':recent.map(e=>{
-        const a=AGENTS[e.agentId];
-        const dl=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
-        return`<div class="hist-item">
-          <div class="ap-av" style="width:32px;height:32px;font-size:10px;background:${a.hav};color:${a.hat};border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${a.ini}</div>
-          <div style="flex:1"><div style="font-size:12px;font-weight:500">${a.short}</div><div style="font-size:10px;color:var(--muted)">${dl}${e.zd?' · ZD '+e.zd:''}</div></div>
-          <div class="hist-nums">
-            <div class="hn"><div class="hn-val">${e.structures||0}</div><div class="hn-lab">struct.</div></div>
-            <div class="hn"><div class="hn-val">${e.menages||0}</div><div class="hn-lab">ménages</div></div>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>
     <div class="sync-badge">Dernière actualisation : ${lastStr} · JSONBin.io</div>
   `;
 }
