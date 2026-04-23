@@ -2,862 +2,571 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Groupe ZC 140 — 4ème RGPH/RGAE · BUCREP</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>RGPH — Suivi Terrain</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #04080f;
-    --bg2: #080e1c;
-    --card: #0d1628;
-    --border: #1a2e50;
-    --green: #00c896;
-    --green2: #00ff99;
-    --gold: #f59e0b;
-    --blue: #3b82f6;
-    --text: #e8f1ff;
-    --muted: #7a93b8;
-    --radius: 16px;
-  }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --navy:#0D1B2A;--navy2:#1A3A5C;--gold:#C9A84C;--gold-l:#F0D98A;
+  --bg:#F4F2EE;--card:#FFFFFF;--surface:#F0EDE8;
+  --text:#1A1A1A;--muted:#7A7570;--border:#E2DDD8;
+  --blue:#185FA5;--blue-l:#E6F1FB;
+  --teal:#0F6E56;--teal-l:#E1F5EE;
+  --coral:#993C1D;--coral-l:#FAECE7;
+  --radius:14px;--radius-sm:9px;
+  --shadow:0 2px 12px rgba(0,0,0,0.08);
+}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── LOGIN ── */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(150deg,#0D1B2A 0%,#1A3A5C 55%,#0D2A1A 100%);
+  padding:1rem;
+}
+.login-box{
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);
+  border-radius:20px;padding:2rem 1.75rem;width:100%;max-width:420px;
+  backdrop-filter:blur(12px);
+}
+.login-logo{text-align:center;margin-bottom:1.75rem}
+.l-badge{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-l);
+  background:rgba(201,168,76,0.18);padding:4px 14px;border-radius:20px;display:inline-block;margin-bottom:12px}
+.l-title{font-size:24px;font-weight:600;color:#fff;letter-spacing:-0.3px}
+.l-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px}
+.l-section{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin:0 0 10px}
+.user-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:1.25rem}
+.user-btn{
+  display:flex;align-items:center;gap:12px;padding:13px 15px;
+  border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-sm);
+  background:rgba(255,255,255,0.04);cursor:pointer;color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  transition:all .2s;width:100%;text-align:left;
+}
+.user-btn:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.22)}
+.user-btn.sel{background:rgba(201,168,76,0.18);border-color:rgba(201,168,76,0.55)}
+.u-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.av-b{background:rgba(24,95,165,0.35);color:#85B7EB}
+.av-t{background:rgba(15,110,86,0.35);color:#5DCAA5}
+.av-c{background:rgba(153,60,29,0.35);color:#F0997B}
+.av-g{background:rgba(201,168,76,0.28);color:var(--gold-l)}
+.u-role{font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px}
+.l-sep{border:none;border-top:1px solid rgba(255,255,255,0.09);margin:1.1rem 0}
+.login-btn{
+  width:100%;padding:13px;background:var(--gold);color:#0D1B2A;
+  border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;transition:opacity .15s;letter-spacing:.2px;
+}
+.login-btn:hover{opacity:.88}
+.login-btn:active{opacity:.75;transform:scale(.99)}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-  }
+/* ── APP SHELL ── */
+#app-screen{display:none;min-height:100vh;flex-direction:column}
+.topbar{
+  background:var(--navy);color:#fff;height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.25rem;position:sticky;top:0;z-index:100;flex-shrink:0;
+}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-badge{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-l);background:rgba(201,168,76,0.18);padding:3px 10px;border-radius:20px}
+.tb-title{font-size:14px;font-weight:600}
+.tb-right{display:flex;align-items:center;gap:8px}
+.tb-user{font-size:11px;color:rgba(255,255,255,0.45)}
+.logout-btn{font-size:11px;color:rgba(255,255,255,0.4);background:none;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:5px 11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.logout-btn:hover{color:#fff;border-color:rgba(255,255,255,0.35)}
 
-  /* ── BACKGROUND ── */
-  .bg-layer {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,200,150,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 90% 80%, rgba(59,130,246,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse 40% 40% at 10% 90%, rgba(245,158,11,0.06) 0%, transparent 50%);
-  }
+.main{padding:1.25rem;max-width:680px;margin:0 auto;width:100%;flex:1}
 
-  .grid-overlay {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background-image:
-      linear-gradient(rgba(0,200,150,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,200,150,0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
+/* ── CARDS ── */
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
 
-  .particles {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    overflow: hidden;
-  }
-  .particle {
-    position: absolute;
-    border-radius: 50%;
-    background: var(--green);
-    opacity: 0;
-    animation: float-up linear infinite;
-  }
-  @keyframes float-up {
-    0% { transform: translateY(100vh) scale(0); opacity: 0; }
-    10% { opacity: 0.4; }
-    90% { opacity: 0.1; }
-    100% { transform: translateY(-20vh) scale(1); opacity: 0; }
-  }
+/* ── AGENT HEADER ── */
+.agent-hero{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+  border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem;
+  display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);
+}
+.hero-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0}
+.hero-name{font-size:16px;font-weight:600;color:#fff;line-height:1.3}
+.hero-sub{font-size:11px;color:rgba(255,255,255,0.42);margin-top:3px}
 
-  /* ── LAYOUT ── */
-  .wrapper {
-    position: relative; z-index: 1;
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 40px 20px 80px;
-  }
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.stat-box{background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;box-shadow:var(--shadow)}
+.stat-num{font-size:22px;font-weight:700;color:var(--text);line-height:1}
+.stat-lbl{font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:.3px;text-transform:uppercase}
 
-  /* ── HEADER ── */
-  .header { text-align: center; margin-bottom: 48px; }
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.3px}
+.fg input,.fg select{
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);
+  font-family:'DM Sans',sans-serif;width:100%;outline:none;transition:border .15s;
+  -webkit-appearance:none;
+}
+.fg input:focus{border-color:var(--blue);background:#fff}
+.fg-full{grid-column:1/-1}
+.fg-hint{font-size:10px;color:var(--muted);margin-top:2px}
+.save-btn{
+  width:100%;padding:13px;background:var(--navy2);color:#fff;
+  border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:6px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.save-btn:hover{background:var(--navy)}
+.save-btn:active{transform:scale(.99)}
+.save-btn:disabled{opacity:.55;cursor:not-allowed}
 
-  .logo-ring {
-    width: 88px; height: 88px;
-    border-radius: 50%;
-    margin: 0 auto 24px;
-    position: relative;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, rgba(0,200,150,0.15), rgba(59,130,246,0.1));
-    border: 2px solid rgba(0,200,150,0.3);
-    animation: pulse-ring 3s ease-in-out infinite;
-  }
-  @keyframes pulse-ring {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(0,200,150,0.3), 0 0 30px rgba(0,200,150,0.1); }
-    50% { box-shadow: 0 0 0 12px rgba(0,200,150,0), 0 0 50px rgba(0,200,150,0.2); }
-  }
-  .logo-ring svg { width: 44px; height: 44px; }
+/* ── HISTORY ── */
+.hist-item{
+  display:flex;align-items:center;gap:10px;padding:11px 0;
+  border-bottom:.5px solid var(--border);
+}
+.hist-item:last-child{border-bottom:none}
+.hist-date{font-size:12px;font-weight:500;color:var(--text);min-width:80px}
+.hist-zd{font-size:9px;color:var(--blue);font-family:'DM Mono',monospace;background:var(--blue-l);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:3px}
+.hist-nums{display:flex;gap:10px;flex:1;justify-content:flex-end}
+.hn{text-align:center;min-width:38px}
+.hn-val{font-size:14px;font-weight:700;color:var(--text)}
+.hn-lab{font-size:9px;color:var(--muted)}
+.edit-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--muted);transition:all .15s;white-space:nowrap}
+.edit-btn:hover{border-color:var(--blue);color:var(--blue)}
+.empty{text-align:center;color:var(--muted);font-size:13px;padding:2rem;font-style:italic}
 
-  .tag {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--green);
-    background: rgba(0,200,150,0.1);
-    border: 1px solid rgba(0,200,150,0.25);
-    padding: 4px 14px;
-    border-radius: 100px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 18px;
-    animation: fade-in 0.6s ease 0.2s both;
-  }
+/* ── CHEF ── */
+.chef-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.chef-title{font-size:19px;font-weight:700;color:var(--text)}
+.chef-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.refresh-btn{
+  display:flex;align-items:center;gap:6px;padding:8px 14px;
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
+  font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;
+  color:var(--navy2);transition:all .15s;box-shadow:var(--shadow);
+}
+.refresh-btn:hover{background:var(--navy2);color:#fff;border-color:var(--navy2)}
+.spin{animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-  h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 7vw, 46px);
-    font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 14px;
-    animation: fade-in 0.6s ease 0.4s both;
-  }
-  h1 .line1 { display: block; color: #fff; }
-  h1 .line2 {
-    display: block;
-    background: linear-gradient(135deg, var(--green), var(--green2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+.chef-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.cs{background:var(--card);border:.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 8px;text-align:center;box-shadow:var(--shadow)}
+.cs-num{font-size:26px;font-weight:700;line-height:1}
+.cs-num.gold{color:#B07D20}
+.cs-lbl{font-size:9px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.3px}
 
-  .subtitle {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.6;
-    max-width: 480px;
-    margin: 0 auto;
-    animation: fade-in 0.6s ease 0.6s both;
-  }
-  .subtitle strong { color: var(--gold); }
+.ap-card{background:var(--card);border:.5px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.25rem;margin-bottom:10px;box-shadow:var(--shadow)}
+.ap-top{display:flex;align-items:center;gap:11px;margin-bottom:12px}
+.ap-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.ap-name{font-size:13px;font-weight:600;color:var(--text)}
+.ap-days{font-size:10px;color:var(--muted);margin-top:2px}
+.ap-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.an{background:var(--surface);border-radius:8px;padding:8px 6px;text-align:center}
+.an-val{font-size:17px;font-weight:700}
+.an-lab{font-size:9px;color:var(--muted);margin-top:2px}
+.prog-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:5px}
+.prog-bar{height:5px;background:var(--surface);border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;border-radius:5px;transition:width .6s ease}
+.last-entry{font-size:11px;color:var(--muted);margin-top:9px;padding-top:9px;border-top:.5px solid var(--border)}
 
-  @keyframes fade-in {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.sync-badge{font-size:10px;color:var(--muted);text-align:center;padding:.75rem;font-style:italic}
 
-  /* ── BADGE INFOS ── */
-  .info-strip {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 28px 0 40px;
-    animation: fade-in 0.6s ease 0.8s both;
-  }
-  .info-pill {
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 6px 14px;
-    font-size: 12px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-  .info-pill span { font-size: 14px; }
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem}
+.modal{background:var(--card);border-radius:var(--radius);padding:1.5rem;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:16px}
+.modal-fg{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.modal-fg label{font-size:11px;color:var(--muted);font-weight:500}
+.modal-fg input{border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;width:100%;outline:none}
+.modal-fg input:focus{border-color:var(--blue);background:#fff}
+.modal-btns{display:flex;gap:8px;margin-top:14px}
+.modal-cancel{flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;color:var(--muted)}
+.modal-save{flex:1;padding:10px;background:var(--navy2);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.modal-save:disabled{opacity:.5;cursor:not-allowed}
 
-  /* ── CARD ── */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 32px 28px;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-    animation: fade-in 0.6s ease 1s both;
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--green), transparent);
-    opacity: 0.6;
-  }
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(90px);
+  background:var(--navy);color:#fff;padding:11px 22px;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:500;transition:transform .3s ease;z-index:400;
+  white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.25);
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#2E7D32}
+.toast.err{background:#B71C1C}
 
-  .step-num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--green), var(--blue));
-    color: #04080f;
-    font-weight: 700;
-    font-size: 14px;
-    font-family: 'DM Mono', monospace;
-    margin-bottom: 16px;
-  }
+/* ── LOADER ── */
+.loader{text-align:center;padding:2.5rem;color:var(--muted);font-size:13px}
+.loader-spinner{width:28px;height:28px;border:2.5px solid var(--border);border-top-color:var(--navy2);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
 
-  .q-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--green);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .q-text {
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 1.6;
-    color: #fff;
-    margin-bottom: 8px;
-  }
-
-  .q-hint {
-    font-size: 12px;
-    color: var(--muted);
-    font-style: italic;
-    margin-bottom: 22px;
-    padding: 8px 12px;
-    background: rgba(245,158,11,0.06);
-    border-left: 2px solid rgba(245,158,11,0.4);
-    border-radius: 0 6px 6px 0;
-  }
-
-  /* Options */
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .opt {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 14px 16px;
-    background: rgba(255,255,255,0.03);
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--text);
-    text-align: left;
-    transition: all 0.2s ease;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .opt:hover { border-color: var(--green); background: rgba(0,200,150,0.05); }
-  .opt.selected { border-color: var(--blue); background: rgba(59,130,246,0.08); }
-  .opt.correct { border-color: var(--green); background: rgba(0,200,150,0.1); color: var(--green2); }
-  .opt.wrong { border-color: #ef4444; background: rgba(239,68,68,0.08); color: #fca5a5; }
-  .opt:disabled { cursor: default; }
-  .opt-letter {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    min-width: 20px;
-    margin-top: 2px;
-    flex-shrink: 0;
-  }
-  .opt.correct .opt-letter { color: var(--green); }
-  .opt.wrong .opt-letter { color: #ef4444; }
-
-  /* Progress dots */
-  .progress-dots {
-    display: flex; gap: 8px; justify-content: center;
-    margin: 24px 0 0;
-  }
-  .dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: all 0.3s ease;
-  }
-  .dot.active { background: var(--green); transform: scale(1.2); }
-  .dot.done { background: var(--green); opacity: 0.5; }
-  .dot.error { background: #ef4444; }
-
-  /* Feedback */
-  .feedback {
-    margin-top: 16px;
-    padding: 14px 16px;
-    background: rgba(0,200,150,0.06);
-    border-left: 3px solid var(--green);
-    border-radius: 0 8px 8px 0;
-    font-size: 13px;
-    line-height: 1.7;
-    color: #a8d8c8;
-    display: none;
-  }
-  .feedback.show { display: block; animation: fade-in 0.3s ease; }
-  .feedback.error { border-color: #ef4444; background: rgba(239,68,68,0.06); color: #fca5a5; }
-  .feedback strong { color: var(--green); }
-  .feedback.error strong { color: #f87171; }
-
-  /* ── BOUTON VALIDER ── */
-  .btn-validate {
-    margin-top: 20px;
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, var(--green), #00a87a);
-    border: none;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    color: #04080f;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: none;
-  }
-  .btn-validate:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,200,150,0.3); }
-  .btn-validate.show { display: block; }
-
-  /* ── ÉCRAN SUCCÈS ── */
-  #success-screen {
-    display: none;
-    text-align: center;
-    animation: fade-in 0.5s ease;
-  }
-  #success-screen.active { display: block; }
-
-  .success-icon {
-    width: 100px; height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(0,200,150,0.2), rgba(0,255,153,0.1));
-    border: 2px solid var(--green);
-    margin: 0 auto 24px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 44px;
-    animation: bounce-in 0.6s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  @keyframes bounce-in {
-    from { transform: scale(0); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-
-  .success-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 900;
-    color: #fff;
-    margin-bottom: 12px;
-  }
-
-  .success-msg {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 32px;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .whatsapp-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 36px;
-    background: linear-gradient(135deg, #25d366, #128c7e);
-    border: none;
-    border-radius: 100px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 16px;
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 24px rgba(37,211,102,0.35);
-    animation: pulse-btn 2s ease-in-out infinite;
-    margin-bottom: 16px;
-  }
-  .whatsapp-btn:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(37,211,102,0.5);
-  }
-  @keyframes pulse-btn {
-    0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,0.35); }
-    50% { box-shadow: 0 4px 40px rgba(37,211,102,0.6); }
-  }
-
-  .wa-icon { font-size: 24px; }
-
-  .success-note {
-    font-size: 12px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* ── ÉCRAN ÉCHEC ── */
-  #fail-screen {
-    display: none;
-    text-align: center;
-    animation: fade-in 0.5s ease;
-  }
-  #fail-screen.active { display: block; }
-
-  .fail-icon {
-    width: 100px; height: 100px;
-    border-radius: 50%;
-    background: rgba(239,68,68,0.1);
-    border: 2px solid #ef4444;
-    margin: 0 auto 24px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 44px;
-    animation: bounce-in 0.6s cubic-bezier(0.34,1.56,0.64,1);
-  }
-
-  .fail-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 900;
-    color: #fff;
-    margin-bottom: 12px;
-  }
-
-  .fail-msg {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 32px;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .fail-msg strong { color: #fca5a5; }
-
-  .btn-retry {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 16px 32px;
-    background: transparent;
-    border: 2px solid #ef4444;
-    border-radius: 100px;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    color: #fca5a5;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-retry:hover { background: rgba(239,68,68,0.1); transform: translateY(-2px); }
-
-  /* ── FOOTER ── */
-  .footer {
-    text-align: center;
-    margin-top: 48px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* ── HIDDEN ── */
-  .hidden { display: none !important; }
-
-  /* score bar */
-  .score-bar {
-    display: flex; gap: 6px; justify-content: center; margin-bottom: 28px;
-  }
-  .score-seg {
-    height: 6px; flex: 1; max-width: 80px;
-    border-radius: 100px;
-    background: var(--border);
-    transition: background 0.4s ease;
-  }
-  .score-seg.ok { background: var(--green); }
-  .score-seg.ko { background: #ef4444; }
+/* ── RESPONSIVE ── */
+@media(max-width:480px){
+  .main{padding:1rem .875rem}
+  .login-box{padding:1.75rem 1.25rem}
+  .l-title{font-size:20px}
+  .stats-row{gap:6px}
+  .stat-num{font-size:19px}
+  .form-grid{grid-template-columns:1fr}
+  .fg-full{grid-column:1}
+  .chef-stats{gap:6px}
+  .cs-num{font-size:22px}
+  .topbar{padding:0 1rem}
+  .tb-user{display:none}
+  .hist-nums{gap:6px}
+  .hn-val{font-size:13px}
+}
+@media(max-width:360px){
+  .stats-row{grid-template-columns:1fr 1fr;gap:6px}
+  .stat-box:last-child{grid-column:1/-1}
+}
 </style>
 </head>
 <body>
 
-<!-- Background -->
-<div class="bg-layer"></div>
-<div class="grid-overlay"></div>
-<div class="particles" id="particles"></div>
-
-<div class="wrapper">
-
-  <!-- HEADER -->
-  <header class="header">
-    <div class="logo-ring">
-      <svg viewBox="0 0 44 44" fill="none">
-        <circle cx="22" cy="22" r="18" stroke="#00c896" stroke-width="1.5" stroke-dasharray="4 3"/>
-        <circle cx="22" cy="22" r="10" fill="rgba(0,200,150,0.15)" stroke="#00c896" stroke-width="1.5"/>
-        <path d="M22 16v6l4 2" stroke="#00ff99" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="22" cy="22" r="2" fill="#00ff99"/>
-        <path d="M12 10L8 6M32 10L36 6M12 34L8 38M32 34L36 38" stroke="#00c896" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-      </svg>
+<!-- ══ LOGIN ══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="l-badge">4e RGPH / RGAE · BUCREP</div>
+      <div class="l-title">Suivi de Recensement</div>
+      <div class="l-sub">Équipe Zone de Dénombrement · Yaoundé</div>
     </div>
-    <div class="tag">4ème RGPH / RGAE · BUCREP</div>
-    <h1>
-      <span class="line1">Bienvenue dans le groupe</span>
-      <span class="line2">Zone de Contrôle 140</span>
-    </h1>
-    <p class="subtitle">
-      Pour rejoindre le groupe WhatsApp des agents recenseurs de la <strong>ZC 140</strong>, vous devez d'abord prouver votre maîtrise du manuel. Répondez correctement aux <strong>2 questions</strong> ci-dessous.
-    </p>
-  </header>
 
-  <!-- INFO STRIP -->
-  <div class="info-strip">
-    <div class="info-pill"><span>🏛️</span> BUCREP Officiel</div>
-    <div class="info-pill"><span>📋</span> Manuel AR · 2023</div>
-    <div class="info-pill"><span>🔐</span> Accès conditionnel</div>
-    <div class="info-pill"><span>✅</span> 2 questions requises</div>
+    <div class="l-section">Agents recenseurs</div>
+    <div class="user-grid">
+      <button class="user-btn" onclick="selectUser('pauline',this)">
+        <div class="u-av av-b">PM</div>
+        <div><div>Melingui Bomba Pauline Marie</div><div class="u-role">Agent Recenseur</div></div>
+      </button>
+      <button class="user-btn" onclick="selectUser('innocent',this)">
+        <div class="u-av av-t">BI</div>
+        <div><div>Margaba Batouri Innocent</div><div class="u-role">Agent Recenseur</div></div>
+      </button>
+      <button class="user-btn" onclick="selectUser('jeanne',this)">
+        <div class="u-av av-c">JM</div>
+        <div><div>Messina Messi Jeanne</div><div class="u-role">Agent Recenseur</div></div>
+      </button>
+    </div>
+
+    <hr class="l-sep">
+    <div class="l-section">Chef d'équipes</div>
+    <div class="user-grid">
+      <button class="user-btn" onclick="selectUser('chef',this)">
+        <div class="u-av av-g">D</div>
+        <div><div>Dongle</div><div class="u-role">Chef d'équipes · Accès complet</div></div>
+      </button>
+    </div>
+    <hr class="l-sep">
+    <button class="login-btn" onclick="doLogin()">Accéder à mon espace →</button>
   </div>
+</div>
 
-  <!-- QUIZ SECTION -->
-  <div id="quiz-section">
-
-    <!-- SCORE BAR -->
-    <div class="score-bar">
-      <div class="score-seg" id="seg1"></div>
-      <div class="score-seg" id="seg2"></div>
+<!-- ══ APP ══ -->
+<div id="app-screen">
+  <div class="topbar">
+    <div class="tb-left">
+      <span class="tb-badge">RGPH 2024</span>
+      <span class="tb-title">Suivi Terrain</span>
     </div>
-
-    <!-- QUESTION 1 -->
-    <div class="card" id="card-q1">
-      <div class="step-num">1</div>
-      <div class="q-label">Question 1 / 2 — Concepts fondamentaux</div>
-      <div class="q-text">Un homme polygame a passé la nuit de référence chez sa 2ème femme qui vit dans une habitation séparée. Dans quel ménage est-il recensé comme Résident Présent, et dans quel statut figure-t-il dans son ménage habituel ?</div>
-      <div class="q-hint">⚠️ Piège : lisez chaque option avec attention — une seule correspond exactement au manuel.</div>
-      <div class="options" id="opts1">
-        <button class="opt" onclick="selectOpt(1, 0)"><span class="opt-letter">A.</span><span>Résident Présent dans son ménage habituel (1ère femme) ; non recensé chez la 2ème femme</span></button>
-        <button class="opt" onclick="selectOpt(1, 1)"><span class="opt-letter">B.</span><span>Résident Présent chez la 2ème femme (où il a passé la nuit) ; Résident Absent dans son ménage habituel</span></button>
-        <button class="opt" onclick="selectOpt(1, 2)"><span class="opt-letter">C.</span><span>Il est recensé dans les deux ménages simultanément comme Résident Présent</span></button>
-        <button class="opt" onclick="selectOpt(1, 3)"><span class="opt-letter">D.</span><span>Visiteur chez la 2ème femme ; Résident Présent dans son ménage habituel</span></button>
-      </div>
-      <div class="feedback" id="fb1"></div>
-      <button class="btn-validate" id="btn1" onclick="validate(1)">Valider ma réponse →</button>
-    </div>
-
-    <!-- QUESTION 2 (masquée au départ) -->
-    <div class="card hidden" id="card-q2">
-      <div class="step-num">2</div>
-      <div class="q-label">Question 2 / 2 — Numérotation & Procédures</div>
-      <div class="q-text">Dans la ZD n°005, un dortoir de prison porte le numéro de structure GC005/803 et abrite 60 détenus. Combien de ménages faut-il créer dans ce dortoir, et quel numéro portera le 3ème ménage ?</div>
-      <div class="q-hint">⚠️ Piège : le manuel fixe une taille maximale par groupe. Calculez avant de choisir.</div>
-      <div class="options" id="opts2">
-        <button class="opt" onclick="selectOpt(2, 0)"><span class="opt-letter">A.</span><span>1 seul ménage GC005/803/01 — on recense les 60 personnes ensemble</span></button>
-        <button class="opt" onclick="selectOpt(2, 1)"><span class="opt-letter">B.</span><span>3 ménages (25+25+10) — le 3ème ménage porte le numéro GC005/803/03</span></button>
-        <button class="opt" onclick="selectOpt(2, 2)"><span class="opt-letter">C.</span><span>2 ménages (30+30) — le 3ème n'existe pas car le maximum autorisé est 30 par groupe</span></button>
-        <button class="opt" onclick="selectOpt(2, 3)"><span class="opt-letter">D.</span><span>6 ménages de 10 personnes — le 3ème porte GC005/803/03</span></button>
-      </div>
-      <div class="feedback" id="fb2"></div>
-      <button class="btn-validate" id="btn2" onclick="validate(2)">Valider et accéder →</button>
-    </div>
-
-    <!-- PROGRESS DOTS -->
-    <div class="progress-dots">
-      <div class="dot active" id="dot1"></div>
-      <div class="dot" id="dot2"></div>
-    </div>
-
-  </div><!-- end quiz-section -->
-
-  <!-- SUCCÈS -->
-  <div id="success-screen">
-    <div class="card">
-      <div class="success-icon">🎯</div>
-      <div class="success-title">Félicitations, Agent !</div>
-      <div class="success-msg">
-        Vous avez prouvé votre maîtrise du manuel. Vous êtes désormais autorisé à rejoindre le groupe WhatsApp officiel des agents recenseurs de la <strong style="color:var(--green)">Zone de Contrôle 140</strong>.
-      </div>
-      <div class="score-bar">
-        <div class="score-seg ok" id="s-seg1"></div>
-        <div class="score-seg ok" id="s-seg2"></div>
-      </div>
-      <center>
-        <a class="whatsapp-btn" href="https://chat.whatsapp.com/EWzv3lsGbxgHWC29MQd8Pb?mode=gi_t" target="_blank">
-          <span class="wa-icon">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M14 2C7.373 2 2 7.373 2 14c0 2.157.575 4.18 1.578 5.924L2 26l6.232-1.547A11.938 11.938 0 0014 26c6.627 0 12-5.373 12-12S20.627 2 14 2z" fill="#25D366"/>
-              <path d="M19.5 16.5c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.6-.92-2.19-.24-.57-.49-.5-.67-.5-.17 0-.37-.02-.57-.02s-.52.07-.8.37c-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" fill="white"/>
-            </svg>
-          </span>
-          Rejoindre le groupe ZC 140
-        </a>
-        <div class="success-note">Lien officiel · Groupe BUCREP · ZC 140</div>
-      </center>
+    <div class="tb-right">
+      <span class="tb-user" id="tb-name"></span>
+      <button class="logout-btn" onclick="logout()">← Quitter</button>
     </div>
   </div>
+  <div class="main" id="main"></div>
+</div>
 
-  <!-- ÉCHEC -->
-  <div id="fail-screen" style="display:none;">
-    <div class="card">
-      <div class="fail-icon">📚</div>
-      <div class="fail-title">Accès refusé</div>
-      <div class="fail-msg">
-        Vous n'avez pas obtenu le score requis. Votre accès est <strong>suspendu pendant 2 heures</strong>.<br>Mettez ce temps à profit pour relire attentivement votre Manuel de l'Agent Recenseur.
-      </div>
-      <div id="countdown-box" style="
-        margin: 0 auto 24px;
-        background: rgba(239,68,68,0.08);
-        border: 1px solid rgba(239,68,68,0.25);
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-      ">
-        <div style="font-family:'DM Mono',monospace; font-size:11px; color:#f87171; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">Prochain essai disponible dans</div>
-        <div id="countdown-timer" style="font-family:'Playfair Display',serif; font-size:42px; font-weight:900; color:#fca5a5; letter-spacing:4px;">02:00:00</div>
-        <div style="font-family:'DM Mono',monospace; font-size:11px; color:#7a93b8; margin-top:8px;">Profitez de ce temps pour lire votre manuel 📖</div>
-      </div>
+<!-- ══ MODAL EDIT ══ -->
+<div class="modal-bg" id="edit-modal" style="display:none">
+  <div class="modal">
+    <div class="modal-title">Modifier la saisie</div>
+    <div class="modal-fg"><label>Structures identifiées</label><input type="number" id="e-struct" min="0"></div>
+    <div class="modal-fg"><label>Structures numérotées</label><input type="number" id="e-num" min="0"></div>
+    <div class="modal-fg"><label>Ménages ordinaires</label><input type="number" id="e-men" min="0"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Annuler</button>
+      <button class="modal-save" id="modal-save-btn" onclick="saveEdit()">Enregistrer</button>
     </div>
   </div>
+</div>
 
-  <!-- BLOQUÉ (revient après échec dans les 2h) -->
-  <div id="blocked-screen" style="display:none;">
-    <div class="card">
-      <div class="fail-icon">⏳</div>
-      <div class="fail-title">Accès temporairement bloqué</div>
-      <div class="fail-msg">
-        Vous avez échoué au test précédent. Vous devez <strong>patienter 2h</strong> le temps de lire votre manuel avant de pouvoir retenter.
-      </div>
-      <div style="
-        margin: 0 auto 24px;
-        background: rgba(239,68,68,0.08);
-        border: 1px solid rgba(239,68,68,0.25);
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-      ">
-        <div style="font-family:'DM Mono',monospace; font-size:11px; color:#f87171; letter-spacing:2px; text-transform:uppercase; margin-bottom:10px;">Accès disponible dans</div>
-        <div id="blocked-timer" style="font-family:'Playfair Display',serif; font-size:42px; font-weight:900; color:#fca5a5; letter-spacing:4px;">--:--:--</div>
-        <div style="font-family:'DM Mono',monospace; font-size:11px; color:#7a93b8; margin-top:8px;">📖 Relisez le Manuel de l'Agent Recenseur</div>
-      </div>
-      <div style="
-        background: rgba(245,158,11,0.06);
-        border: 1px solid rgba(245,158,11,0.2);
-        border-radius: 10px;
-        padding: 16px;
-        font-size: 13px;
-        color: #fde68a;
-        line-height: 1.7;
-        text-align: left;
-      ">
-        <strong style="display:block; margin-bottom:6px;">💡 Conseils de révision :</strong>
-        Chapitre 1 — Définitions : ménage, résidence, nuit de référence<br>
-        Chapitre 3 — Numérotation GC, codes XXX et XX<br>
-        Chapitre 5 — Algorithme P04 : RP / RA / Visiteur<br>
-        Chapitre 6 — Ménages collectifs, prisons, dortoirs
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>4ème RGPH / RGAE · BUCREP · Zone de Contrôle 140</p>
-    <p style="margin-top:6px; opacity:0.5;">Accès réservé aux agents recenseurs formés</p>
-  </footer>
-
-</div><!-- end wrapper -->
+<div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG ──
-const WA_LINK = 'https://chat.whatsapp.com/EWzv3lsGbxgHWC29MQd8Pb?mode=gi_t';
-const LOCK_KEY = 'zc140_lockout';
-const LOCK_DURATION = 2 * 60 * 60 * 1000; // 2 heures en ms
+// ══ CONFIG JSONBIN ══
+const BIN_ID  = '69ea9b05aaba8821972f44f5';
+const API_KEY = '$2a$10$phoNGUlUffuXacxn2E8r5.yFLfQ3L/bQ9SshS7i2amo4X3CaR4fz6';
+const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+const HEADERS = {'Content-Type':'application/json','X-Master-Key':API_KEY,'X-Bin-Versioning':'false'};
 
-// ── PARTICLES ──
-(function(){
-  const container = document.getElementById('particles');
-  for(let i=0; i<18; i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random()*4+2;
-    p.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*8}s;`;
-    container.appendChild(p);
-  }
-})();
-
-// ── LOCKOUT SYSTEM ──
-function getLockout() {
-  try {
-    const raw = localStorage.getItem(LOCK_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch(e) { return null; }
-}
-
-function setLockout() {
-  try {
-    localStorage.setItem(LOCK_KEY, JSON.stringify({ until: Date.now() + LOCK_DURATION }));
-  } catch(e) {}
-}
-
-function clearLockout() {
-  try { localStorage.removeItem(LOCK_KEY); } catch(e) {}
-}
-
-function isLocked() {
-  const lock = getLockout();
-  if (!lock) return false;
-  if (Date.now() >= lock.until) { clearLockout(); return false; }
-  return true;
-}
-
-function getRemainingMs() {
-  const lock = getLockout();
-  if (!lock) return 0;
-  return Math.max(0, lock.until - Date.now());
-}
-
-function formatTime(ms) {
-  const total = Math.floor(ms / 1000);
-  const h = Math.floor(total / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-
-// ── COUNTDOWN TICKER ──
-let countdownInterval = null;
-
-function startCountdown(elementId, onExpire) {
-  if (countdownInterval) clearInterval(countdownInterval);
-  const el = document.getElementById(elementId);
-  countdownInterval = setInterval(() => {
-    const rem = getRemainingMs();
-    if (rem <= 0) {
-      clearInterval(countdownInterval);
-      clearLockout();
-      if (onExpire) onExpire();
-      return;
-    }
-    if (el) el.textContent = formatTime(rem);
-  }, 1000);
-}
-
-// ── INIT : vérifier dès le chargement ──
-function init() {
-  if (isLocked()) {
-    showBlocked();
-  }
-  // Mettre à jour le timer bloqué en temps réel
-}
-
-function showBlocked() {
-  document.getElementById('quiz-section').style.display = 'none';
-  document.getElementById('header-section') && (document.getElementById('header-section').style.display = 'none');
-  document.getElementById('blocked-screen').style.display = 'block';
-  document.getElementById('blocked-timer').textContent = formatTime(getRemainingMs());
-  startCountdown('blocked-timer', () => {
-    // Quand le timer expire → débloquer
-    document.getElementById('blocked-screen').style.display = 'none';
-    document.getElementById('quiz-section').style.display = '';
-    resetQuizState();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ── QUIZ LOGIC ──
-const CORRECT = { 1: 1, 2: 1 };
-
-const FEEDBACK = {
-  1: {
-    correct: `<strong>✓ Exactement !</strong> Selon le manuel (Ch.5 §P04) : <em>« s'il a passé cette nuit chez une autre femme, il aura le statut de résident absent dans son ménage habituel et celui de visiteur dans le ménage où il est recensé. »</em> Il est donc RP chez la 2ème femme et RA dans son ménage habituel.`,
-    wrong: `<strong>✗ Réponse incorrecte.</strong> Le manuel précise que le polygame qui passe la nuit chez une autre femme est <em>Résident Présent</em> dans ce ménage et <em>Résident Absent</em> dans son ménage habituel. Il ne peut être RP que dans un seul ménage.`
-  },
-  2: {
-    correct: `<strong>✓ Parfait !</strong> Le manuel (Ch.6 §6.1) stipule : <em>« si le dortoir abrite plus de 25 personnes, il est recommandé de scinder en groupes de maximum 25 personnes. »</em> 60 détenus → 3 groupes (25+25+10). Le 3ème ménage = GC005/803/03.`,
-    wrong: `<strong>✗ Réponse incorrecte.</strong> Le manuel fixe un maximum de <em>25 personnes par groupe</em> dans les dortoirs de prison. Pour 60 détenus : 3 groupes (25+25+10). Le 3ème ménage porte le numéro GC005/803/03.`
-  }
+// ══ AGENTS ══
+const AGENTS = {
+  pauline:  {name:'Melingui Bomba Pauline Marie', short:'Pauline M.',  ini:'PM', av:'av-b', hav:'rgba(24,95,165,0.2)',  hat:'#85B7EB',  prog:'#185FA5', lbl:'blue'},
+  innocent: {name:'Margaba Batouri Innocent',      short:'Innocent M.', ini:'BI', av:'av-t', hav:'rgba(15,110,86,0.2)', hat:'#5DCAA5',  prog:'#0F6E56', lbl:'teal'},
+  jeanne:   {name:'Messina Messi Jeanne',          short:'Jeanne M.M.', ini:'JM', av:'av-c', hav:'rgba(153,60,29,0.2)',hat:'#F0997B',  prog:'#993C1D', lbl:'coral'},
+  chef:     {name:'Dongle',                        short:'Dongle',      ini:'D',  av:'av-g', hav:'rgba(201,168,76,0.2)',hat:'#F0D98A', prog:'#C9A84C', lbl:'gold'}
 };
 
-let selected = { 1: null, 2: null };
-let answered = { 1: false, 2: false };
-let score = 0;
+let currentUser = null;
+let selectedBtn = null;
+let editingId   = null;
+let remoteData  = {entries:[]};
+let isSaving    = false;
 
-function selectOpt(q, idx) {
-  if (answered[q]) return;
-  selected[q] = idx;
-  const opts = document.querySelectorAll(`#opts${q} .opt`);
-  opts.forEach((o, i) => o.classList.toggle('selected', i === idx));
-  document.getElementById(`btn${q}`).classList.add('show');
+// ══ JSONBIN API ══
+async function fetchData(){
+  try{
+    const r = await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
+    const j = await r.json();
+    remoteData = j.record || {entries:[]};
+    if(!Array.isArray(remoteData.entries)) remoteData.entries = [];
+  } catch(e){ remoteData={entries:[]}; }
 }
 
-function validate(q) {
-  if (answered[q] || selected[q] === null) return;
-  answered[q] = true;
-  const isCorrect = selected[q] === CORRECT[q];
-  const opts = document.querySelectorAll(`#opts${q} .opt`);
-  opts.forEach((o, i) => {
-    o.disabled = true;
-    o.classList.remove('selected');
-    if (i === CORRECT[q]) o.classList.add('correct');
-    else if (i === selected[q] && !isCorrect) o.classList.add('wrong');
-  });
+async function pushData(){
+  await fetch(BIN_URL,{method:'PUT',headers:HEADERS,body:JSON.stringify(remoteData)});
+}
 
-  const fb = document.getElementById(`fb${q}`);
-  fb.innerHTML = isCorrect ? FEEDBACK[q].correct : FEEDBACK[q].wrong;
-  fb.className = `feedback show ${isCorrect ? '' : 'error'}`;
-  document.getElementById(`btn${q}`).classList.remove('show');
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 
-  const seg = document.getElementById(`seg${q}`);
-  seg.classList.add(isCorrect ? 'ok' : 'ko');
+// ══ LOGIN ══
+function selectUser(id,btn){
+  currentUser=id;
+  document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
 
-  const dot = document.getElementById(`dot${q}`);
-  dot.classList.remove('active');
-  dot.classList.add(isCorrect ? 'done' : 'error');
+async function doLogin(){
+  if(!currentUser){showToast('Sélectionnez un utilisateur','err');return;}
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-screen').style.display='flex';
+  document.getElementById('app-screen').style.flexDirection='column';
+  document.getElementById('tb-name').textContent=AGENTS[currentUser].short;
+  document.getElementById('main').innerHTML='<div class="loader"><div class="loader-spinner"></div>Chargement des données…</div>';
+  await fetchData();
+  if(currentUser==='chef') renderChef(); else renderAgent();
+}
 
-  if (isCorrect) score++;
+function logout(){
+  currentUser=null;selectedBtn=null;
+  document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+}
 
-  if (q === 1) {
-    setTimeout(() => {
-      document.getElementById('card-q2').classList.remove('hidden');
-      document.getElementById('dot2').classList.add('active');
-      document.getElementById('card-q2').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 1800);
-  } else if (q === 2) {
-    setTimeout(() => {
-      document.getElementById('quiz-section').style.display = 'none';
-      if (score === 2) {
-        // SUCCÈS — on ouvre directement WhatsApp
-        document.getElementById('success-screen').classList.add('active');
-        // Auto-redirect après 3 secondes
-        setTimeout(() => { window.location.href = WA_LINK; }, 3000);
-      } else {
-        // ÉCHEC — poser le verrou 2h
-        setLockout();
-        document.getElementById('fail-screen').style.display = 'block';
-        // Lancer le countdown sur l'écran d'échec
-        document.getElementById('countdown-timer').textContent = formatTime(getRemainingMs());
-        startCountdown('countdown-timer', () => {
-          // Quand expire depuis l'écran d'échec → permettre réessai
-          document.getElementById('fail-screen').style.display = 'none';
-          document.getElementById('quiz-section').style.display = '';
-          resetQuizState();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2000);
+// ══ AGENT VIEW ══
+function renderAgent(){
+  const a = AGENTS[currentUser];
+  const entries = remoteData.entries.filter(e=>e.agentId===currentUser);
+  const totalS = entries.reduce((s,e)=>s+(e.structures||0),0);
+  const totalN = entries.reduce((s,e)=>s+(e.numbered||0),0);
+  const totalM = entries.reduce((s,e)=>s+(e.menages||0),0);
+  const days   = new Set(entries.map(e=>e.date)).size;
+  const today  = new Date().toISOString().split('T')[0];
+  const todayE = entries.find(e=>e.date===today);
+  const sorted = [...entries].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,15);
+
+  document.getElementById('main').innerHTML=`
+    <div class="agent-hero">
+      <div class="hero-av" style="background:${a.hav};color:${a.hat}">${a.ini}</div>
+      <div>
+        <div class="hero-name">${a.name}</div>
+        <div class="hero-sub">Agent Recenseur · ${days} jour${days>1?'s':''} de terrain</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="stat-num">${totalS}</div><div class="stat-lbl">Identifiées</div></div>
+      <div class="stat-box"><div class="stat-num">${totalN}</div><div class="stat-lbl">Numérotées</div></div>
+      <div class="stat-box"><div class="stat-num">${totalM}</div><div class="stat-lbl">Ménages</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="card-dot"></span>${todayE?"Mettre à jour — aujourd'hui":"Saisie du jour"}</div>
+      <div class="form-grid">
+        <div class="fg"><label>Date</label><input type="date" id="s-date" value="${today}"></div>
+        <div class="fg"><label>ZD travaillée</label><input type="text" id="s-zd" placeholder="Ex: 001" maxlength="3" value="${todayE?.zd||''}"></div>
+        <div class="fg"><label>Structures identifiées</label><input type="number" id="s-str" placeholder="0" min="0" value="${todayE?.structures||''}"></div>
+        <div class="fg"><label>Structures numérotées</label><input type="number" id="s-num" placeholder="0" min="0" value="${todayE?.numbered||''}"></div>
+        <div class="fg fg-full"><label>Ménages ordinaires numérotés</label><input type="number" id="s-men" placeholder="0" min="0" value="${todayE?.menages||''}">
+          <div class="fg-hint">Total cumulé pour la journée sélectionnée</div>
+        </div>
+      </div>
+      <button class="save-btn" id="save-btn" onclick="saveSaisie()">
+        <span id="save-icon">💾</span><span id="save-txt">Enregistrer ma progression</span>
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="card-dot"></span>Mes saisies (${entries.length})</div>
+      ${sorted.length===0?'<div class="empty">Aucune saisie pour le moment.</div>':sorted.map(e=>{
+        const dl=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+        return`<div class="hist-item">
+          <div style="min-width:82px"><div class="hist-date">${dl}</div>${e.zd?`<span class="hist-zd">ZD ${e.zd}</span>`:''}</div>
+          <div class="hist-nums">
+            <div class="hn"><div class="hn-val">${e.structures||0}</div><div class="hn-lab">identif.</div></div>
+            <div class="hn"><div class="hn-val">${e.numbered||0}</div><div class="hn-lab">numérot.</div></div>
+            <div class="hn"><div class="hn-val">${e.menages||0}</div><div class="hn-lab">ménages</div></div>
+          </div>
+          <button class="edit-btn" onclick="openEdit('${e.id}')">Modifier</button>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="sync-badge">Données synchronisées avec JSONBin.io</div>
+  `;
+}
+
+async function saveSaisie(){
+  if(isSaving) return;
+  const date=document.getElementById('s-date').value;
+  if(!date){showToast('Entrez une date','err');return;}
+  isSaving=true;
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true;
+  document.getElementById('save-icon').textContent='⏳';
+  document.getElementById('save-txt').textContent='Enregistrement…';
+
+  await fetchData();
+  const idx=remoteData.entries.findIndex(e=>e.agentId===currentUser&&e.date===date);
+  const entry={
+    id: idx>=0 ? remoteData.entries[idx].id : genId(),
+    agentId:currentUser, date,
+    zd:document.getElementById('s-zd').value.trim(),
+    structures:parseInt(document.getElementById('s-str').value)||0,
+    numbered:parseInt(document.getElementById('s-num').value)||0,
+    menages:parseInt(document.getElementById('s-men').value)||0,
+    updatedAt:Date.now()
+  };
+  if(idx>=0) remoteData.entries[idx]=entry; else remoteData.entries.push(entry);
+  try{
+    await pushData();
+    showToast('Progression enregistrée !','ok');
+  } catch(e){ showToast('Erreur de connexion','err'); }
+  isSaving=false;
+  renderAgent();
+}
+
+// ══ MODAL EDIT ══
+function openEdit(id){
+  const e=remoteData.entries.find(x=>x.id===id);
+  if(!e) return;
+  editingId=id;
+  document.getElementById('e-struct').value=e.structures||0;
+  document.getElementById('e-num').value=e.numbered||0;
+  document.getElementById('e-men').value=e.menages||0;
+  document.getElementById('edit-modal').style.display='flex';
+}
+function closeModal(){document.getElementById('edit-modal').style.display='none';editingId=null;}
+
+async function saveEdit(){
+  if(!editingId) return;
+  const btn=document.getElementById('modal-save-btn');
+  btn.disabled=true;btn.textContent='…';
+  await fetchData();
+  const idx=remoteData.entries.findIndex(e=>e.id===editingId);
+  if(idx>=0){
+    remoteData.entries[idx].structures=parseInt(document.getElementById('e-struct').value)||0;
+    remoteData.entries[idx].numbered=parseInt(document.getElementById('e-num').value)||0;
+    remoteData.entries[idx].menages=parseInt(document.getElementById('e-men').value)||0;
+    remoteData.entries[idx].updatedAt=Date.now();
+    try{ await pushData(); showToast('Saisie modifiée','ok'); } catch(e){ showToast('Erreur réseau','err'); }
   }
+  btn.disabled=false;btn.textContent='Enregistrer';
+  closeModal();
+  if(currentUser==='chef') renderChef(); else renderAgent();
 }
 
-function resetQuizState() {
-  selected = { 1: null, 2: null };
-  answered = { 1: false, 2: false };
-  score = 0;
+// ══ CHEF VIEW ══
+function renderChef(){
+  const all=remoteData.entries;
+  const agIds=['pauline','innocent','jeanne'];
+  const totalS=all.reduce((s,e)=>s+(e.structures||0),0);
+  const totalM=all.reduce((s,e)=>s+(e.menages||0),0);
+  const daysSet=new Set(all.map(e=>e.date));
+  const lastTs=all.length?Math.max(...all.map(e=>e.updatedAt||0)):0;
+  const lastStr=lastTs?new Date(lastTs).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'--';
 
-  document.querySelectorAll('#opts1 .opt').forEach(o => { o.disabled = false; o.className = 'opt'; });
-  document.getElementById('fb1').className = 'feedback';
-  document.getElementById('btn1').classList.remove('show');
-  document.getElementById('seg1').className = 'score-seg';
-  document.getElementById('dot1').className = 'dot active';
+  const agCards=agIds.map(id=>{
+    const a=AGENTS[id];
+    const ents=all.filter(e=>e.agentId===id);
+    const s=ents.reduce((x,e)=>x+(e.structures||0),0);
+    const n=ents.reduce((x,e)=>x+(e.numbered||0),0);
+    const m=ents.reduce((x,e)=>x+(e.menages||0),0);
+    const d=new Set(ents.map(e=>e.date)).size;
+    const pct=Math.min(100,Math.round((s/50)*100));
+    const last=[...ents].sort((a,b)=>b.date.localeCompare(a.date))[0];
+    const lastLbl=last?new Date(last.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})+(last.zd?' · ZD '+last.zd:''):'Aucune saisie';
+    return`<div class="ap-card">
+      <div class="ap-top">
+        <div class="ap-av" style="background:${a.hav};color:${a.hat}">${a.ini}</div>
+        <div><div class="ap-name">${a.name}</div><div class="ap-days">${d} jour${d>1?'s':''} de terrain</div></div>
+      </div>
+      <div class="ap-nums">
+        <div class="an"><div class="an-val" style="color:${a.prog}">${s}</div><div class="an-lab">identifiées</div></div>
+        <div class="an"><div class="an-val">${n}</div><div class="an-lab">numérotées</div></div>
+        <div class="an"><div class="an-val">${m}</div><div class="an-lab">ménages</div></div>
+      </div>
+      <div class="prog-meta"><span>Progression</span><span>${pct}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${a.prog}"></div></div>
+      <div class="last-entry">Dernière saisie : ${lastLbl}${last?' · '+last.structures+' structures':''}</div>
+    </div>`;
+  }).join('');
 
-  document.querySelectorAll('#opts2 .opt').forEach(o => { o.disabled = false; o.className = 'opt'; });
-  document.getElementById('fb2').className = 'feedback';
-  document.getElementById('btn2').classList.remove('show');
-  document.getElementById('seg2').className = 'score-seg';
-  document.getElementById('dot2').className = 'dot';
-  document.getElementById('card-q2').classList.add('hidden');
+  const recent=[...all].sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)).slice(0,10);
 
-  document.getElementById('success-screen').classList.remove('active');
-  document.getElementById('fail-screen').style.display = 'none';
-  document.getElementById('blocked-screen').style.display = 'none';
+  document.getElementById('main').innerHTML=`
+    <div class="chef-header">
+      <div><div class="chef-title">Tableau de bord</div><div class="chef-sub">4e RGPH / RGAE · Chef d'équipes</div></div>
+      <button class="refresh-btn" onclick="doRefresh()"><span id="ref-ico">↻</span> Actualiser</button>
+    </div>
+
+    <div class="chef-stats">
+      <div class="cs"><div class="cs-num gold">${totalS}</div><div class="cs-lbl">Structures</div></div>
+      <div class="cs"><div class="cs-num">${totalM}</div><div class="cs-lbl">Ménages</div></div>
+      <div class="cs"><div class="cs-num">${daysSet.size}</div><div class="cs-lbl">Jours terrain</div></div>
+    </div>
+
+    <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Progression par agent</div>
+    ${agCards}
+
+    <div class="card" style="margin-top:.5rem">
+      <div class="card-title"><span class="card-dot"></span>Dernières mises à jour</div>
+      ${recent.length===0?'<div class="empty">Aucune saisie enregistrée.</div>':recent.map(e=>{
+        const a=AGENTS[e.agentId];
+        const dl=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+        return`<div class="hist-item">
+          <div class="ap-av" style="width:32px;height:32px;font-size:10px;background:${a.hav};color:${a.hat};border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${a.ini}</div>
+          <div style="flex:1"><div style="font-size:12px;font-weight:500">${a.short}</div><div style="font-size:10px;color:var(--muted)">${dl}${e.zd?' · ZD '+e.zd:''}</div></div>
+          <div class="hist-nums">
+            <div class="hn"><div class="hn-val">${e.structures||0}</div><div class="hn-lab">struct.</div></div>
+            <div class="hn"><div class="hn-val">${e.menages||0}</div><div class="hn-lab">ménages</div></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="sync-badge">Dernière actualisation : ${lastStr} · JSONBin.io</div>
+  `;
 }
 
-// ── LANCEMENT ──
-init();
+async function doRefresh(){
+  const ico=document.getElementById('ref-ico');
+  ico.classList.add('spin');
+  await fetchData();
+  renderChef();
+  ico.classList.remove('spin');
+  showToast('Données actualisées','ok');
+}
+
+// ══ TOAST ══
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast'+(type?' '+type:'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
 </script>
-
 </body>
 </html>
-
