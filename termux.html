@@ -3,776 +3,1684 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>RGPH — Suivi Terrain</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Pawfect Home · Adoption Féline</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════
+   RESET & ROOT
+══════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --navy:#0D1B2A;--navy2:#1A3A5C;--gold:#C9A84C;--gold-l:#F0D98A;
-  --bg:#F4F2EE;--card:#FFFFFF;--surface:#F0EDE8;
-  --text:#1A1A1A;--muted:#7A7570;--border:#E2DDD8;
-  --blue:#185FA5;--blue-l:#E6F1FB;
-  --teal:#0F6E56;--teal-l:#E1F5EE;
-  --coral:#993C1D;--coral-l:#FAECE7;
-  --red:#C0392B;--red-l:#FDECEA;
-  --radius:14px;--radius-sm:9px;
-  --shadow:0 2px 12px rgba(0,0,0,0.08);
+  --cream:#F5EFE0;--cream2:#EDE4D0;--cream3:#D9CFBA;
+  --dark:#1A1410;--dark2:#241E17;--dark3:#2E2720;
+  --terracotta:#C4622D;--terra2:#E07848;--terra3:#F09060;
+  --sage:#5A7A5A;--sage2:#7A9A7A;
+  --gold:#D4A843;--gold2:#EBC060;
+  --text:#F5EFE0;--text2:#C8BCA8;--text3:#8A7D6A;
+  --card:rgba(36,30,23,0.92);
+  --radius:18px;--radius-sm:10px;--radius-lg:28px;
+  --shadow:0 8px 40px rgba(0,0,0,0.45);
+  --shadow-sm:0 3px 16px rgba(0,0,0,0.3);
 }
-html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--dark);color:var(--text);
+  overflow-x:hidden;line-height:1.6;
+  cursor:none;
+}
 
-/* ── LOGIN ── */
-#login-screen{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(150deg,#0D1B2A 0%,#1A3A5C 55%,#0D2A1A 100%);
-  padding:1rem;
+/* ══ CURSOR ══ */
+.cursor{
+  position:fixed;width:12px;height:12px;background:var(--terracotta);
+  border-radius:50%;pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);transition:transform .1s,width .2s,height .2s,background .2s;
+  mix-blend-mode:difference;
 }
-.login-box{
-  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.13);
-  border-radius:20px;padding:2rem 1.75rem;width:100%;max-width:420px;
-  backdrop-filter:blur(12px);
+.cursor-ring{
+  position:fixed;width:38px;height:38px;border:1.5px solid var(--terracotta);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);transition:all .12s ease;opacity:.6;
 }
-.login-logo{text-align:center;margin-bottom:1.75rem}
-.l-badge{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-l);
-  background:rgba(201,168,76,0.18);padding:4px 14px;border-radius:20px;display:inline-block;margin-bottom:12px}
-.l-title{font-size:24px;font-weight:600;color:#fff;letter-spacing:-0.3px}
-.l-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px}
-.l-section{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin:0 0 10px}
-.user-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:1.25rem}
-.user-btn{
-  display:flex;align-items:center;gap:12px;padding:13px 15px;
-  border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-sm);
-  background:rgba(255,255,255,0.04);cursor:pointer;color:#fff;
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
-  transition:all .2s;width:100%;text-align:left;
-}
-.user-btn:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,0.22)}
-.user-btn.sel{background:rgba(201,168,76,0.18);border-color:rgba(201,168,76,0.55)}
-.u-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
-.av-b{background:rgba(24,95,165,0.35);color:#85B7EB}
-.av-t{background:rgba(15,110,86,0.35);color:#5DCAA5}
-.av-c{background:rgba(153,60,29,0.35);color:#F0997B}
-.av-g{background:rgba(201,168,76,0.28);color:var(--gold-l)}
-.u-role{font-size:10px;color:rgba(255,255,255,0.38);margin-top:1px}
-.l-sep{border:none;border-top:1px solid rgba(255,255,255,0.09);margin:1.1rem 0}
 
-/* ── PASSWORD FIELD ── */
-.pwd-wrap{
-  position:relative;display:flex;align-items:center;
-  margin-top:10px;
+/* ══ GRAIN OVERLAY ══ */
+body::before{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.5;
 }
-.pwd-wrap input{
-  width:100%;padding:11px 44px 11px 14px;
-  border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius-sm);
-  background:rgba(255,255,255,0.07);color:#fff;
-  font-family:'DM Sans',sans-serif;font-size:14px;outline:none;
-  transition:border .15s;
-}
-.pwd-wrap input::placeholder{color:rgba(255,255,255,0.3)}
-.pwd-wrap input:focus{border-color:rgba(201,168,76,0.6);background:rgba(255,255,255,0.1)}
-.pwd-wrap input.shake{animation:shake .4s ease}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-.pwd-eye{
-  position:absolute;right:12px;background:none;border:none;cursor:pointer;
-  color:rgba(255,255,255,0.4);font-size:16px;padding:4px;line-height:1;
-}
-.pwd-eye:hover{color:rgba(255,255,255,0.8)}
-.pwd-err{font-size:11px;color:#F08080;margin-top:5px;display:none}
 
-.login-btn{
-  width:100%;padding:13px;background:var(--gold);color:#0D1B2A;
-  border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;
-  font-size:14px;font-weight:700;cursor:pointer;transition:opacity .15s;letter-spacing:.2px;
-  margin-top:14px;
-}
-.login-btn:hover{opacity:.88}
-.login-btn:active{opacity:.75;transform:scale(.99)}
-
-/* ── APP SHELL ── */
-#app-screen{display:none;min-height:100vh;flex-direction:column}
-.topbar{
-  background:var(--navy);color:#fff;height:56px;
+/* ══ NAV ══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  padding:1.25rem 2rem;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 1.25rem;position:sticky;top:0;z-index:100;flex-shrink:0;
+  transition:background .4s,backdrop-filter .4s,box-shadow .4s;
 }
-.tb-left{display:flex;align-items:center;gap:10px}
-.tb-badge{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-l);background:rgba(201,168,76,0.18);padding:3px 10px;border-radius:20px}
-.tb-title{font-size:14px;font-weight:600}
-.tb-right{display:flex;align-items:center;gap:8px}
-.tb-user{font-size:11px;color:rgba(255,255,255,0.45)}
-.logout-btn{font-size:11px;color:rgba(255,255,255,0.4);background:none;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:5px 11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
-.logout-btn:hover{color:#fff;border-color:rgba(255,255,255,0.35)}
-
-.main{padding:1.25rem;max-width:680px;margin:0 auto;width:100%;flex:1}
-
-/* ── CARDS ── */
-.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--shadow)}
-.card-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.card-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
-
-/* ── AGENT HEADER ── */
-.agent-hero{
-  background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
-  border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1rem;
-  display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);
+nav.scrolled{
+  background:rgba(26,20,16,0.85);backdrop-filter:blur(20px);
+  box-shadow:0 1px 0 rgba(255,255,255,0.06);
 }
-.hero-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0}
-.hero-name{font-size:16px;font-weight:600;color:#fff;line-height:1.3}
-.hero-sub{font-size:11px;color:rgba(255,255,255,0.42);margin-top:3px}
-
-/* ── STATS ROW ── */
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
-.stat-box{background:var(--card);border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;box-shadow:var(--shadow)}
-.stat-num{font-size:22px;font-weight:700;color:var(--text);line-height:1}
-.stat-lbl{font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:.3px;text-transform:uppercase}
-
-/* ── FORM ── */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.fg{display:flex;flex-direction:column;gap:5px}
-.fg label{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.3px}
-.fg input,.fg select{
-  border:1px solid var(--border);border-radius:var(--radius-sm);
-  padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);
-  font-family:'DM Sans',sans-serif;width:100%;outline:none;transition:border .15s;
-  -webkit-appearance:none;
+.nav-logo{
+  font-family:'Playfair Display',serif;font-size:22px;font-weight:700;
+  color:var(--cream);letter-spacing:-.3px;display:flex;align-items:center;gap:8px;
 }
-.fg input:focus{border-color:var(--blue);background:#fff}
-.fg-full{grid-column:1/-1}
-.fg-hint{font-size:10px;color:var(--muted);margin-top:2px}
-.save-btn{
-  width:100%;padding:13px;background:var(--navy2);color:#fff;
-  border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;
-  font-size:14px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:6px;
-  display:flex;align-items:center;justify-content:center;gap:8px;
+.nav-logo span{color:var(--terracotta)}
+.nav-links{display:flex;align-items:center;gap:2rem}
+.nav-links a{
+  font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;
+  letter-spacing:.5px;transition:color .2s;
 }
-.save-btn:hover{background:var(--navy)}
-.save-btn:active{transform:scale(.99)}
-.save-btn:disabled{opacity:.55;cursor:not-allowed}
+.nav-links a:hover{color:var(--cream)}
+.nav-cta{
+  background:var(--terracotta);color:var(--cream)!important;
+  padding:9px 20px;border-radius:50px;font-weight:600!important;
+  transition:background .2s,transform .15s!important;
+}
+.nav-cta:hover{background:var(--terra2)!important;transform:translateY(-1px)!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--cream);border-radius:2px;transition:all .3s}
+.mobile-menu{
+  display:none;position:fixed;inset:0;background:var(--dark2);z-index:450;
+  flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+}
+.mobile-menu a{font-family:'Playfair Display',serif;font-size:28px;color:var(--cream);text-decoration:none}
+.mobile-menu.open{display:flex}
 
-/* ── HISTORY ── */
-.hist-item{
-  display:flex;align-items:center;gap:10px;padding:11px 0;
-  border-bottom:.5px solid var(--border);
+/* ══ HERO ══ */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  position:relative;overflow:hidden;padding:8rem 2rem 4rem;
 }
-.hist-item:last-child{border-bottom:none}
-.hist-date{font-size:12px;font-weight:500;color:var(--text);min-width:80px}
-.hist-zd{font-size:9px;color:var(--blue);font-family:'DM Mono',monospace;background:var(--blue-l);padding:2px 7px;border-radius:4px;display:inline-block;margin-top:3px}
-.hist-nums{display:flex;gap:10px;flex:1;justify-content:flex-end}
-.hn{text-align:center;min-width:38px}
-.hn-val{font-size:14px;font-weight:700;color:var(--text)}
-.hn-lab{font-size:9px;color:var(--muted)}
-.edit-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--muted);transition:all .15s;white-space:nowrap}
-.edit-btn:hover{border-color:var(--blue);color:var(--blue)}
-.del-btn{background:var(--red-l);border:1px solid rgba(192,57,43,0.25);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--red);transition:all .15s;white-space:nowrap}
-.del-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
-.empty{text-align:center;color:var(--muted);font-size:13px;padding:2rem;font-style:italic}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 70% 40%, rgba(196,98,45,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 20% 70%, rgba(90,122,90,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 80% at 50% 50%, rgba(36,30,23,0.95) 0%, var(--dark) 100%);
+}
+.hero-orb{
+  position:absolute;border-radius:50%;filter:blur(80px);opacity:.35;animation:float 8s ease-in-out infinite;
+}
+.hero-orb1{width:500px;height:500px;background:var(--terracotta);top:-100px;right:-100px;animation-delay:0s}
+.hero-orb2{width:350px;height:350px;background:var(--sage);bottom:-50px;left:-80px;animation-delay:3s}
+.hero-orb3{width:200px;height:200px;background:var(--gold);top:40%;left:30%;animation-delay:5s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(196,98,45,0.18);border:1px solid rgba(196,98,45,0.35);
+  padding:6px 16px;border-radius:50px;margin-bottom:1.5rem;
+  font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--terra3);
+}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--terra3);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{
+  font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,88px);
+  font-weight:900;line-height:1.0;letter-spacing:-2px;margin-bottom:1.5rem;
+  color:var(--cream);
+}
+.hero h1 em{color:var(--terracotta);font-style:italic}
+.hero h1 .stroke{
+  -webkit-text-stroke:1.5px var(--cream);color:transparent;
+}
+.hero-sub{font-size:18px;color:var(--text2);max-width:480px;margin-bottom:2.5rem;font-weight:300;line-height:1.7}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{
+  background:var(--terracotta);color:var(--cream);padding:14px 32px;
+  border-radius:50px;font-size:15px;font-weight:600;border:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+  text-decoration:none;
+}
+.btn-primary:hover{background:var(--terra2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(196,98,45,0.4)}
+.btn-ghost{
+  background:transparent;color:var(--cream);padding:14px 32px;
+  border-radius:50px;font-size:15px;font-weight:500;border:1.5px solid rgba(245,239,224,0.25);
+  cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn-ghost:hover{border-color:var(--cream);background:rgba(245,239,224,0.06)}
+.hero-stats{
+  position:absolute;bottom:3rem;right:2rem;z-index:2;
+  display:flex;gap:2rem;
+}
+.hero-stat{text-align:right}
+.hero-stat-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--cream);line-height:1}
+.hero-stat-lbl{font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
 
-/* ── CHEF ── */
-.chef-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.chef-title{font-size:19px;font-weight:700;color:var(--text)}
-.chef-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.refresh-btn{
-  display:flex;align-items:center;gap:6px;padding:8px 14px;
-  background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
-  font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;
-  color:var(--navy2);transition:all .15s;box-shadow:var(--shadow);
+/* ══ SECTIONS ══ */
+section{padding:6rem 2rem;position:relative}
+.container{max-width:1200px;margin:0 auto}
+.section-label{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--terracotta);
+  font-weight:600;margin-bottom:1rem;
 }
-.refresh-btn:hover{background:var(--navy2);color:#fff;border-color:var(--navy2)}
-.spin{animation:spin .7s linear infinite;display:inline-block}
+.section-title{
+  font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);
+  font-weight:700;line-height:1.1;letter-spacing:-1px;color:var(--cream);margin-bottom:1rem;
+}
+.section-sub{font-size:16px;color:var(--text2);max-width:520px;font-weight:300;line-height:1.7}
+
+/* ══ DIVIDER ══ */
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(245,239,224,0.1),transparent);margin:0 2rem}
+
+/* ══ FEATURED ══ */
+.featured-grid{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr;
+  grid-template-rows:auto auto;gap:16px;margin-top:3rem;
+}
+.featured-grid .cat-card:first-child{grid-row:1/3}
+
+/* ══ CAT CARD ══ */
+.cat-card{
+  background:var(--dark2);border:1px solid rgba(245,239,224,0.07);
+  border-radius:var(--radius);overflow:hidden;position:relative;
+  cursor:pointer;transition:transform .3s,box-shadow .3s,border-color .3s;
+  display:flex;flex-direction:column;
+}
+.cat-card:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:rgba(196,98,45,0.3)}
+.cat-card-media{
+  width:100%;aspect-ratio:4/3;overflow:hidden;position:relative;background:var(--dark3);
+  display:flex;align-items:center;justify-content:center;
+}
+.cat-card:first-child .cat-card-media{aspect-ratio:3/4}
+.cat-card-media video,.cat-card-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.cat-card:hover .cat-card-media video,.cat-card:hover .cat-card-media img{transform:scale(1.06)}
+.cat-placeholder{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:12px;
+  background:linear-gradient(135deg,var(--dark3) 0%,var(--dark2) 100%);
+}
+.cat-emoji{font-size:48px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4))}
+.cat-placeholder-txt{font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase}
+.cat-badge{
+  position:absolute;top:12px;left:12px;
+  background:var(--terracotta);color:var(--cream);
+  font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 12px;border-radius:50px;
+}
+.cat-badge.available{background:var(--sage)}
+.cat-badge.new{background:var(--gold);color:var(--dark)}
+.play-btn{
+  position:absolute;bottom:12px;right:12px;
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(245,239,224,0.15);backdrop-filter:blur(10px);
+  border:1px solid rgba(245,239,224,0.25);display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:all .2s;
+}
+.cat-card:hover .play-btn{background:var(--terracotta);border-color:var(--terracotta)}
+.cat-info{padding:1.1rem 1.25rem;flex:1;display:flex;flex-direction:column}
+.cat-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.cat-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.cat-tag{
+  font-size:10px;color:var(--text3);background:rgba(245,239,224,0.06);
+  border:1px solid rgba(245,239,224,0.1);padding:3px 10px;border-radius:50px;
+}
+.cat-desc{font-size:13px;color:var(--text2);line-height:1.6;flex:1;margin-bottom:14px}
+.cat-adopt-btn{
+  background:transparent;border:1px solid rgba(196,98,45,0.4);color:var(--terra3);
+  padding:9px 18px;border-radius:50px;font-size:12px;font-weight:600;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;
+  letter-spacing:.5px;align-self:flex-start;
+}
+.cat-adopt-btn:hover{background:var(--terracotta);border-color:var(--terracotta);color:var(--cream)}
+
+/* ══ LOADING STATE ══ */
+.cats-loading{
+  grid-column:1/-1;text-align:center;padding:4rem;
+  display:flex;flex-direction:column;align-items:center;gap:16px;
+}
+.loader-ring{
+  width:48px;height:48px;border:3px solid rgba(245,239,224,0.1);
+  border-top-color:var(--terracotta);border-radius:50%;
+  animation:spin .8s linear infinite;
+}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.chef-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
-.cs{background:var(--card);border:.5px solid var(--border);border-radius:var(--radius-sm);padding:14px 8px;text-align:center;box-shadow:var(--shadow)}
-.cs-num{font-size:26px;font-weight:700;line-height:1}
-.cs-num.gold{color:#B07D20}
-.cs-lbl{font-size:9px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.3px}
-
-.ap-card{background:var(--card);border:.5px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.25rem;margin-bottom:10px;box-shadow:var(--shadow)}
-.ap-top{display:flex;align-items:center;gap:11px;margin-bottom:12px}
-.ap-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-.ap-name{font-size:13px;font-weight:600;color:var(--text)}
-.ap-days{font-size:10px;color:var(--muted);margin-top:2px}
-.ap-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
-.an{background:var(--surface);border-radius:8px;padding:8px 6px;text-align:center}
-.an-val{font-size:17px;font-weight:700}
-.an-lab{font-size:9px;color:var(--muted);margin-top:2px}
-.prog-meta{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:5px}
-.prog-bar{height:5px;background:var(--surface);border-radius:5px;overflow:hidden}
-.prog-fill{height:100%;border-radius:5px;transition:width .6s ease}
-.last-entry{font-size:11px;color:var(--muted);margin-top:9px;padding-top:9px;border-top:.5px solid var(--border)}
-
-/* ── DELETE ALL ZONE ── */
-.danger-zone{background:var(--red-l);border:1px solid rgba(192,57,43,0.2);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1rem}
-.dz-title{font-size:12px;font-weight:700;color:var(--red);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.dz-desc{font-size:11px;color:#7a3030;margin-bottom:12px}
-.dz-btns{display:flex;gap:8px;flex-wrap:wrap}
-.dz-btn{
-  padding:9px 16px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;
-  cursor:pointer;font-family:'DM Sans',sans-serif;border:none;transition:all .15s;
+/* ══ ALL CATS GRID ══ */
+.cats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:16px;margin-top:3rem;
 }
-.dz-btn.all{background:var(--red);color:#fff}
-.dz-btn.all:hover{background:#A93226}
-.dz-btn.ag{background:rgba(192,57,43,0.12);color:var(--red);border:1px solid rgba(192,57,43,0.25)}
-.dz-btn.ag:hover{background:var(--red);color:#fff}
 
-.sync-badge{font-size:10px;color:var(--muted);text-align:center;padding:.75rem;font-style:italic}
+/* ══ FILTER BAR ══ */
+.filter-bar{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:2rem;
+}
+.filter-btn{
+  background:transparent;border:1px solid rgba(245,239,224,0.15);color:var(--text2);
+  padding:8px 18px;border-radius:50px;font-size:12px;font-weight:500;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:.3px;
+}
+.filter-btn:hover,.filter-btn.active{
+  background:var(--terracotta);border-color:var(--terracotta);color:var(--cream);
+}
 
-/* ── MODAL ── */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem}
-.modal{background:var(--card);border-radius:var(--radius);padding:1.5rem;width:100%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
-.modal-title{font-size:15px;font-weight:600;margin-bottom:16px}
-.modal-fg{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.modal-fg label{font-size:11px;color:var(--muted);font-weight:500}
-.modal-fg input{border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:14px;background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;width:100%;outline:none}
-.modal-fg input:focus{border-color:var(--blue);background:#fff}
-.modal-btns{display:flex;gap:8px;margin-top:14px}
-.modal-cancel{flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;color:var(--muted)}
-.modal-save{flex:1;padding:10px;background:var(--navy2);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
-.modal-save:disabled{opacity:.5;cursor:not-allowed}
-/* confirm delete modal */
-.modal-del{flex:1;padding:10px;background:var(--red);color:#fff;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
-.modal-del:hover{background:#A93226}
+/* ══ HOW IT WORKS ══ */
+.how-bg{background:var(--dark2);border-top:1px solid rgba(245,239,224,0.06);border-bottom:1px solid rgba(245,239,224,0.06)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-top:3rem}
+.step{position:relative;padding:2rem;background:var(--dark3);border-radius:var(--radius);border:1px solid rgba(245,239,224,0.07)}
+.step-num{
+  font-family:'DM Mono',monospace;font-size:11px;color:var(--terracotta);
+  letter-spacing:2px;margin-bottom:1rem;
+}
+.step-icon{font-size:36px;margin-bottom:1rem;display:block}
+.step-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--cream);margin-bottom:.5rem}
+.step-desc{font-size:13px;color:var(--text2);line-height:1.65}
+.step-connector{position:absolute;top:50%;right:-1.1rem;width:22px;height:1px;background:rgba(196,98,45,0.4)}
 
-/* ── TOAST ── */
+/* ══ TESTIMONIALS ══ */
+.testimonials-wrap{position:relative;overflow:hidden;margin-top:3rem}
+.testimonials-track{display:flex;gap:20px;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.testimonial-card{
+  background:var(--dark2);border:1px solid rgba(245,239,224,0.08);
+  border-radius:var(--radius);padding:2rem;min-width:340px;flex-shrink:0;
+  position:relative;overflow:hidden;
+}
+.testimonial-card::before{
+  content:'"';font-family:'Playfair Display',serif;font-size:120px;
+  color:rgba(196,98,45,0.1);position:absolute;top:-20px;left:16px;line-height:1;
+}
+.test-stars{display:flex;gap:3px;margin-bottom:1rem}
+.star{color:var(--gold);font-size:14px}
+.test-text{font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:1.5rem;position:relative;z-index:1;font-style:italic}
+.test-author{display:flex;align-items:center;gap:12px}
+.test-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--terracotta),var(--gold));
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
+}
+.test-name{font-size:14px;font-weight:600;color:var(--cream)}
+.test-cat{font-size:12px;color:var(--text3)}
+.test-controls{display:flex;gap:10px;margin-top:2rem;justify-content:center}
+.test-ctrl{
+  width:10px;height:10px;border-radius:50%;background:rgba(245,239,224,0.2);
+  border:none;cursor:pointer;transition:all .2s;padding:0;
+}
+.test-ctrl.active{background:var(--terracotta);width:28px;border-radius:5px}
+.test-nav{
+  display:flex;gap:10px;margin-top:1.5rem;justify-content:flex-end;
+}
+.test-nav-btn{
+  width:44px;height:44px;border-radius:50%;background:var(--dark3);
+  border:1px solid rgba(245,239,224,0.15);color:var(--cream);
+  font-size:18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;
+}
+.test-nav-btn:hover{background:var(--terracotta);border-color:var(--terracotta)}
+
+/* ══ ADMIN PANEL ══ */
+.admin-section{background:var(--dark2);border-top:1px solid rgba(245,239,224,0.06)}
+.admin-toggle{
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  padding:1.5rem 2rem;border-bottom:1px solid rgba(245,239,224,0.06);
+  transition:background .2s;
+}
+.admin-toggle:hover{background:rgba(245,239,224,0.02)}
+.admin-toggle-title{font-size:14px;font-weight:500;color:var(--text2)}
+.admin-key-input{
+  background:var(--dark3);border:1px solid rgba(245,239,224,0.12);color:var(--cream);
+  padding:10px 14px;border-radius:var(--radius-sm);font-size:13px;
+  font-family:'DM Mono',monospace;width:260px;outline:none;transition:border .2s;
+}
+.admin-key-input:focus{border-color:var(--terracotta)}
+.admin-panel{display:none;padding:2rem}
+.admin-panel.open{display:block}
+.admin-form{
+  background:var(--dark3);border:1px solid rgba(245,239,224,0.07);
+  border-radius:var(--radius);padding:2rem;max-width:600px;
+}
+.admin-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--cream);margin-bottom:1.5rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:11px;color:var(--text3);font-weight:500;letter-spacing:.5px;text-transform:uppercase}
+.form-group input,.form-group textarea,.form-group select{
+  background:var(--dark2);border:1px solid rgba(245,239,224,0.1);color:var(--cream);
+  padding:11px 14px;border-radius:var(--radius-sm);font-size:14px;
+  font-family:'Outfit',sans-serif;outline:none;transition:border .2s;width:100%;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--terracotta)}
+.form-group textarea{min-height:90px;resize:vertical}
+.form-group select option{background:var(--dark2)}
+.admin-submit{
+  background:var(--terracotta);color:var(--cream);padding:12px 28px;
+  border-radius:50px;font-size:14px;font-weight:600;border:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;transition:all .2s;margin-top:.5rem;
+}
+.admin-submit:hover{background:var(--terra2);transform:translateY(-2px)}
+.admin-manage-item{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;
+  background:var(--dark2);border:1px solid rgba(245,239,224,0.08);
+  border-radius:var(--radius-sm);margin-bottom:8px;transition:border-color .2s;
+}
+.admin-manage-item:hover{border-color:rgba(245,239,224,0.18)}
+.manage-thumb{
+  width:48px;height:48px;border-radius:8px;background:var(--dark3);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;
+}
+.manage-thumb img{width:100%;height:100%;object-fit:cover}
+.manage-info{flex:1;min-width:0}
+.manage-name{font-size:14px;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.manage-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.manage-status{
+  font-size:10px;font-weight:600;letter-spacing:.5px;padding:3px 10px;
+  border-radius:50px;border:none;cursor:default;
+}
+.ms-available{background:rgba(90,122,90,0.2);color:var(--sage2)}
+.ms-reserved{background:rgba(139,115,85,0.2);color:#C4A060}
+.ms-adopted{background:rgba(196,98,45,0.2);color:var(--terra3)}
+.manage-actions{display:flex;gap:6px;flex-shrink:0}
+.manage-edit-btn{
+  background:transparent;border:1px solid rgba(245,239,224,0.15);color:var(--text2);
+  padding:6px 12px;border-radius:50px;font-size:11px;font-weight:500;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;
+}
+.manage-edit-btn:hover{border-color:var(--gold);color:var(--gold)}
+.manage-del-btn{
+  background:transparent;border:1px solid rgba(224,85,85,0.3);color:#E05555;
+  padding:6px 12px;border-radius:50px;font-size:11px;font-weight:500;
+  font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;
+}
+.manage-del-btn:hover{background:rgba(224,85,85,0.15);border-color:#E05555}
+.confirm-del{
+  background:#E05555;border:none;color:#fff;
+  padding:6px 12px;border-radius:50px;font-size:11px;font-weight:600;
+  font-family:'Outfit',sans-serif;cursor:pointer;animation:shake .3s ease;
+}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+/* ══ MODAL ══ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:800;
+  display:flex;align-items:center;justify-content:center;padding:1rem;
+  backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{
+  background:var(--dark2);border:1px solid rgba(245,239,224,0.1);
+  border-radius:var(--radius-lg);max-width:620px;width:100%;max-height:92vh;
+  overflow-y:auto;transform:scale(.94) translateY(20px);transition:transform .3s;
+}
+.modal-overlay.open .modal-box{transform:scale(1) translateY(0)}
+.modal-media{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--dark3);display:flex;align-items:center;justify-content:center;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.modal-media video,.modal-media img{width:100%;height:100%;object-fit:cover}
+.modal-body{padding:2rem}
+.modal-name{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--cream);margin-bottom:.5rem}
+.modal-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.modal-tag{font-size:11px;color:var(--text3);background:rgba(245,239,224,0.07);border:1px solid rgba(245,239,224,0.12);padding:4px 12px;border-radius:50px}
+.modal-desc{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:1.5rem}
+.modal-price-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(212,168,67,0.15);border:1px solid rgba(212,168,67,0.4);
+  color:var(--gold2);padding:6px 16px;border-radius:50px;font-size:18px;font-weight:700;
+  margin-bottom:1.25rem;font-family:'DM Mono',monospace;
+}
+.modal-contact{
+  background:var(--dark3);border-radius:var(--radius);padding:1.25rem;margin-bottom:1.25rem;
+  font-size:13px;color:var(--text2);
+}
+.modal-contact strong{color:var(--cream);display:block;margin-bottom:.25rem}
+.modal-adopt-btn{
+  width:100%;background:var(--terracotta);color:var(--cream);padding:14px;
+  border-radius:50px;font-size:15px;font-weight:600;border:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;transition:all .2s;margin-bottom:10px;
+}
+.modal-adopt-btn:hover{background:var(--terra2)}
+.modal-close{
+  position:absolute;top:1rem;right:1rem;width:38px;height:38px;border-radius:50%;
+  background:rgba(26,20,16,0.7);border:1px solid rgba(245,239,224,0.15);
+  color:var(--cream);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;z-index:10;
+}
+.modal-close:hover{background:var(--terracotta)}
+
+/* ══ ACCESSORIES CONFIGURATOR ══ */
+.config-section{
+  background:var(--dark3);border-radius:var(--radius);padding:1.5rem;margin-bottom:1.25rem;
+  border:1px solid rgba(245,239,224,0.07);
+}
+.config-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--cream);margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.config-item{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--dark2);border:1.5px solid rgba(245,239,224,0.08);border-radius:10px;
+  padding:10px 14px;cursor:pointer;transition:all .2s;
+}
+.config-item:hover{border-color:rgba(196,98,45,0.35)}
+.config-item.selected{border-color:var(--terracotta);background:rgba(196,98,45,0.1)}
+.config-item-left{display:flex;align-items:center;gap:10px}
+.config-item-icon{font-size:22px}
+.config-item-info{}
+.config-item-name{font-size:13px;font-weight:600;color:var(--cream)}
+.config-item-price{font-size:11px;color:var(--terracotta);font-family:'DM Mono',monospace}
+.config-check{width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(245,239,224,0.2);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.config-item.selected .config-check{background:var(--terracotta);border-color:var(--terracotta);color:#fff}
+.price-summary{
+  background:linear-gradient(135deg,rgba(212,168,67,0.12),rgba(196,98,45,0.08));
+  border:1px solid rgba(212,168,67,0.25);border-radius:var(--radius);
+  padding:1.25rem 1.5rem;margin-bottom:1.25rem;
+}
+.price-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text2);margin-bottom:6px}
+.price-row.total{border-top:1px solid rgba(245,239,224,0.1);padding-top:10px;margin-top:6px;font-size:18px;font-weight:700;color:var(--cream)}
+.price-row.total span:last-child{color:var(--gold2);font-family:'DM Mono',monospace}
+
+/* ══ ADOPTION FORM OVERLAY ══ */
+.adopt-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:850;
+  display:flex;align-items:center;justify-content:center;padding:1rem;
+  backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.adopt-overlay.open{opacity:1;pointer-events:all}
+.adopt-box{
+  background:var(--dark2);border:1px solid rgba(245,239,224,0.12);
+  border-radius:var(--radius-lg);max-width:560px;width:100%;max-height:92vh;
+  overflow-y:auto;position:relative;padding:2.5rem;
+}
+.adopt-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:.5rem}
+.adopt-sub{font-size:13px;color:var(--text2);margin-bottom:2rem;line-height:1.6}
+.adopt-form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.adopt-form-group label{font-size:11px;color:var(--text3);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.adopt-form-group input,.adopt-form-group select,.adopt-form-group textarea{
+  background:var(--dark3);border:1px solid rgba(245,239,224,0.12);color:var(--cream);
+  padding:11px 14px;border-radius:var(--radius-sm);font-size:14px;
+  font-family:'Outfit',sans-serif;outline:none;transition:border .2s;width:100%;
+}
+.adopt-form-group input:focus,.adopt-form-group select:focus,.adopt-form-group textarea:focus{border-color:var(--terracotta)}
+.adopt-form-group select option{background:var(--dark2)}
+.adopt-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.adopt-submit{
+  width:100%;background:var(--terracotta);color:var(--cream);padding:14px;
+  border-radius:50px;font-size:15px;font-weight:600;border:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;transition:all .2s;margin-top:.5rem;
+}
+.adopt-submit:hover{background:var(--terra2);transform:translateY(-2px)}
+.adopt-close{
+  position:absolute;top:1rem;right:1rem;width:38px;height:38px;border-radius:50%;
+  background:rgba(26,20,16,0.7);border:1px solid rgba(245,239,224,0.15);
+  color:var(--cream);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.adopt-close:hover{background:var(--terracotta)}
+
+/* ══ PREORDER / PAYMENT ══ */
+.preorder-section{margin-top:1.5rem;border-top:1px solid rgba(245,239,224,0.08);padding-top:1.5rem}
+.preorder-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);margin-bottom:1rem}
+.payment-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.payment-card{
+  background:var(--dark3);border:2px solid rgba(245,239,224,0.08);border-radius:12px;
+  padding:14px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.payment-card:hover{border-color:rgba(196,98,45,0.4)}
+.payment-card.selected{border-color:var(--terracotta);background:rgba(196,98,45,0.08)}
+.payment-card-icon{font-size:28px}
+.payment-card-name{font-size:13px;font-weight:600;color:var(--cream)}
+.payment-card-desc{font-size:11px;color:var(--text3);text-align:center}
+.security-badge{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(90,122,90,0.12);border:1px solid rgba(90,122,90,0.3);
+  border-radius:10px;padding:12px 16px;margin-bottom:1rem;
+}
+.security-badge-icon{font-size:22px;flex-shrink:0}
+.security-badge-text{font-size:12px;color:var(--text2);line-height:1.5}
+.security-badge-text strong{color:var(--sage2);display:block;margin-bottom:2px}
+.preorder-btn{
+  width:100%;background:linear-gradient(135deg,var(--gold),var(--terracotta));
+  color:var(--cream);padding:14px;border-radius:50px;font-size:15px;font-weight:700;
+  border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s;
+}
+.preorder-btn:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 8px 24px rgba(196,98,45,0.4)}
+.preorder-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ══ SUCCESS DOWNLOAD ══ */
+.success-box{
+  text-align:center;padding:2rem;
+}
+.success-icon{font-size:64px;display:block;margin-bottom:1rem}
+.success-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--cream);margin-bottom:.75rem}
+.success-sub{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:1.5rem}
+.download-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--sage);color:var(--cream);padding:13px 28px;border-radius:50px;
+  font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:'Outfit',sans-serif;
+  transition:all .2s;text-decoration:none;
+}
+.download-btn:hover{background:var(--sage2);transform:translateY(-2px)}
+
+/* ══ TOAST ══ */
 .toast{
-  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(90px);
-  background:var(--navy);color:#fff;padding:11px 22px;border-radius:var(--radius-sm);
-  font-size:13px;font-weight:500;transition:transform .3s ease;z-index:400;
-  white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.25);
+  position:fixed;bottom:2rem;right:2rem;z-index:900;
+  background:var(--dark2);border:1px solid rgba(245,239,224,0.15);
+  color:var(--cream);padding:14px 22px;border-radius:var(--radius);
+  font-size:13px;font-weight:500;box-shadow:var(--shadow);
+  transform:translateY(80px);opacity:0;transition:all .3s;max-width:320px;
+  display:flex;align-items:center;gap:10px;
 }
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.ok{background:#2E7D32}
-.toast.err{background:#B71C1C}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-left:3px solid var(--sage)}
+.toast.err{border-left:3px solid #E05555}
 
-/* ── LOADER ── */
-.loader{text-align:center;padding:2.5rem;color:var(--muted);font-size:13px}
-.loader-spinner{width:28px;height:28px;border:2.5px solid var(--border);border-top-color:var(--navy2);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
-
-/* ── RESPONSIVE ── */
-@media(max-width:480px){
-  .main{padding:1rem .875rem}
-  .login-box{padding:1.75rem 1.25rem}
-  .l-title{font-size:20px}
-  .stats-row{gap:6px}
-  .stat-num{font-size:19px}
-  .form-grid{grid-template-columns:1fr}
-  .fg-full{grid-column:1}
-  .chef-stats{gap:6px}
-  .cs-num{font-size:22px}
-  .topbar{padding:0 1rem}
-  .tb-user{display:none}
-  .hist-nums{gap:6px}
-  .hn-val{font-size:13px}
-  .dz-btns{flex-direction:column}
+/* ══ FOOTER ══ */
+footer{
+  background:var(--dark);border-top:1px solid rgba(245,239,224,0.07);
+  padding:4rem 2rem 2rem;
 }
-@media(max-width:360px){
-  .stats-row{grid-template-columns:1fr 1fr;gap:6px}
-  .stat-box:last-child{grid-column:1/-1}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;max-width:1200px;margin:0 auto;margin-bottom:3rem}
+.footer-brand{font-family:'Playfair Display',serif;font-size:24px;color:var(--cream);margin-bottom:.75rem}
+.footer-brand span{color:var(--terracotta)}
+.footer-desc{font-size:13px;color:var(--text3);line-height:1.7;max-width:280px}
+.footer-heading{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:1rem;font-weight:600}
+.footer-links{display:flex;flex-direction:column;gap:8px}
+.footer-links a{font-size:13px;color:var(--text2);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--cream)}
+.footer-bottom{
+  border-top:1px solid rgba(245,239,224,0.07);padding-top:1.5rem;
+  display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{font-size:12px;color:var(--text3)}
+.footer-paws{font-size:18px;letter-spacing:4px}
+
+/* ══ SCROLL ANIMATIONS ══ */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px){
+  .featured-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .featured-grid .cat-card:first-child{grid-row:auto;grid-column:1/-1}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-stats{position:static;flex-wrap:wrap;gap:1.5rem;margin-top:2rem}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .footer-grid>div:first-child{grid-column:1/-1}
+  .step-connector{display:none}
+}
+@media(max-width:600px){
+  nav{padding:1rem 1.25rem}
+  .hero{padding:7rem 1.25rem 3rem}
+  .hero h1{letter-spacing:-1px}
+  section{padding:4rem 1.25rem}
+  .featured-grid,.cats-grid{grid-template-columns:1fr}
+  .featured-grid .cat-card:first-child .cat-card-media{aspect-ratio:4/3}
+  .form-row{grid-template-columns:1fr}
+  .form-group.full{grid-column:1}
+  .footer-grid{grid-template-columns:1fr}
+  .testimonial-card{min-width:280px}
+  .hero-stats{justify-content:flex-start}
+  .footer-bottom{flex-direction:column;text-align:center}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN ══ -->
-<div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="l-badge">4e RGPH / RGAE · BUCREP</div>
-      <div class="l-title">Suivi de Recensement</div>
-      <div class="l-sub">Équipe Zone de Dénombrement · Yaoundé</div>
-    </div>
+<!-- CURSOR -->
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
 
-    <div class="l-section">Agents recenseurs</div>
-    <div class="user-grid">
-      <button class="user-btn" onclick="selectUser('pauline',this)">
-        <div class="u-av av-b">PM</div>
-        <div><div>Melingui Bomba Pauline Marie</div><div class="u-role">Agent Recenseur</div></div>
-      </button>
-      <button class="user-btn" onclick="selectUser('innocent',this)">
-        <div class="u-av av-t">BI</div>
-        <div><div>Margaba Batouri Innocent</div><div class="u-role">Agent Recenseur</div></div>
-      </button>
-      <button class="user-btn" onclick="selectUser('jeanne',this)">
-        <div class="u-av av-c">JM</div>
-        <div><div>Messina Messi Jeanne</div><div class="u-role">Agent Recenseur</div></div>
-      </button>
-    </div>
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">🐾 Pawfect <span>Home</span></div>
+  <div class="nav-links">
+    <a href="#chats">Nos Chats</a>
+    <a href="#adoption">Adoption</a>
+    <a href="#temoignages">Témoignages</a>
+    <a href="#contact" class="nav-cta">Adopter maintenant</a>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
 
-    <hr class="l-sep">
-    <div class="l-section">Administrateur</div>
-    <div class="user-grid">
-      <button class="user-btn" onclick="selectUser('chef',this)">
-        <div class="u-av av-g">NS</div>
-        <div><div>Ngnitedem Sonzia</div><div class="u-role">Administrateur · Accès complet</div></div>
-      </button>
-    </div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#chats" onclick="toggleMenu()">Nos Chats</a>
+  <a href="#adoption" onclick="toggleMenu()">Adoption</a>
+  <a href="#temoignages" onclick="toggleMenu()">Témoignages</a>
+  <a href="#contact" class="nav-cta" style="font-size:20px;padding:12px 28px" onclick="toggleMenu()">Adopter</a>
+</div>
 
-    <!-- Champ mot de passe (affiché selon sélection) -->
-    <div id="pwd-section" style="display:none;margin-top:4px">
-      <div class="pwd-wrap">
-        <input type="password" id="pwd-input" placeholder="Mot de passe requis…" onkeydown="if(event.key==='Enter')doLogin()">
-        <button class="pwd-eye" onclick="togglePwd()" id="eye-btn" type="button">👁</button>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="hero-orb hero-orb1"></div>
+    <div class="hero-orb hero-orb2"></div>
+    <div class="hero-orb hero-orb3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag">🐱 Adoption Responsable · FRANCE</div>
+    <h1>Chaque <em>minou</em><br>mérite un <span class="stroke">foyer</span></h1>
+    <p class="hero-sub">Trouvez votre compagnon félin idéal. Des chats adorables cherchent une famille aimante — leur histoire peut commencer avec vous.</p>
+    <div class="hero-actions">
+      <a href="#chats" class="btn-primary">Voir les chats disponibles →</a>
+      <a href="#adoption" class="btn-ghost">Comment adopter</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="stat-total">—</div>
+        <div class="hero-stat-lbl">Chats disponibles</div>
       </div>
-      <div class="pwd-err" id="pwd-err">Mot de passe incorrect. Réessayez.</div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">47+</div>
+        <div class="hero-stat-lbl">Adoptions réussies</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-lbl">Familles heureuses</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FEATURED CATS -->
+<section id="chats">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Nos compagnons</div>
+      <h2 class="section-title">Chats à l'adoption</h2>
+      <p class="section-sub">Chacun a sa personnalité, son histoire. Découvrez celui qui fera battre votre cœur.</p>
     </div>
 
-    <hr class="l-sep">
-    <button class="login-btn" onclick="doLogin()">Accéder à mon espace →</button>
+    <div class="filter-bar reveal">
+      <button class="filter-btn active" onclick="filterCats('all',this)">Tous</button>
+      <button class="filter-btn" onclick="filterCats('chaton',this)">Chatons</button>
+      <button class="filter-btn" onclick="filterCats('adulte',this)">Adultes</button>
+      <button class="filter-btn" onclick="filterCats('male',this)">Mâles</button>
+      <button class="filter-btn" onclick="filterCats('femelle',this)">Femelles</button>
+    </div>
+
+    <div class="cats-grid" id="cats-grid">
+      <div class="cats-loading">
+        <div class="loader-ring"></div>
+        <span style="font-size:13px;color:var(--text3)">Chargement des petits félins…</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section id="adoption" class="how-bg">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Processus</div>
+      <h2 class="section-title">Comment adopter ?</h2>
+      <p class="section-sub">Un processus simple et humain pour garantir le bonheur de votre nouveau compagnon.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step reveal" style="transition-delay:.1s">
+        <div class="step-num">01 / DÉCOUVERTE</div>
+        <span class="step-icon">🔍</span>
+        <div class="step-title">Choisissez votre chat</div>
+        <div class="step-desc">Parcourez notre galerie, regardez les vidéos, lisez leurs histoires. Prenez le temps de trouver celui qui vous correspond.</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step reveal" style="transition-delay:.2s">
+        <div class="step-num">02 / CONTACT</div>
+        <span class="step-icon">📞</span>
+        <div class="step-title">Prenez contact</div>
+        <div class="step-desc">Contactez-nous via WhatsApp ou email. Nous organisons une rencontre pour que vous fassiez connaissance avec votre futur compagnon.</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step reveal" style="transition-delay:.3s">
+        <div class="step-num">03 / RENCONTRE</div>
+        <span class="step-icon">🤝</span>
+        <div class="step-title">La rencontre</div>
+        <div class="step-desc">Un moment magique où humain et félin se découvrent. Pas de pression — on s'assure que c'est la bonne alchimie pour tous.</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step reveal" style="transition-delay:.4s">
+        <div class="step-num">04 / FOYER</div>
+        <span class="step-icon">🏠</span>
+        <div class="step-title">Nouvelle vie</div>
+        <div class="step-desc">Votre nouveau compagnon rejoint sa famille pour toujours. Nous restons disponibles pour vous accompagner dans cette belle aventure.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS -->
+<section id="temoignages">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Ce qu'ils disent</div>
+      <h2 class="section-title">Des familles comblées</h2>
+      <p class="section-sub">Ils ont fait le grand pas. Lisez leurs témoignages et laissez-vous inspirer.</p>
+    </div>
+    <div class="testimonials-wrap reveal">
+      <div class="testimonials-track" id="test-track">
+        <!-- JS rendered -->
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem">
+        <div class="test-controls" id="test-dots"></div>
+        <div class="test-nav">
+          <button class="test-nav-btn" onclick="slideTest(-1)">←</button>
+          <button class="test-nav-btn" onclick="slideTest(1)">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--dark2)">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center" class="reveal">
+      <div>
+        <div class="section-label">Adopter</div>
+        <h2 class="section-title">Prêt à accueillir un compagnon ?</h2>
+        <p class="section-sub" style="margin-bottom:2rem">Contactez-nous directement. Nous répondons sous 24h et organisons une rencontre à votre convenance.</p>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <a href="https://wa.me/237600000000" class="btn-primary" style="align-self:flex-start;text-decoration:none">📱 WhatsApp</a>
+          <a href="mailto:contact@pawfecthome.cm" class="btn-ghost" style="align-self:flex-start;text-decoration:none">✉️ Envoyer un email</a>
+        </div>
+      </div>
+      <div style="background:var(--dark3);border-radius:var(--radius);padding:2.5rem;border:1px solid rgba(245,239,224,0.07)">
+        <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--cream);margin-bottom:1.5rem">Informations pratiques</div>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:20px">📍</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--cream)">Localisation</div><div style="font-size:13px;color:var(--text2)">FRANCE, PARIS</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:20px">⏰</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--cream)">Disponibilité</div><div style="font-size:13px;color:var(--text2)">Lun–Sam · 8h–18h</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:20px">💉</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--cream)">Santé garantie</div><div style="font-size:13px;color:var(--text2)">Vaccinés, vermifugés, suivis vétérinaires</div></div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start">
+            <span style="font-size:20px">🎁</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--cream)">Kit de bienvenue</div><div style="font-size:13px;color:var(--text2)">Inclus avec chaque adoption</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<div class="admin-section">
+  <div class="admin-toggle" onclick="toggleAdmin()">
+    <span style="font-size:18px">⚙️</span>
+    <span class="admin-toggle-title">Espace administrateur — Ajouter un chat</span>
+    <input type="password" class="admin-key-input" id="admin-key" placeholder="Clé d'accès admin…" onclick="event.stopPropagation()" style="margin-left:auto">
+    <span style="font-size:18px;color:var(--text3);transition:transform .3s" id="admin-arrow">▼</span>
+  </div>
+  <div class="admin-panel" id="admin-panel">
+    <div class="admin-form">
+      <div class="admin-title">Ajouter un chat 🐱</div>
+      <div class="form-row">
+        <div class="form-group"><label>Nom du chat *</label><input type="text" id="a-name" placeholder="Ex: Luna"></div>
+        <div class="form-group"><label>Race</label><input type="text" id="a-race" placeholder="Ex: Européen commun"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Âge</label><input type="text" id="a-age" placeholder="Ex: 3 mois"></div>
+        <div class="form-group"><label>Sexe</label>
+          <select id="a-sex"><option value="">Sélectionner…</option><option value="Mâle">Mâle</option><option value="Femelle">Femelle</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Personnalité</label><input type="text" id="a-character" placeholder="Ex: Calme, joueur, câlin"></div>
+        <div class="form-group"><label>Statut</label>
+          <select id="a-status"><option value="available">Disponible</option><option value="reserved">Réservé</option><option value="adopted">Adopté</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>💰 Prix d'adoption (€)</label><input type="number" id="a-price" placeholder="Ex: 250" min="0" step="10"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full"><label>URL Vidéo (YouTube, TikTok, direct…)</label><input type="url" id="a-video" placeholder="https://…"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full"><label>URL Photo</label><input type="url" id="a-photo" placeholder="https://… (optionnel si vidéo)"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full"><label>Description *</label><textarea id="a-desc" placeholder="Racontez l'histoire de ce petit félin…"></textarea></div>
+      </div>
+      <button class="admin-submit" id="admin-submit" onclick="addCat()">Publier ce chat →</button>
+    </div>
+
+    <!-- LISTE DE GESTION -->
+    <div class="admin-manage" id="admin-manage" style="margin-top:2rem;max-width:600px">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);margin-bottom:1rem;display:flex;align-items:center;gap:10px">
+        <span>🗂️</span> Gérer les chats publiés
+      </div>
+      <div id="manage-list">
+        <div style="font-size:13px;color:var(--text3);font-style:italic">Chargement…</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ══ APP ══ -->
-<div id="app-screen">
-  <div class="topbar">
-    <div class="tb-left">
-      <span class="tb-badge">RGPH 2024</span>
-      <span class="tb-title">Suivi Terrain</span>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">🐾 Pawfect <span>Home</span></div>
+      <p class="footer-desc">Nous croyons que chaque chat mérite un foyer aimant, et chaque famille mérite un compagnon fidèle. Adopter, c'est changer deux vies à la fois.</p>
     </div>
-    <div class="tb-right">
-      <span class="tb-user" id="tb-name"></span>
-      <button class="logout-btn" onclick="logout()">← Quitter</button>
+    <div>
+      <div class="footer-heading">Navigation</div>
+      <div class="footer-links">
+        <a href="#chats">Nos chats</a>
+        <a href="#adoption">Comment adopter</a>
+        <a href="#temoignages">Témoignages</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-heading">Contact</div>
+      <div class="footer-links">
+        <a href="https://wa.me/237600000000">WhatsApp</a>
+        <a href="mailto:contact@pawfecthome.cm">Email</a>
+        <a href="#">TikTok</a>
+        <a href="#">Facebook</a>
+      </div>
     </div>
   </div>
-  <div class="main" id="main"></div>
-</div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2024 Pawfect Home · PARIS, FRANCE· Adoption féline responsable</span>
+    <span class="footer-paws">🐾🐾🐾</span>
+  </div>
+</footer>
 
-<!-- ══ MODAL EDIT ══ -->
-<div class="modal-bg" id="edit-modal" style="display:none">
-  <div class="modal">
-    <div class="modal-title">Modifier la saisie</div>
-    <div class="modal-fg"><label>Structures identifiées</label><input type="number" id="e-struct" min="0"></div>
-    <div class="modal-fg"><label>Structures numérotées</label><input type="number" id="e-num" min="0"></div>
-    <div class="modal-fg"><label>Ménages ordinaires</label><input type="number" id="e-men" min="0"></div>
-    <div class="modal-btns">
-      <button class="modal-cancel" onclick="closeModal()">Annuler</button>
-      <button class="modal-save" id="modal-save-btn" onclick="saveEdit()">Enregistrer</button>
-    </div>
+<!-- CAT MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box" style="position:relative">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <div id="modal-content"></div>
   </div>
 </div>
 
-<!-- ══ MODAL CONFIRM DELETE ══ -->
-<div class="modal-bg" id="confirm-modal" style="display:none">
-  <div class="modal">
-    <div class="modal-title" id="confirm-title">Confirmer la suppression</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="confirm-msg">Cette action est irréversible.</div>
-    <div class="modal-btns">
-      <button class="modal-cancel" onclick="closeConfirm()">Annuler</button>
-      <button class="modal-del" id="confirm-ok-btn" onclick="confirmAction()">Supprimer</button>
-    </div>
+<!-- ADOPTION FORM OVERLAY -->
+<div class="adopt-overlay" id="adopt-overlay">
+  <div class="adopt-box">
+    <button class="adopt-close" onclick="closeAdoptForm()">✕</button>
+    <div id="adopt-form-content"></div>
+  </div>
+</div>
+
+<!-- PREORDER OVERLAY -->
+<div class="adopt-overlay" id="preorder-overlay">
+  <div class="adopt-box">
+    <button class="adopt-close" onclick="closePreorder()">✕</button>
+    <div id="preorder-content"></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ══ CONFIG JSONBIN ══
-const BIN_ID  = '69ea9b05aaba8821972f44f5';
+// ══ CONFIG ══
+const BIN_ID  = '69ebdd75856a6821896c8887';
 const API_KEY = '$2a$10$phoNGUlUffuXacxn2E8r5.yFLfQ3L/bQ9SshS7i2amo4X3CaR4fz6';
 const BIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
-const HEADERS = {'Content-Type':'application/json','X-Master-Key':API_KEY,'X-Bin-Versioning':'false'};
+const HDR     = {'Content-Type':'application/json','X-Master-Key':API_KEY,'X-Bin-Versioning':'false'};
+const ADMIN_KEY = 'dongle2024';
 
-// ══ MOTS DE PASSE ══
-const PASSWORDS = {
-  pauline:  'Root(255)',
-  innocent: 'Root(265)',
-  jeanne:   'Root(266)',
-  chef:     'import os24'
-};
+// ══ DATA ══
+let db = {cats:[], testimonials:[]};
+let currentFilter = 'all';
+let testIndex = 0;
 
-// Utilisateurs nécessitant un mot de passe
-const NEEDS_PWD = ['pauline','innocent','jeanne','chef'];
+// ══ DEFAULT TESTIMONIALS ══
+const DEFAULT_TESTIMONIALS = [
+  {id:'t1',name:'Aminata Koné',cat:'A adopté Nala',avatar:'🌺',stars:5,text:'Je ne pensais pas que l\'adoption pouvait être aussi simple et belle. Nala est arrivée chez nous il y a 3 mois et c\'est comme si elle avait toujours été là. Elle ronronne dès qu\'elle me voit. Merci infiniment !'},
+  {id:'t2',name:'Jean-Pierre Mbarga',cat:'A adopté Simba',avatar:'🦁',stars:5,text:'Mon fils voulait un chat depuis des années. Simba est parfait — joueur, propre, affectueux. Le processus d\'adoption était transparent et l\'équipe très professionnelle. Je recommande à 100%.'},
+  {id:'t3',name:'Marie-Claire Essono',cat:'A adopté Luna & Étoile',avatar:'⭐',stars:5,text:'J\'ai adopté deux sœurs ensemble. L\'équipe m\'a conseillé et guidé dans ce choix. Ces deux chattes ont transformé mon appartement en un vrai foyer chaleureux. Chaque soir elles viennent dormir avec moi.'},
+  {id:'t4',name:'Robert Fouda',cat:'A adopté Mochi',avatar:'🎋',stars:5,text:'Mochi est un vrai compagnon de télétravail. Il dort sur mon bureau, attend que je finisse mes appels et vient ronronner sur mes genoux. Une vraie thérapie anti-stress ! Adoption parfaite.'},
+  {id:'t5',name:'Christelle Ngo',cat:'A adopté Tigrou',avatar:'🐯',stars:5,text:'J\'hésitais longtemps car je n\'avais jamais eu de chat. L\'équipe m\'a accompagné, répondu à toutes mes questions. Aujourd\'hui Tigrou est mon meilleur ami. Je regrette juste de ne pas avoir adopté plus tôt !'},
+  {id:'t6',name:'Aurélie Tamba',cat:'A adopté Perle',avatar:'💎',stars:5,text:'Perle est une petite chatte blanche au caractère de reine. Elle a mis quelques jours à s\'habituer, puis elle s\'est complètement épanouie. Mes enfants l\'adorent. C\'était la meilleure décision de l\'année.'},
+];
 
-// ══ AGENTS ══
-const AGENTS = {
-  pauline:  {name:'Melingui Bomba Pauline Marie', short:'Pauline M.',    ini:'PM', av:'av-b', hav:'rgba(24,95,165,0.2)',   hat:'#85B7EB', prog:'#185FA5', lbl:'blue'},
-  innocent: {name:'Margaba Batouri Innocent',      short:'Innocent M.',  ini:'BI', av:'av-t', hav:'rgba(15,110,86,0.2)',  hat:'#5DCAA5', prog:'#0F6E56', lbl:'teal'},
-  jeanne:   {name:'Messina Messi Jeanne',          short:'Jeanne M.M.',  ini:'JM', av:'av-c', hav:'rgba(153,60,29,0.2)', hat:'#F0997B', prog:'#993C1D', lbl:'coral'},
-  chef:     {name:'Ngnitedem Sonzia',              short:'Ngnitedem S.', ini:'NS', av:'av-g', hav:'rgba(201,168,76,0.2)',hat:'#F0D98A', prog:'#C9A84C', lbl:'gold'}
-};
-
-let currentUser  = null;
-let editingId    = null;
-let remoteData   = {entries:[]};
-let isSaving     = false;
-let pendingAction = null; // {type, payload}
-
-// ══ JSONBIN API ══
-async function fetchData(){
+// ══ JSONBIN ══
+async function fetchDB(){
   try{
     const r = await fetch(BIN_URL+'/latest',{headers:{'X-Master-Key':API_KEY}});
     const j = await r.json();
-    remoteData = j.record || {entries:[]};
-    if(!Array.isArray(remoteData.entries)) remoteData.entries = [];
-  } catch(e){ remoteData={entries:[]}; }
+    db = j.record || {cats:[],testimonials:[]};
+    if(!Array.isArray(db.cats)) db.cats=[];
+    if(!Array.isArray(db.testimonials)||db.testimonials.length===0) db.testimonials=DEFAULT_TESTIMONIALS;
+  } catch(e){
+    db = {cats:[], testimonials:DEFAULT_TESTIMONIALS};
+  }
 }
 
-async function pushData(){
-  await fetch(BIN_URL,{method:'PUT',headers:HEADERS,body:JSON.stringify(remoteData)});
+async function pushDB(){
+  await fetch(BIN_URL,{method:'PUT',headers:HDR,body:JSON.stringify(db)});
 }
 
 function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 
-// ══ LOGIN / SECURITE ══
-function selectUser(id, btn){
-  currentUser = id;
-  document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-
-  const pwdSection = document.getElementById('pwd-section');
-  const pwdInput   = document.getElementById('pwd-input');
-  const pwdErr     = document.getElementById('pwd-err');
-
-  if(NEEDS_PWD.includes(id)){
-    pwdSection.style.display = 'block';
-    pwdInput.value = '';
-    pwdErr.style.display = 'none';
-    pwdInput.removeAttribute('data-valid');
-    setTimeout(()=>pwdInput.focus(), 80);
-  } else {
-    pwdSection.style.display = 'none';
-  }
-}
-
-function togglePwd(){
-  const inp = document.getElementById('pwd-input');
-  const eye = document.getElementById('eye-btn');
-  if(inp.type==='password'){inp.type='text';eye.textContent='🙈';}
-  else{inp.type='password';eye.textContent='👁';}
-}
-
-async function doLogin(){
-  if(!currentUser){showToast('Sélectionnez un utilisateur','err');return;}
-
-  // Vérification mot de passe
-  if(NEEDS_PWD.includes(currentUser)){
-    const pwd    = document.getElementById('pwd-input').value;
-    const pwdErr = document.getElementById('pwd-err');
-    if(pwd !== PASSWORDS[currentUser]){
-      pwdErr.style.display='block';
-      const inp=document.getElementById('pwd-input');
-      inp.classList.remove('shake');
-      void inp.offsetWidth; // reflow
-      inp.classList.add('shake');
-      inp.select();
-      return;
-    }
-    pwdErr.style.display='none';
+// ══ RENDER CATS ══
+function renderCats(){
+  const grid = document.getElementById('cats-grid');
+  let cats = db.cats.filter(c=>c.status!=='adopted');
+  if(currentFilter!=='all'){
+    cats = cats.filter(c=>{
+      if(currentFilter==='chaton') return c.age&&c.age.toLowerCase().includes('mois');
+      if(currentFilter==='adulte') return c.age && !c.age.toLowerCase().includes('mois');
+      if(currentFilter==='male') return c.sex && c.sex.toLowerCase().includes('mâle');
+      if(currentFilter==='femelle') return c.sex && c.sex.toLowerCase().includes('femelle');
+      return true;
+    });
   }
 
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('app-screen').style.display='flex';
-  document.getElementById('app-screen').style.flexDirection='column';
-  document.getElementById('tb-name').textContent = AGENTS[currentUser].short;
-  document.getElementById('main').innerHTML='<div class="loader"><div class="loader-spinner"></div>Chargement des données…</div>';
-  await fetchData();
-  if(currentUser==='chef') renderChef(); else renderAgent();
-}
+  document.getElementById('stat-total').textContent = db.cats.filter(c=>c.status==='available').length;
 
-function logout(){
-  currentUser=null;
-  document.querySelectorAll('.user-btn').forEach(b=>b.classList.remove('sel'));
-  document.getElementById('pwd-section').style.display='none';
-  document.getElementById('pwd-input').value='';
-  document.getElementById('app-screen').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-}
+  if(cats.length===0){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--text3);font-style:italic;font-size:15px">
+      ${db.cats.length===0?'Aucun chat pour le moment — revenez bientôt 🐾':'Aucun chat dans cette catégorie pour le moment.'}
+    </div>`;
+    return;
+  }
 
-// ══ AGENT VIEW ══
-function renderAgent(){
-  const a       = AGENTS[currentUser];
-  const entries = remoteData.entries.filter(e=>e.agentId===currentUser);
-  const totalS  = entries.reduce((s,e)=>s+(e.structures||0),0);
-  const totalN  = entries.reduce((s,e)=>s+(e.numbered||0),0);
-  const totalM  = entries.reduce((s,e)=>s+(e.menages||0),0);
-  const days    = new Set(entries.map(e=>e.date)).size;
-  const today   = new Date().toISOString().split('T')[0];
-  const todayE  = entries.find(e=>e.date===today);
-  const sorted  = [...entries].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,15);
+  grid.innerHTML = cats.map((cat,i) => {
+    const badge = cat.status==='reserved'?'<div class="cat-badge" style="background:#8B7355">Réservé</div>':
+                  cat.isNew?'<div class="cat-badge new">Nouveau</div>':
+                  '<div class="cat-badge available">Disponible</div>';
+    const media = cat.video ?
+      `<video src="${cat.video}" muted loop playsinline preload="none" onmouseenter="this.play()" onmouseleave="this.pause()"></video>` :
+      cat.photo ? `<img src="${cat.photo}" alt="${cat.name}" loading="lazy">` :
+      `<div class="cat-placeholder"><div class="cat-emoji">🐱</div><div class="cat-placeholder-txt">Photo à venir</div></div>`;
 
-  document.getElementById('main').innerHTML=`
-    <div class="agent-hero">
-      <div class="hero-av" style="background:${a.hav};color:${a.hat}">${a.ini}</div>
-      <div>
-        <div class="hero-name">${a.name}</div>
-        <div class="hero-sub">Agent Recenseur · ${days} jour${days>1?'s':''} de terrain</div>
+    return`<div class="cat-card reveal" style="transition-delay:${i*0.08}s" onclick="openCat('${cat.id}')">
+      <div class="cat-card-media">
+        ${media}${badge}
+        ${cat.video?'<div class="play-btn">▶</div>':''}
       </div>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-box"><div class="stat-num">${totalS}</div><div class="stat-lbl">Identifiées</div></div>
-      <div class="stat-box"><div class="stat-num">${totalN}</div><div class="stat-lbl">Numérotées</div></div>
-      <div class="stat-box"><div class="stat-num">${totalM}</div><div class="stat-lbl">Ménages</div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="card-dot"></span>${todayE?"Mettre à jour — aujourd'hui":"Saisie du jour"}</div>
-      <div class="form-grid">
-        <div class="fg"><label>Date</label><input type="date" id="s-date" value="${today}"></div>
-        <div class="fg"><label>ZD travaillée</label><input type="text" id="s-zd" placeholder="Ex: 001" maxlength="3" value="${todayE?.zd||''}"></div>
-        <div class="fg"><label>Structures identifiées</label><input type="number" id="s-str" placeholder="0" min="0" value="${todayE?.structures||''}"></div>
-        <div class="fg"><label>Structures numérotées</label><input type="number" id="s-num" placeholder="0" min="0" value="${todayE?.numbered||''}"></div>
-        <div class="fg fg-full"><label>Ménages ordinaires numérotés</label><input type="number" id="s-men" placeholder="0" min="0" value="${todayE?.menages||''}">
-          <div class="fg-hint">Total cumulé pour la journée sélectionnée</div>
+      <div class="cat-info">
+        <div class="cat-name">${cat.name}</div>
+        <div class="cat-meta">
+          ${cat.race?`<span class="cat-tag">${cat.race}</span>`:''}
+          ${cat.age?`<span class="cat-tag">${cat.age}</span>`:''}
+          ${cat.sex?`<span class="cat-tag">${cat.sex}</span>`:''}
         </div>
+        <div class="cat-desc">${cat.description?cat.description.slice(0,110)+'…':''}</div>
+        ${cat.price?`<div style="font-family:'DM Mono',monospace;font-size:14px;color:var(--gold2);margin-bottom:8px">💰 ${cat.price} €</div>`:''}
+        <button class="cat-adopt-btn">Voir la fiche →</button>
       </div>
-      <button class="save-btn" id="save-btn" onclick="saveSaisie()">
-        <span id="save-icon">💾</span><span id="save-txt">Enregistrer ma progression</span>
-      </button>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="card-dot"></span>Mes saisies (${entries.length})</div>
-      ${sorted.length===0?'<div class="empty">Aucune saisie pour le moment.</div>':sorted.map(e=>{
-        const dl=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
-        return`<div class="hist-item">
-          <div style="min-width:82px"><div class="hist-date">${dl}</div>${e.zd?`<span class="hist-zd">ZD ${e.zd}</span>`:''}</div>
-          <div class="hist-nums">
-            <div class="hn"><div class="hn-val">${e.structures||0}</div><div class="hn-lab">identif.</div></div>
-            <div class="hn"><div class="hn-val">${e.numbered||0}</div><div class="hn-lab">numérot.</div></div>
-            <div class="hn"><div class="hn-val">${e.menages||0}</div><div class="hn-lab">ménages</div></div>
-          </div>
-          <button class="edit-btn" onclick="openEdit('${e.id}')">Modifier</button>
-        </div>`;
-      }).join('')}
-    </div>
-    <div class="sync-badge">Données synchronisées avec JSONBin.io</div>
-  `;
-}
-
-async function saveSaisie(){
-  if(isSaving) return;
-  const date=document.getElementById('s-date').value;
-  if(!date){showToast('Entrez une date','err');return;}
-  isSaving=true;
-  const btn=document.getElementById('save-btn');
-  btn.disabled=true;
-  document.getElementById('save-icon').textContent='⏳';
-  document.getElementById('save-txt').textContent='Enregistrement…';
-
-  await fetchData();
-  const idx=remoteData.entries.findIndex(e=>e.agentId===currentUser&&e.date===date);
-  const entry={
-    id: idx>=0 ? remoteData.entries[idx].id : genId(),
-    agentId:currentUser, date,
-    zd:document.getElementById('s-zd').value.trim(),
-    structures:parseInt(document.getElementById('s-str').value)||0,
-    numbered:parseInt(document.getElementById('s-num').value)||0,
-    menages:parseInt(document.getElementById('s-men').value)||0,
-    updatedAt:Date.now()
-  };
-  if(idx>=0) remoteData.entries[idx]=entry; else remoteData.entries.push(entry);
-  try{
-    await pushData();
-    showToast('Progression enregistrée !','ok');
-  } catch(e){ showToast('Erreur de connexion','err'); }
-  isSaving=false;
-  renderAgent();
-}
-
-// ══ MODAL EDIT ══
-function openEdit(id){
-  const e=remoteData.entries.find(x=>x.id===id);
-  if(!e) return;
-  editingId=id;
-  document.getElementById('e-struct').value=e.structures||0;
-  document.getElementById('e-num').value=e.numbered||0;
-  document.getElementById('e-men').value=e.menages||0;
-  document.getElementById('edit-modal').style.display='flex';
-}
-function closeModal(){document.getElementById('edit-modal').style.display='none';editingId=null;}
-
-async function saveEdit(){
-  if(!editingId) return;
-  const btn=document.getElementById('modal-save-btn');
-  btn.disabled=true;btn.textContent='…';
-  await fetchData();
-  const idx=remoteData.entries.findIndex(e=>e.id===editingId);
-  if(idx>=0){
-    remoteData.entries[idx].structures=parseInt(document.getElementById('e-struct').value)||0;
-    remoteData.entries[idx].numbered=parseInt(document.getElementById('e-num').value)||0;
-    remoteData.entries[idx].menages=parseInt(document.getElementById('e-men').value)||0;
-    remoteData.entries[idx].updatedAt=Date.now();
-    try{ await pushData(); showToast('Saisie modifiée','ok'); } catch(e){ showToast('Erreur réseau','err'); }
-  }
-  btn.disabled=false;btn.textContent='Enregistrer';
-  closeModal();
-  if(currentUser==='chef') renderChef(); else renderAgent();
-}
-
-// ══ MODAL CONFIRM (SUPPRESSION) ══
-function openConfirm(title, msg, action){
-  pendingAction = action;
-  document.getElementById('confirm-title').textContent = title;
-  document.getElementById('confirm-msg').textContent   = msg;
-  document.getElementById('confirm-modal').style.display='flex';
-}
-function closeConfirm(){
-  document.getElementById('confirm-modal').style.display='none';
-  pendingAction=null;
-}
-async function confirmAction(){
-  if(!pendingAction) return;
-  const btn=document.getElementById('confirm-ok-btn');
-  btn.disabled=true; btn.textContent='…';
-  await pendingAction();
-  btn.disabled=false; btn.textContent='Supprimer';
-  closeConfirm();
-}
-
-// ══ SUPPRESSIONS (ADMIN UNIQUEMENT) ══
-function adminDeleteEntry(id){
-  const e=remoteData.entries.find(x=>x.id===id);
-  if(!e) return;
-  const a=AGENTS[e.agentId];
-  const dl=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'long'});
-  openConfirm(
-    'Supprimer cette saisie',
-    `Supprimer la saisie du ${dl} pour ${a.short} (${e.structures||0} structures, ${e.menages||0} ménages) ?`,
-    async()=>{
-      await fetchData();
-      remoteData.entries=remoteData.entries.filter(x=>x.id!==id);
-      try{ await pushData(); showToast('Saisie supprimée','ok'); } catch(err){ showToast('Erreur réseau','err'); }
-      renderChef();
-    }
-  );
-}
-
-function adminDeleteAgent(agentId){
-  const a=AGENTS[agentId];
-  const count=remoteData.entries.filter(e=>e.agentId===agentId).length;
-  openConfirm(
-    `Supprimer les données de ${a.short}`,
-    `Supprimer les ${count} saisie${count>1?'s':''} de ${a.name} ? Cette action est irréversible.`,
-    async()=>{
-      await fetchData();
-      remoteData.entries=remoteData.entries.filter(e=>e.agentId!==agentId);
-      try{ await pushData(); showToast(`Données de ${a.short} supprimées`,'ok'); } catch(err){ showToast('Erreur réseau','err'); }
-      renderChef();
-    }
-  );
-}
-
-function adminDeleteAll(){
-  const count=remoteData.entries.length;
-  if(count===0){showToast('Aucune donnée à supprimer','err');return;}
-  openConfirm(
-    'Supprimer TOUTES les données',
-    `Supprimer la totalité des ${count} saisie${count>1?'s':''} de tous les agents ? Action irréversible.`,
-    async()=>{
-      remoteData.entries=[];
-      try{ await pushData(); showToast('Toutes les données supprimées','ok'); } catch(err){ showToast('Erreur réseau','err'); }
-      renderChef();
-    }
-  );
-}
-
-// ══ CHEF VIEW ══
-function renderChef(){
-  const all=remoteData.entries;
-  const agIds=['pauline','innocent','jeanne'];
-  const totalS=all.reduce((s,e)=>s+(e.structures||0),0);
-  const totalM=all.reduce((s,e)=>s+(e.menages||0),0);
-  const daysSet=new Set(all.map(e=>e.date));
-  const lastTs=all.length?Math.max(...all.map(e=>e.updatedAt||0)):0;
-  const lastStr=lastTs?new Date(lastTs).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}):'--';
-
-  const agCards=agIds.map(id=>{
-    const a=AGENTS[id];
-    const ents=all.filter(e=>e.agentId===id);
-    const s=ents.reduce((x,e)=>x+(e.structures||0),0);
-    const n=ents.reduce((x,e)=>x+(e.numbered||0),0);
-    const m=ents.reduce((x,e)=>x+(e.menages||0),0);
-    const d=new Set(ents.map(e=>e.date)).size;
-    const pct=Math.min(100,Math.round((s/50)*100));
-    const last=[...ents].sort((a,b)=>b.date.localeCompare(a.date))[0];
-    const lastLbl=last?new Date(last.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})+(last.zd?' · ZD '+last.zd:''):'Aucune saisie';
-
-    // saisies détaillées de cet agent (5 dernières)
-    const agSorted=[...ents].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
-    const saisiesHtml=agSorted.length===0?'':`
-      <div style="margin-top:10px;padding-top:10px;border-top:.5px solid var(--border)">
-        <div style="font-size:10px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Saisies récentes</div>
-        ${agSorted.map(e=>{
-          const dl=new Date(e.date+'T00:00:00').toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
-          return`<div class="hist-item" style="padding:7px 0">
-            <div style="min-width:90px">
-              <div class="hist-date">${dl}</div>
-              ${e.zd?`<span class="hist-zd">ZD ${e.zd}</span>`:''}
-            </div>
-            <div class="hist-nums">
-              <div class="hn"><div class="hn-val">${e.structures||0}</div><div class="hn-lab">struct.</div></div>
-              <div class="hn"><div class="hn-val">${e.numbered||0}</div><div class="hn-lab">num.</div></div>
-              <div class="hn"><div class="hn-val">${e.menages||0}</div><div class="hn-lab">mén.</div></div>
-            </div>
-            <button class="del-btn" onclick="adminDeleteEntry('${e.id}')">🗑</button>
-          </div>`;
-        }).join('')}
-      </div>`;
-
-    return`<div class="ap-card">
-      <div class="ap-top">
-        <div class="ap-av" style="background:${a.hav};color:${a.hat}">${a.ini}</div>
-        <div style="flex:1"><div class="ap-name">${a.name}</div><div class="ap-days">${d} jour${d>1?'s':''} de terrain · ${ents.length} saisie${ents.length>1?'s':''}</div></div>
-        <button class="del-btn" onclick="adminDeleteAgent('${id}')" title="Supprimer toutes les saisies de ${a.short}" style="font-size:10px">🗑 Agent</button>
-      </div>
-      <div class="ap-nums">
-        <div class="an"><div class="an-val" style="color:${a.prog}">${s}</div><div class="an-lab">identifiées</div></div>
-        <div class="an"><div class="an-val">${n}</div><div class="an-lab">numérotées</div></div>
-        <div class="an"><div class="an-val">${m}</div><div class="an-lab">ménages</div></div>
-      </div>
-      <div class="prog-meta"><span>Progression</span><span>${pct}%</span></div>
-      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${a.prog}"></div></div>
-      <div class="last-entry">Dernière saisie : ${lastLbl}${last?' · '+last.structures+' structures':''}</div>
-      ${saisiesHtml}
     </div>`;
   }).join('');
+  observeReveal();
+}
 
-  document.getElementById('main').innerHTML=`
-    <div class="chef-header">
-      <div><div class="chef-title">Tableau de bord</div><div class="chef-sub">4e RGPH / RGAE · Ngnitedem Sonzia</div></div>
-      <button class="refresh-btn" onclick="doRefresh()"><span id="ref-ico">↻</span> Actualiser</button>
-    </div>
+// ══ FILTER ══
+function filterCats(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCats();
+}
 
-    <div class="chef-stats">
-      <div class="cs"><div class="cs-num gold">${totalS}</div><div class="cs-lbl">Structures</div></div>
-      <div class="cs"><div class="cs-num">${totalM}</div><div class="cs-lbl">Ménages</div></div>
-      <div class="cs"><div class="cs-num">${daysSet.size}</div><div class="cs-lbl">Jours terrain</div></div>
-    </div>
+// ══ ACCESSORIES CONFIG ══
+const ACCESSORIES = [
+  {id:'laisse',icon:'🦮',name:'Laisse & Harnais',price:25,desc:'Promenade sécurisée'},
+  {id:'cage',icon:'🏠',name:'Cage de transport',price:45,desc:'Voyage en toute sécurité'},
+  {id:'litiere',icon:'🪣',name:'Litière premium',price:35,desc:'Kit complet 1 mois'},
+  {id:'jouets',icon:'🧶',name:'Pack de jouets',price:20,desc:'10 jouets variés'},
+  {id:'griffoir',icon:'🪵',name:'Arbre à chat',price:60,desc:'Avec griffoir et perchoir'},
+  {id:'gamelles',icon:'🍽️',name:'Gamelles inox',price:18,desc:'Eau + nourriture'},
+  {id:'collier',icon:'🎀',name:'Collier gravé',price:15,desc:'Avec médaille ID'},
+  {id:'couverture',icon:'🛏️',name:'Corbeille moelleuse',price:30,desc:'Couchage ultra-doux'},
+];
 
-    <!-- ZONE DANGER -->
-    <div class="danger-zone">
-      <div class="dz-title">🛡 Zone d'administration — Suppression de données</div>
-      <div class="dz-desc">Ces actions sont irréversibles. Une confirmation sera demandée avant chaque suppression.</div>
-      <div class="dz-btns">
-        <button class="dz-btn all" onclick="adminDeleteAll()">🗑 Supprimer TOUTES les données</button>
-        <button class="dz-btn ag" onclick="adminDeleteAgent('pauline')">Pauline M.</button>
-        <button class="dz-btn ag" onclick="adminDeleteAgent('innocent')">Innocent M.</button>
-        <button class="dz-btn ag" onclick="adminDeleteAgent('jeanne')">Jeanne M.M.</button>
+let selectedAccessories = new Set();
+let currentCatForAdopt = null;
+
+function calcTotal(catPrice){
+  let acc = 0;
+  selectedAccessories.forEach(id=>{
+    const a = ACCESSORIES.find(x=>x.id===id);
+    if(a) acc += a.price;
+  });
+  return {cat: catPrice||0, accessories: acc, total: (catPrice||0)+acc};
+}
+
+function toggleAccessory(id){
+  if(selectedAccessories.has(id)) selectedAccessories.delete(id);
+  else selectedAccessories.add(id);
+  updatePriceSummary();
+}
+
+function updatePriceSummary(){
+  const cat = currentCatForAdopt;
+  if(!cat) return;
+  const {cat:cp, accessories:ap, total} = calcTotal(cat.price);
+  const el = document.getElementById('price-summary-block');
+  if(!el) return;
+  el.innerHTML=`
+    <div class="price-row"><span>🐱 ${cat.name}</span><span>${cp>0?cp+'€':'Non renseigné'}</span></div>
+    ${ap>0?`<div class="price-row"><span>🛍️ Accessoires (${selectedAccessories.size})</span><span>${ap}€</span></div>`:''}
+    <div class="price-row total"><span>💰 Total estimatif</span><span>${total>0?total+'€':'—'}</span></div>
+    ${total>=500?'<div style="font-size:11px;color:var(--terra3);margin-top:6px">⚠️ Budget supérieur à 500€ — pensez à étaler vos achats !</div>':''}
+  `;
+  // update accessory checks
+  ACCESSORIES.forEach(a=>{
+    const item = document.getElementById('acc-'+a.id);
+    if(item){
+      item.classList.toggle('selected', selectedAccessories.has(a.id));
+      const chk = item.querySelector('.config-check');
+      if(chk) chk.textContent = selectedAccessories.has(a.id)?'✓':'';
+    }
+  });
+}
+
+// ══ MODAL ══
+function openCat(id){
+  const cat = db.cats.find(c=>c.id===id);
+  if(!cat) return;
+  currentCatForAdopt = cat;
+  selectedAccessories = new Set();
+
+  const media = cat.video ?
+    `<video src="${cat.video}" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover"></video>` :
+    cat.photo ? `<img src="${cat.photo}" alt="${cat.name}" style="width:100%;height:100%;object-fit:cover">` :
+    `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:72px">🐱</div>`;
+
+  const priceTag = cat.price ? `<div class="modal-price-tag">💰 ${cat.price} €<span style="font-size:12px;font-weight:400;margin-left:4px;opacity:.7">prix d'adoption</span></div>` : '';
+
+  const accGrid = ACCESSORIES.map(a=>`
+    <div class="config-item" id="acc-${a.id}" onclick="toggleAccessory('${a.id}')">
+      <div class="config-item-left">
+        <div class="config-item-icon">${a.icon}</div>
+        <div class="config-item-info">
+          <div class="config-item-name">${a.name}</div>
+          <div class="config-item-price">+${a.price}€ · ${a.desc}</div>
+        </div>
       </div>
+      <div class="config-check"></div>
     </div>
+  `).join('');
 
-    <div style="font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Progression &amp; saisies par agent</div>
-    ${agCards}
+  document.getElementById('modal-content').innerHTML=`
+    <div class="modal-media">${media}</div>
+    <div class="modal-body">
+      <div class="modal-name">${cat.name}</div>
+      <div class="modal-tags">
+        ${cat.race?`<span class="modal-tag">${cat.race}</span>`:''}
+        ${cat.age?`<span class="modal-tag">🎂 ${cat.age}</span>`:''}
+        ${cat.sex?`<span class="modal-tag">${cat.sex==='Mâle'?'♂️':'♀️'} ${cat.sex}</span>`:''}
+        ${cat.character?`<span class="modal-tag">✨ ${cat.character}</span>`:''}
+        <span class="modal-tag" style="color:${cat.status==='available'?'var(--sage2)':'var(--text3)'}">
+          ${cat.status==='available'?'✅ Disponible':cat.status==='reserved'?'⏳ Réservé':'🏠 Adopté'}
+        </span>
+      </div>
+      ${priceTag}
+      <p class="modal-desc">${cat.description||''}</p>
 
-    <div class="sync-badge">Dernière actualisation : ${lastStr} · JSONBin.io</div>
+      <!-- ACCESSORIES -->
+      <div class="config-section">
+        <div class="config-title">🛍️ Configurez votre kit d'accueil</div>
+        <div class="config-grid">${accGrid}</div>
+      </div>
+
+      <!-- PRICE SUMMARY -->
+      <div class="price-summary" id="price-summary-block">
+        <div class="price-row"><span>🐱 ${cat.name}</span><span>${cat.price?cat.price+'€':'Non renseigné'}</span></div>
+        <div class="price-row total"><span>💰 Total estimatif</span><span>${cat.price?cat.price+'€':'—'}</span></div>
+      </div>
+
+      <!-- ADOPTION BUTTON -->
+      <button class="modal-adopt-btn" onclick="openAdoptForm()">
+        🐾 Démarrer la procédure d'adoption
+      </button>
+      <button class="modal-adopt-btn" style="background:linear-gradient(135deg,var(--gold),var(--terracotta))" onclick="openPreorderModal()">
+        ⭐ Précommander ${cat.name}
+      </button>
+    </div>
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(e){if(e.target===document.getElementById('modal-overlay')) closeModalBtn()}
+function closeModalBtn(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ══ ADOPTION FORM ══
+function openAdoptForm(){
+  const cat = currentCatForAdopt;
+  if(!cat) return;
+  document.getElementById('adopt-overlay').classList.add('open');
+  document.getElementById('adopt-form-content').innerHTML=`
+    <div class="adopt-title">📋 Dossier d'adoption</div>
+    <p class="adopt-sub">Remplissez ce formulaire pour adopter <strong style="color:var(--terra3)">${cat.name}</strong>. Une fois soumis, vous recevrez votre attestation de candidature en image PNG à télécharger.</p>
+
+    <div class="adopt-form-row">
+      <div class="adopt-form-group"><label>Prénom *</label><input type="text" id="ad-prenom" placeholder="Votre prénom"></div>
+      <div class="adopt-form-group"><label>Nom *</label><input type="text" id="ad-nom" placeholder="Votre nom"></div>
+    </div>
+    <div class="adopt-form-group"><label>Email *</label><input type="email" id="ad-email" placeholder="votre@email.com"></div>
+    <div class="adopt-form-group"><label>Téléphone</label><input type="tel" id="ad-tel" placeholder="+33 6 00 00 00 00"></div>
+    <div class="adopt-form-group"><label>Adresse *</label><input type="text" id="ad-adresse" placeholder="Numéro et nom de rue"></div>
+    <div class="adopt-form-row">
+      <div class="adopt-form-group"><label>Code postal *</label><input type="text" id="ad-cp" placeholder="75001"></div>
+      <div class="adopt-form-group"><label>Ville *</label><input type="text" id="ad-ville" placeholder="Paris"></div>
+    </div>
+    <div class="adopt-form-group"><label>Pays</label>
+      <select id="ad-pays">
+        <option>France</option><option>Belgique</option><option>Suisse</option><option>Luxembourg</option><option>Canada</option><option>Autre</option>
+      </select>
+    </div>
+    <div class="adopt-form-group"><label>Type de logement</label>
+      <select id="ad-logement">
+        <option value="">Sélectionner…</option>
+        <option>Appartement (sans balcon)</option>
+        <option>Appartement (avec balcon/terrasse)</option>
+        <option>Maison avec jardin</option>
+        <option>Maison sans jardin</option>
+      </select>
+    </div>
+    <div class="adopt-form-group"><label>Avez-vous déjà eu des animaux ?</label>
+      <select id="ad-exp">
+        <option value="">Sélectionner…</option>
+        <option>Oui, des chats</option>
+        <option>Oui, d'autres animaux</option>
+        <option>Non, premier animal</option>
+      </select>
+    </div>
+    <div class="adopt-form-group"><label>Motivation (optionnel)</label>
+      <textarea id="ad-motiv" placeholder="Pourquoi souhaitez-vous adopter ${cat.name} ?" style="min-height:80px;resize:vertical"></textarea>
+    </div>
+    <button class="adopt-submit" onclick="submitAdoptForm()">✅ Valider et générer mon attestation PNG</button>
   `;
 }
 
-async function doRefresh(){
-  const ico=document.getElementById('ref-ico');
-  ico.classList.add('spin');
-  await fetchData();
-  renderChef();
-  ico.classList.remove('spin');
-  showToast('Données actualisées','ok');
+function closeAdoptForm(){
+  document.getElementById('adopt-overlay').classList.remove('open');
 }
 
-// ══ TOAST ══
+function submitAdoptForm(){
+  const prenom = document.getElementById('ad-prenom')?.value.trim();
+  const nom = document.getElementById('ad-nom')?.value.trim();
+  const email = document.getElementById('ad-email')?.value.trim();
+  const adresse = document.getElementById('ad-adresse')?.value.trim();
+  const cp = document.getElementById('ad-cp')?.value.trim();
+  const ville = document.getElementById('ad-ville')?.value.trim();
+  if(!prenom||!nom||!email||!adresse||!cp||!ville){showToast('Veuillez remplir tous les champs obligatoires *','err');return;}
+
+  const data = {
+    prenom, nom, email,
+    tel: document.getElementById('ad-tel')?.value.trim()||'—',
+    adresse, cp, ville,
+    pays: document.getElementById('ad-pays')?.value||'France',
+    logement: document.getElementById('ad-logement')?.value||'—',
+    exp: document.getElementById('ad-exp')?.value||'—',
+    motiv: document.getElementById('ad-motiv')?.value.trim()||'',
+  };
+  generateAdoptionPNG(data);
+}
+
+function generateAdoptionPNG(data){
+  const cat = currentCatForAdopt;
+  const {total} = calcTotal(cat.price);
+  const refNum = 'PAW-'+Date.now().toString(36).toUpperCase();
+  const dateStr = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  const accList = ACCESSORIES.filter(a=>selectedAccessories.has(a.id)).map(a=>a.icon+' '+a.name).join(', ')||'Aucun accessoire sélectionné';
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 900; canvas.height = 1200;
+  const ctx = canvas.getContext('2d');
+
+  // Helper function: roundRect
+  if (!CanvasRenderingContext2D.prototype.roundRect) {
+    CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+      if (w < 2 * r) r = w / 2;
+      if (h < 2 * r) r = h / 2;
+      this.moveTo(x+r, y);
+      this.lineTo(x+w-r, y);
+      this.quadraticCurveTo(x+w, y, x+w, y+r);
+      this.lineTo(x+w, y+h-r);
+      this.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+      this.lineTo(x+r, y+h);
+      this.quadraticCurveTo(x, y+h, x, y+h-r);
+      this.lineTo(x, y+r);
+      this.quadraticCurveTo(x, y, x+r, y);
+      return this;
+    };
+  }
+
+  // Background gradient
+  const bg = ctx.createLinearGradient(0,0,900,1200);
+  bg.addColorStop(0,'#1A1410'); bg.addColorStop(1,'#241E17');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,900,1200);
+
+  // Decorative top bar
+  const bar = ctx.createLinearGradient(0,0,900,0);
+  bar.addColorStop(0,'#C4622D'); bar.addColorStop(1,'#D4A843');
+  ctx.fillStyle=bar; ctx.fillRect(0,0,900,8);
+
+  // Logo area
+  ctx.fillStyle='rgba(196,98,45,0.12)';
+  ctx.beginPath(); ctx.roundRect(40,30,820,100,16); ctx.fill();
+  ctx.fillStyle='#F5EFE0';
+  ctx.font='bold 36px "Playfair Display", serif'; ctx.fillText('🐾 Pawfect Home', 60,95);
+  ctx.fillStyle='#8A7D6A'; ctx.font='500 16px "Outfit", sans-serif';
+  ctx.fillText('ATTESTATION DE CANDIDATURE À L\'ADOPTION', 60,118);
+  ctx.fillStyle='#C4622D'; ctx.font='600 14px "DM Mono", monospace';
+  ctx.textAlign='right'; ctx.fillText('Réf. '+refNum, 860,95);
+  ctx.fillStyle='#8A7D6A'; ctx.font='500 13px "Outfit", sans-serif';
+  ctx.fillText(dateStr, 860,118);
+  ctx.textAlign='left';
+
+  // Section: cat info
+  ctx.fillStyle='rgba(245,239,224,0.05)';
+  ctx.beginPath(); ctx.roundRect(40,155,820,160,14); ctx.fill();
+  ctx.fillStyle='rgba(196,98,45,0.6)'; ctx.fillRect(40,155,5,160);
+
+  ctx.fillStyle='#C4622D'; ctx.font='600 12px "Outfit", sans-serif';
+  ctx.fillText('CHAT SOUHAITÉ', 60,183);
+  ctx.fillStyle='#F5EFE0'; ctx.font='bold 30px "Playfair Display", serif';
+  ctx.fillText(cat.name, 60,225);
+  ctx.fillStyle='#C8BCA8'; ctx.font='500 15px "Outfit", sans-serif';
+  const tags=[cat.race,cat.age,cat.sex,cat.character].filter(Boolean).join(' · ');
+  ctx.fillText(tags||'—', 60,255);
+  if(cat.price){
+    ctx.fillStyle='#EBC060'; ctx.font='bold 20px "DM Mono", monospace';
+    ctx.fillText('Prix adoption : '+cat.price+' €', 60,290);
+  }
+
+  // Section: applicant info
+  ctx.fillStyle='rgba(245,239,224,0.05)';
+  ctx.beginPath(); ctx.roundRect(40,340,820,310,14); ctx.fill();
+  ctx.fillStyle='rgba(90,122,90,0.6)'; ctx.fillRect(40,340,5,310);
+
+  ctx.fillStyle='#7A9A7A'; ctx.font='600 12px "Outfit", sans-serif';
+  ctx.fillText('INFORMATIONS DU CANDIDAT', 60,368);
+
+  function row(label, val, y){
+    ctx.fillStyle='#8A7D6A'; ctx.font='500 12px "Outfit", sans-serif'; ctx.fillText(label, 60, y);
+    ctx.fillStyle='#F5EFE0'; ctx.font='500 16px "Outfit", sans-serif'; ctx.fillText(val||'—', 60, y+22);
+  }
+  row('Nom complet', data.prenom+' '+data.nom, 390);
+  row('Email', data.email, 440);
+  row('Téléphone', data.tel, 490);
+  ctx.fillStyle='#8A7D6A'; ctx.font='500 12px "Outfit", sans-serif'; ctx.fillText('Adresse complète', 60, 540);
+  ctx.fillStyle='#F5EFE0'; ctx.font='500 16px "Outfit", sans-serif';
+  ctx.fillText(data.adresse+', '+data.cp+' '+data.ville+', '+data.pays, 60, 562);
+  row('Type de logement', data.logement, 590);
+  row('Expérience animaux', data.exp, 625);
+
+  // Section: accessories
+  ctx.fillStyle='rgba(245,239,224,0.05)';
+  ctx.beginPath(); ctx.roundRect(40,680,820,130,14); ctx.fill();
+  ctx.fillStyle='rgba(212,168,67,0.5)'; ctx.fillRect(40,680,5,130);
+  ctx.fillStyle='#D4A843'; ctx.font='600 12px "Outfit", sans-serif'; ctx.fillText('ACCESSOIRES SÉLECTIONNÉS', 60,706);
+  ctx.fillStyle='#C8BCA8'; ctx.font='500 14px "Outfit", sans-serif';
+  const accLines = accList.match(/.{1,80}(\s|$)/g)||[accList];
+  accLines.forEach((line,i)=>ctx.fillText(line.trim(),60,730+i*22));
+  ctx.fillStyle='#EBC060'; ctx.font='bold 18px "DM Mono", monospace';
+  ctx.fillText('TOTAL ESTIMATIF : '+(total>0?total+' €':'—'), 60,795);
+
+  // Motivation
+  if(data.motiv){
+    ctx.fillStyle='rgba(245,239,224,0.04)';
+    ctx.beginPath(); ctx.roundRect(40,840,820,100,14); ctx.fill();
+    ctx.fillStyle='#8A7D6A'; ctx.font='500 12px "Outfit", sans-serif'; ctx.fillText('MOTIVATION', 60,866);
+    ctx.fillStyle='#C8BCA8'; ctx.font='400 14px "Outfit", sans-serif';
+    const motLines=(data.motiv.slice(0,160)+(data.motiv.length>160?'…':'')).match(/.{1,85}(\s|$)/g)||[data.motiv];
+    motLines.forEach((l,i)=>ctx.fillText(l.trim(),60,886+i*20));
+  }
+
+  // Footer
+  ctx.fillStyle='rgba(245,239,224,0.06)';
+  ctx.beginPath(); ctx.roundRect(40,1100,820,80,14); ctx.fill();
+  ctx.fillStyle='#5A5040'; ctx.font='400 12px "Outfit", sans-serif';
+  const footerY = 1128;
+  ctx.fillText('🔒 Document généré sur pawfecthome.fr — Plateforme sécurisée (HTTPS)', 60, footerY);
+  ctx.fillText('Ce document constitue une déclaration de candidature. Il ne vaut pas engagement contractuel.', 60, footerY+20);
+  ctx.fillStyle='#C4622D'; ctx.font='600 13px "DM Mono", monospace';
+  ctx.textAlign='right'; ctx.fillText('pawfecthome.fr', 860, footerY+20);
+  ctx.textAlign='left';
+
+  // Download
+  const link = document.createElement('a');
+  link.download = `adoption_${cat.name}_${refNum}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+
+  // Show success
+  document.getElementById('adopt-form-content').innerHTML=`
+    <div class="success-box">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">Dossier généré avec succès !</div>
+      <p class="success-sub">Votre attestation de candidature pour <strong style="color:var(--terra3)">${cat.name}</strong> a été téléchargée au format PNG.<br><br>
+      Référence : <strong style="font-family:'DM Mono',monospace;color:var(--gold2)">${refNum}</strong><br><br>
+      Présentez cette image lors de votre contact avec nous pour finaliser l'adoption.</p>
+      <button class="download-btn" onclick="submitAdoptForm()">⬇️ Re-télécharger l'attestation</button>
+      <div style="margin-top:1rem">
+        <button class="modal-adopt-btn" style="display:inline-flex;align-items:center;gap:8px;width:auto;padding:12px 24px" onclick="window.open('https://wa.me/237600000000?text=Bonjour, j\\'ai soumis un dossier pour ${encodeURIComponent(cat.name)}, réf. ${refNum}','_blank')">📱 Envoyer sur WhatsApp</button>
+      </div>
+    </div>
+  `;
+  showToast('Attestation PNG téléchargée ! 🎉','ok');
+}
+
+// ══ PREORDER ══
+let selectedPayment = '';
+
+function openPreorderModal(){
+  const cat = currentCatForAdopt;
+  if(!cat) return;
+  selectedPayment='';
+  const {total} = calcTotal(cat.price);
+  document.getElementById('preorder-overlay').classList.add('open');
+  document.getElementById('preorder-content').innerHTML=`
+    <div class="adopt-title">⭐ Précommander ${cat.name}</div>
+    <p class="adopt-sub">Réservez votre compagnon dès maintenant. La précommande est variable et peut être ajustée avant finalisation.</p>
+
+    <div class="price-summary">
+      <div class="price-row"><span>🐱 ${cat.name}</span><span>${cat.price?cat.price+'€':'—'}</span></div>
+      ${selectedAccessories.size>0?`<div class="price-row"><span>🛍️ Accessoires</span><span>${calcTotal(cat.price).accessories}€</span></div>`:''}
+      <div class="price-row total"><span>💰 Total estimatif</span><span>${total>0?total+'€':'À définir'}</span></div>
+    </div>
+
+    <div class="preorder-section">
+      <div class="preorder-title">💳 Choisissez votre méthode de paiement</div>
+
+      <div class="security-badge">
+        <div class="security-badge-icon">🔒</div>
+        <div class="security-badge-text">
+          <strong>Plateforme 100% sécurisée · HTTPS certifié</strong>
+          Vos informations sont protégées par un chiffrement SSL. Pawfect Home ne stocke aucune donnée bancaire. Vous ne craignez absolument rien.
+        </div>
+      </div>
+
+      <div class="payment-methods">
+        <div class="payment-card" id="pay-cash" onclick="selectPayment('cash')">
+          <div class="payment-card-icon">💵</div>
+          <div class="payment-card-name">Cash</div>
+          <div class="payment-card-desc">Paiement en espèces lors de la remise</div>
+        </div>
+        <div class="payment-card" id="pay-neosurf" onclick="selectPayment('neosurf')">
+          <div class="payment-card-icon">🎫</div>
+          <div class="payment-card-name">Neosurf</div>
+          <div class="payment-card-desc">Ticket prépayé anonyme — sécurisé</div>
+        </div>
+      </div>
+
+      <div id="payment-info-box" style="display:none;background:var(--dark3);border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:13px;color:var(--text2);line-height:1.6"></div>
+
+      <div class="adopt-form-group" style="margin-top:.5rem">
+        <label>Montant de la précommande (€) *</label>
+        <input type="number" id="po-montant" placeholder="Ex: 100" min="1" value="${Math.min(100,(total||100))}">
+        <span style="font-size:11px;color:var(--text3);margin-top:4px">Vous pouvez adapter ce montant — il sera déduit du total à la remise.</span>
+      </div>
+
+      <div class="adopt-form-group">
+        <label>Votre nom</label>
+        <input type="text" id="po-nom" placeholder="Prénom Nom">
+      </div>
+
+      <button class="preorder-btn" id="preorder-submit-btn" onclick="submitPreorder()" disabled>
+        🔒 Valider ma précommande
+      </button>
+    </div>
+  `;
+}
+
+function selectPayment(method){
+  selectedPayment = method;
+  document.querySelectorAll('.payment-card').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('pay-'+method).classList.add('selected');
+  const infoBox = document.getElementById('payment-info-box');
+  infoBox.style.display='block';
+  if(method==='cash'){
+    infoBox.innerHTML='<strong style="color:var(--cream)">💵 Paiement en cash</strong><br>Vous réglerez en espèces directement lors de la remise de votre compagnon. Aucune information sensible requise en ligne.';
+  } else {
+    infoBox.innerHTML='<strong style="color:var(--cream)">🎫 Paiement Neosurf</strong><br>Achetez un ticket Neosurf dans un point de vente (tabac, bureau de poste, supermarché). Communiquez-nous le code de votre ticket par WhatsApp ou email. Votre identité reste confidentielle.';
+  }
+  document.getElementById('preorder-submit-btn').disabled=false;
+}
+
+function closePreorder(){
+  document.getElementById('preorder-overlay').classList.remove('open');
+}
+
+function submitPreorder(){
+  const cat = currentCatForAdopt;
+  const montant = document.getElementById('po-montant')?.value;
+  const nom = document.getElementById('po-nom')?.value.trim();
+  if(!selectedPayment){showToast('Sélectionnez une méthode de paiement','err');return;}
+  if(!montant||parseFloat(montant)<=0){showToast('Entrez un montant valide','err');return;}
+
+  const refNum = 'PRE-'+Date.now().toString(36).toUpperCase();
+  const payLabel = selectedPayment==='cash'?'💵 Cash':'🎫 Neosurf';
+  document.getElementById('preorder-content').innerHTML=`
+    <div class="success-box">
+      <span class="success-icon">🎊</span>
+      <div class="success-title">Précommande enregistrée !</div>
+      <p class="success-sub">
+        Votre précommande pour <strong style="color:var(--terra3)">${cat.name}</strong> a bien été enregistrée.<br><br>
+        Méthode : <strong style="color:var(--gold2)">${payLabel}</strong><br>
+        Montant réservé : <strong style="color:var(--gold2);font-family:'DM Mono',monospace">${parseFloat(montant).toFixed(2)} €</strong><br>
+        Référence : <strong style="font-family:'DM Mono',monospace;color:var(--gold2)">${refNum}</strong><br><br>
+        ${selectedPayment==='neosurf'?'<span style="background:rgba(90,122,90,0.15);border:1px solid rgba(90,122,90,0.3);padding:8px 14px;border-radius:8px;display:block;margin-top:8px">Envoyez votre code Neosurf par WhatsApp avec la référence <strong>'+ refNum +'</strong></span>':'Nous vous contacterons pour confirmer la date de remise.'}
+      </p>
+      <button class="modal-adopt-btn" style="display:inline-flex;align-items:center;gap:8px;width:auto;padding:12px 24px" onclick="window.open('https://wa.me/237600000000?text=Précommande '+encodeURIComponent(refNum)+' — '+encodeURIComponent(cat.name)+' — '+encodeURIComponent(payLabel),'_blank')">📱 Confirmer sur WhatsApp</button>
+    </div>
+  `;
+  showToast('Précommande validée ! '+refNum,'ok');
+}
+
+// ══ TESTIMONIALS ══
+function renderTestimonials(){
+  const track = document.getElementById('test-track');
+  const dots  = document.getElementById('test-dots');
+  const tests = db.testimonials||DEFAULT_TESTIMONIALS;
+  track.innerHTML = tests.map(t=>`
+    <div class="testimonial-card">
+      <div class="test-stars">${'<span class="star">★</span>'.repeat(t.stars||5)}</div>
+      <p class="test-text">${t.text}</p>
+      <div class="test-author">
+        <div class="test-avatar">${t.avatar||'🐱'}</div>
+        <div>
+          <div class="test-name">${t.name}</div>
+          <div class="test-cat">${t.cat}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  dots.innerHTML = tests.map((_,i)=>`<button class="test-ctrl${i===0?' active':''}" onclick="goTest(${i})"></button>`).join('');
+  updateTestSlide();
+}
+
+function updateTestSlide(){
+  const track = document.getElementById('test-track');
+  const cards = track.querySelectorAll('.testimonial-card');
+  if(!cards.length) return;
+  const w = cards[0].offsetWidth+20;
+  track.style.transform=`translateX(-${testIndex*w}px)`;
+  document.querySelectorAll('.test-ctrl').forEach((d,i)=>d.classList.toggle('active',i===testIndex));
+}
+
+function slideTest(dir){
+  const total = (db.testimonials||DEFAULT_TESTIMONIALS).length;
+  testIndex = (testIndex+dir+total)%total;
+  updateTestSlide();
+}
+function goTest(i){testIndex=i;updateTestSlide()}
+
+// ── Auto slide
+setInterval(()=>slideTest(1), 5000);
+window.addEventListener('resize',updateTestSlide);
+
+// ══ ADMIN ══
+let adminOpen = false;
+function toggleAdmin(){
+  const key = document.getElementById('admin-key').value;
+  if(key!==ADMIN_KEY){showToast('Clé admin incorrecte','err');return;}
+  adminOpen=!adminOpen;
+  document.getElementById('admin-panel').classList.toggle('open',adminOpen);
+  document.getElementById('admin-arrow').style.transform=adminOpen?'rotate(180deg)':'';
+  if(adminOpen) renderManageList();
+}
+
+async function addCat(){
+  const name = document.getElementById('a-name').value.trim();
+  const desc = document.getElementById('a-desc').value.trim();
+  if(!name||!desc){showToast('Nom et description requis','err');return;}
+
+  const btn = document.getElementById('admin-submit');
+  btn.disabled=true; btn.textContent='Publication…';
+
+  const priceVal = document.getElementById('a-price').value.trim();
+  const cat = {
+    id:genId(), name,
+    race:document.getElementById('a-race').value.trim(),
+    age:document.getElementById('a-age').value.trim(),
+    sex:document.getElementById('a-sex').value,
+    character:document.getElementById('a-character').value.trim(),
+    status:document.getElementById('a-status').value,
+    price:priceVal ? parseFloat(priceVal) : null,
+    video:document.getElementById('a-video').value.trim(),
+    photo:document.getElementById('a-photo').value.trim(),
+    description:desc,
+    isNew:true,
+    createdAt:Date.now()
+  };
+
+  db.cats.unshift(cat);
+  try{
+    await pushDB();
+    showToast(`${name} a été publié ! 🐾`,'ok');
+    ['a-name','a-race','a-age','a-sex','a-character','a-status','a-price','a-video','a-photo','a-desc'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){
+        if(el.tagName==='SELECT') el.value=el.options[0]?.value||'';
+        else el.value='';
+      }
+    });
+    renderCats();
+    renderManageList();
+  } catch(e){
+    showToast('Erreur de connexion','err');
+    db.cats.shift();
+  }
+  btn.disabled=false; btn.textContent='Publier ce chat →';
+}
+
+// ══ MANAGE LIST ══
+function renderManageList(){
+  const list = document.getElementById('manage-list');
+  const cats = db.cats;
+  if(!cats.length){
+    list.innerHTML='<div style="font-size:13px;color:var(--text3);font-style:italic;padding:.5rem 0">Aucun chat publié pour le moment.</div>';
+    return;
+  }
+  list.innerHTML = cats.map(cat=>{
+    const thumb = cat.photo ? `<img src="${cat.photo}" alt="${cat.name}">` : cat.video ? '🎬' : '🐱';
+    const statusClass = {available:'ms-available',reserved:'ms-reserved',adopted:'ms-adopted'}[cat.status]||'ms-available';
+    const statusLbl = {available:'Disponible',reserved:'Réservé',adopted:'Adopté'}[cat.status]||'Disponible';
+    return `<div class="admin-manage-item" id="mitem-${cat.id}">
+      <div class="manage-thumb">${thumb}</div>
+      <div class="manage-info">
+        <div class="manage-name">${cat.name}</div>
+        <div class="manage-meta">${[cat.race,cat.age,cat.sex].filter(Boolean).join(' · ')||'—'}</div>
+      </div>
+      <span class="manage-status ${statusClass}">${statusLbl}</span>
+      <div class="manage-actions">
+        <button class="manage-del-btn" id="delbtn-${cat.id}" onclick="askDelete('${cat.id}')">🗑 Supprimer</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+let deleteConfirmId = null;
+function askDelete(id){
+  // Si on clique une 2e fois sur le même → confirmer
+  if(deleteConfirmId===id){ deleteCat(id); return; }
+  // Reset le précédent
+  if(deleteConfirmId){
+    const prev = document.getElementById('delbtn-'+deleteConfirmId);
+    if(prev){ prev.className='manage-del-btn'; prev.textContent='🗑 Supprimer'; prev.onclick=()=>askDelete(deleteConfirmId); }
+  }
+  deleteConfirmId = id;
+  const btn = document.getElementById('delbtn-'+id);
+  btn.className='confirm-del';
+  btn.textContent='⚠️ Confirmer ?';
+  btn.onclick=()=>deleteCat(id);
+  // Auto-reset après 4s
+  setTimeout(()=>{
+    if(deleteConfirmId===id){
+      deleteConfirmId=null;
+      if(btn){ btn.className='manage-del-btn'; btn.textContent='🗑 Supprimer'; btn.onclick=()=>askDelete(id); }
+    }
+  },4000);
+}
+
+async function deleteCat(id){
+  const cat = db.cats.find(c=>c.id===id);
+  if(!cat) return;
+  const btn = document.getElementById('delbtn-'+id);
+  if(btn){ btn.disabled=true; btn.textContent='Suppression…'; }
+  db.cats = db.cats.filter(c=>c.id!==id);
+  try{
+    await pushDB();
+    showToast(`${cat.name} supprimé avec succès`,'ok');
+    renderCats();
+    renderManageList();
+  } catch(e){
+    db.cats.unshift(cat);
+    showToast('Erreur lors de la suppression','err');
+    renderManageList();
+  }
+  deleteConfirmId=null;
+}
 function showToast(msg,type=''){
   const t=document.getElementById('toast');
   t.textContent=msg; t.className='toast'+(type?' '+type:'');
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2600);
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
+
+// ══ CURSOR ══
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(animRing)})();
+document.querySelectorAll('a,button,.cat-card,.user-btn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.5)';curR.style.transform='translate(-50%,-50%) scale(1.5)';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';curR.style.transform='translate(-50%,-50%) scale(1)';});
+});
+
+// ══ NAV SCROLL ══
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// ══ MOBILE MENU ══
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ══ REVEAL ON SCROLL ══
+function observeReveal(){
+  const els=document.querySelectorAll('.reveal:not(.visible)');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+  },{threshold:.12});
+  els.forEach(el=>obs.observe(el));
+}
+
+// ══ INIT ══
+(async()=>{
+  await fetchDB();
+  renderCats();
+  renderTestimonials();
+  observeReveal();
+})();
 </script>
 </body>
 </html>
