@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation Cybersécurité — Stop None Académie</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00F5FF;
+    --blue: #0070F3;
+    --red: #FF2D55;
+    --bg: #030712;
+    --glass: rgba(0,112,243,0.08);
+    --glass-border: rgba(0,245,255,0.15);
+    --text: #E2E8F0;
+    --muted: #64748B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ─── CANVAS MATRIX ─── */
+  #matrix-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  /* ─── SCAN LINE OVERLAY ─── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,245,255,0.015) 2px,
+      rgba(0,245,255,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .page-wrap { position: relative; z-index: 2; }
+
+  /* ─── NAV ─── */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 5%;
+    border-bottom: 1px solid var(--glass-border);
+    backdrop-filter: blur(12px);
+    background: rgba(3,7,18,0.7);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1rem;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--red); }
+
+  .nav-badge {
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+    color: #000;
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 6px 16px;
+    border-radius: 100px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    animation: pulse-badge 2s infinite;
+  }
+
+  @keyframes pulse-badge {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,245,255,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(0,245,255,0); }
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 5% 60px;
+    position: relative;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--cyan);
+    opacity: 0.5;
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .hero-title .line1 { color: #fff; }
+  .hero-title .line2 {
+    background: linear-gradient(90deg, var(--cyan), var(--blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-title .line3 { color: var(--red); font-size: 0.55em; letter-spacing: 0.15em; }
+
+  .hero-sub {
+    max-width: 620px;
+    margin: 28px auto 0;
+    font-size: 1.1rem;
+    color: #94A3B8;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin: 48px auto 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--cyan);
+    display: block;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+  /* ─── CTA BUTTON ─── */
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 52px;
+    padding: 18px 42px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(37,211,102,0.35);
+    border: 1px solid rgba(37,211,102,0.5);
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  .cta-btn:hover::before { transform: translateX(100%); }
+  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 40px rgba(37,211,102,0.5); }
+
+  .wa-icon { font-size: 1.3rem; }
+
+  .cta-sub { margin-top: 16px; font-size: 0.82rem; color: var(--muted); }
+  .cta-sub span { color: var(--red); }
+
+  /* ─── SECTION BASE ─── */
+  section { padding: 90px 5%; }
+
+  .section-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .section-sub { color: #64748B; font-size: 1rem; max-width: 560px; line-height: 1.7; margin-bottom: 48px; }
+
+  .divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cyan), var(--blue));
+    margin: 20px 0 40px;
+    border-radius: 2px;
+  }
+
+  /* ─── ALERT BANNER ─── */
+  .alert-banner {
+    background: rgba(255,45,85,0.1);
+    border: 1px solid rgba(255,45,85,0.4);
+    border-left: 4px solid var(--red);
+    padding: 16px 24px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #FCA5A5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 800px;
+    margin: 0 auto 60px;
+    text-align: left;
+  }
+  .alert-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+  /* ─── WHY SECTION ─── */
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .why-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .why-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--blue));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .why-card:hover { border-color: rgba(0,245,255,0.4); transform: translateY(-4px); }
+  .why-card:hover::before { transform: scaleX(1); }
+
+  .card-icon {
+    width: 52px; height: 52px;
+    background: rgba(0,112,243,0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+  }
+  .card-title { font-family: 'Orbitron', monospace; font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+  .card-text { font-size: 0.9rem; color: #94A3B8; line-height: 1.65; }
+
+  /* ─── MENACES TICKER ─── */
+  .ticker-wrap {
+    overflow: hidden;
+    background: rgba(255,45,85,0.06);
+    border-top: 1px solid rgba(255,45,85,0.2);
+    border-bottom: 1px solid rgba(255,45,85,0.2);
+    padding: 14px 0;
+    margin: 0 -5%;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 60px;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.78rem;
+    color: var(--red);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ticker-item::before { content: '▶'; font-size: 0.6rem; opacity: 0.6; }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* ─── PROGRAMME ─── */
+  .programme-section { background: rgba(0,112,243,0.03); }
+
+  .modules-list {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .module-item {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: center;
+    gap: 20px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 18px 24px;
+    transition: border-color 0.2s;
+  }
+  .module-item:hover { border-color: rgba(0,245,255,0.35); }
+  .module-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--cyan);
+    opacity: 0.6;
+  }
+  .module-name { font-size: 0.95rem; font-weight: 500; color: #E2E8F0; }
+  .module-name small { display: block; font-size: 0.8rem; color: var(--muted); margin-top: 3px; font-weight: 400; }
+  .module-badge {
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-hot { background: rgba(255,45,85,0.15); color: var(--red); border: 1px solid rgba(255,45,85,0.3); }
+  .badge-new { background: rgba(0,245,255,0.1); color: var(--cyan); border: 1px solid rgba(0,245,255,0.3); }
+  .badge-pro { background: rgba(0,112,243,0.15); color: #60A5FA; border: 1px solid rgba(0,112,243,0.3); }
+
+  /* ─── SALAIRES ─── */
+  .salary-section { text-align: center; }
+  .salary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .salary-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 36px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .salary-card:hover { transform: translateY(-6px); }
+  .salary-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .salary-card.africa::after { background: linear-gradient(90deg, #F59E0B, #EF4444); }
+  .salary-card.europe::after { background: linear-gradient(90deg, var(--blue), var(--cyan)); }
+  .salary-card.usa::after { background: linear-gradient(90deg, #8B5CF6, #EC4899); }
+  .salary-card.canada::after { background: linear-gradient(90deg, #10B981, #06B6D4); }
+
+  .salary-flag { font-size: 2rem; margin-bottom: 12px; }
+  .salary-region {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .salary-range {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--cyan);
+    line-height: 1.1;
+  }
+  .salary-unit { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+  .salary-roles { margin-top: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .salary-role { font-size: 0.8rem; color: #94A3B8; display: flex; align-items: center; gap: 8px; }
+  .salary-role::before { content: '›'; color: var(--cyan); font-weight: 700; }
+
+  /* ─── SECTEURS ─── */
+  .sectors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .sector-pill {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: all 0.25s;
+    cursor: default;
+  }
+  .sector-pill:hover {
+    background: rgba(0,112,243,0.15);
+    border-color: rgba(0,245,255,0.4);
+    transform: scale(1.03);
+  }
+  .sector-emoji { font-size: 1.8rem; display: block; margin-bottom: 10px; }
+  .sector-name { font-size: 0.82rem; font-weight: 600; color: #CBD5E1; }
+
+  /* ─── TEMOIGNAGES ─── */
+  .testi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .testi-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .testi-stars { color: #FBBF24; font-size: 0.9rem; margin-bottom: 14px; }
+  .testi-text { font-size: 0.9rem; color: #94A3B8; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--cyan));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; color: #000;
+    flex-shrink: 0;
+  }
+  .testi-name { font-size: 0.88rem; font-weight: 600; color: #E2E8F0; }
+  .testi-loc { font-size: 0.75rem; color: var(--muted); }
+
+  /* ─── URGENCY SECTION ─── */
+  .urgency-section {
+    text-align: center;
+    padding: 80px 5%;
+    background: radial-gradient(ellipse at center, rgba(0,112,243,0.12) 0%, transparent 70%);
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .urgency-timer {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 36px 0;
+    flex-wrap: wrap;
+  }
+  .timer-block {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 16px 24px;
+    min-width: 80px;
+  }
+  .timer-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--cyan);
+    display: block;
+    line-height: 1;
+  }
+  .timer-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 4px; }
+
+  .spots-bar {
+    max-width: 400px;
+    margin: 0 auto 28px;
+  }
+  .spots-text { font-size: 0.85rem; color: var(--muted); margin-bottom: 10px; }
+  .spots-text span { color: var(--red); font-weight: 700; }
+  .progress-track {
+    height: 8px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 73%;
+    background: linear-gradient(90deg, var(--red), #FF6B6B);
+    border-radius: 100px;
+    animation: fill-pulse 2s ease-in-out infinite;
+  }
+  @keyframes fill-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+  /* ─── BIG CTA ─── */
+  .big-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 52px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: #fff;
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1.05rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 0 50px rgba(37,211,102,0.45);
+    border: 1px solid rgba(37,211,102,0.6);
+    transition: all 0.3s;
+    animation: glow-cta 3s ease-in-out infinite;
+  }
+  .big-cta:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 60px rgba(37,211,102,0.6); }
+
+  @keyframes glow-cta {
+    0%, 100% { box-shadow: 0 0 50px rgba(37,211,102,0.45); }
+    50% { box-shadow: 0 0 80px rgba(37,211,102,0.7), 0 0 120px rgba(37,211,102,0.3); }
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 5%;
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+  }
+  .footer-logo { font-family: 'Orbitron', monospace; font-size: 0.9rem; color: var(--cyan); font-weight: 700; letter-spacing: 0.15em; }
+  .footer-text { font-size: 0.8rem; color: var(--muted); }
+  .footer-disclaimer { font-size: 0.75rem; color: #334155; max-width: 500px; }
+
+  /* ─── HEX DECORATIONS ─── */
+  .hex-deco {
+    position: absolute;
+    border: 1px solid rgba(0,245,255,0.08);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    animation: hex-float 8s ease-in-out infinite;
+  }
+  @keyframes hex-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+    50% { transform: translateY(-20px) rotate(10deg); opacity: 0.8; }
+  }
+
+  /* ─── GLITCH TEXT ─── */
+  .glitch {
+    position: relative;
+  }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  .glitch::before {
+    color: var(--red);
+    clip: rect(0, 900px, 0, 0);
+    animation: glitch-top 4s infinite linear;
+  }
+  .glitch::after {
+    color: var(--cyan);
+    clip: rect(0, 900px, 0, 0);
+    animation: glitch-bot 4s infinite linear 0.2s;
+  }
+  @keyframes glitch-top {
+    2%, 64% { transform: translate(2px, -2px) skew(0deg); clip: rect(0, 900px, 0, 0); }
+    4%, 60%, 100% { transform: translate(0); clip: rect(0, 900px, 0, 0); }
+    8% { clip: rect(0, 900px, 8px, 0); transform: translate(-2px, 0); }
+    16% { clip: rect(48px, 900px, 60px, 0); transform: translate(-2px, 0); }
+    24% { clip: rect(0, 900px, 0, 0); }
+  }
+  @keyframes glitch-bot {
+    2%, 64% { transform: translate(-2px, 2px) skew(0deg); clip: rect(0, 900px, 0, 0); }
+    4%, 60%, 100% { transform: translate(0); clip: rect(0, 900px, 0, 0); }
+    12% { clip: rect(50px, 900px, 70px, 0); transform: translate(2px, 0); }
+    20% { clip: rect(20px, 900px, 40px, 0); transform: translate(2px, 0); }
+    28% { clip: rect(0, 900px, 0, 0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .hero-stats { gap: 24px; }
+    .stat-num { font-size: 1.5rem; }
+    .module-item { grid-template-columns: 36px 1fr; }
+    .module-badge { display: none; }
+    .big-cta { padding: 18px 32px; font-size: 0.88rem; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+
+<div class="page-wrap">
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Stop None <span>Académie</span></div>
+  <a href="https://chat.whatsapp.com/IbdnwME1NFV4VtRIwQ2G6U?s=cl&p=a&mlu=4" class="nav-badge" target="_blank">🔐 Rejoindre la formation</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Hex decorations -->
+  <div class="hex-deco" style="width:120px;height:120px;top:15%;right:8%;animation-delay:0s;background:rgba(0,112,243,0.04);"></div>
+  <div class="hex-deco" style="width:80px;height:80px;top:25%;left:6%;animation-delay:2s;background:rgba(0,245,255,0.03);"></div>
+  <div class="hex-deco" style="width:60px;height:60px;bottom:25%;right:12%;animation-delay:4s;background:rgba(255,45,85,0.04);"></div>
+
+  <div class="hero-eyebrow">Formation professionnelle certifiante</div>
+
+  <h1 class="hero-title">
+    <div class="line1">Maîtrise la</div>
+    <div class="line2 glitch" data-text="CYBERSÉCURITÉ">CYBERSÉCURITÉ</div>
+    <div class="line3">et propulse ta carrière</div>
+  </h1>
+
+  <p class="hero-sub">
+    De zéro à expert en sécurité informatique. Formation 100% pratique dispensée par des professionnels certifiés — pensée pour l'Afrique, reconnue dans le monde entier.
+  </p>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">3.5M+</span>
+      <div class="stat-label">Postes vacants mondial</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">12 sem</span>
+      <div class="stat-label">Pour être opérationnel</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">850K+</span>
+      <div class="stat-label">FCFA salaire moyen/mois</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">94%</span>
+      <div class="stat-label">Taux d'emploi</div>
+    </div>
+  </div>
+
+  <a href="https://chat.whatsapp.com/IbdnwME1NFV4VtRIwQ2G6U?s=cl&p=a&mlu=4" class="cta-btn" target="_blank">
+    <span class="wa-icon">💬</span>
+    Rejoindre la communauté WhatsApp
+  </a>
+  <p class="cta-sub">⚡ Accès <span>GRATUIT</span> · Places limitées · Inscriptions ouvertes</p>
+</section>
+
+<!-- TICKER MENACES -->
+<div style="padding:0 5%;overflow:hidden;">
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <span class="ticker-item">Ransomware en hausse de 300% en Afrique</span>
+      <span class="ticker-item">Pénurie mondiale de 3.5 millions de cyberpros</span>
+      <span class="ticker-item">Cyberattaque toutes les 39 secondes dans le monde</span>
+      <span class="ticker-item">Les banques africaines perdent 4 milliards $/an</span>
+      <span class="ticker-item">Hacking détecté — les experts sont recherchés d'urgence</span>
+      <span class="ticker-item">Security Breach : le marché de la cyber recrute massivement</span>
+      <!-- duplicate pour boucle -->
+      <span class="ticker-item">Ransomware en hausse de 300% en Afrique</span>
+      <span class="ticker-item">Pénurie mondiale de 3.5 millions de cyberpros</span>
+      <span class="ticker-item">Cyberattaque toutes les 39 secondes dans le monde</span>
+      <span class="ticker-item">Les banques africaines perdent 4 milliards $/an</span>
+      <span class="ticker-item">Hacking détecté — les experts sont recherchés d'urgence</span>
+      <span class="ticker-item">Security Breach : le marché de la cyber recrute massivement</span>
+    </div>
+  </div>
+</div>
+
+<!-- POURQUOI SECTION -->
+<section>
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-label">Pourquoi choisir la cybersécurité ?</div>
+    <h2 class="section-title">Le secteur le plus porteur<br>de la décennie numérique</h2>
+    <div class="divider"></div>
+
+    <div class="alert-banner">
+      <span class="alert-icon">⚠️</span>
+      <span>D'ici 2025, les cyberattaques coûteront <strong>10 500 milliards de dollars par an</strong> à l'économie mondiale. Chaque entreprise, chaque gouvernement cherche des experts pour se protéger. <strong>C'est toi qu'ils attendent.</strong></span>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="card-icon">🚀</div>
+        <div class="card-title">Demande explosive</div>
+        <p class="card-text">Plus de 3,5 millions de postes non pourvus dans le monde. Les entreprises se battent pour recruter des talents qualifiés — tu es en position de force dès la sortie de formation.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">Salaires très élevés</div>
+        <p class="card-text">En Europe, un analyste cybersécurité gagne entre 3 500 et 7 000 €/mois. En Afrique, les salaires dépassent largement les autres filières IT. Tu es payé à ta valeur réelle.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon">🌍</div>
+        <div class="card-title">Travail partout dans le monde</div>
+        <p class="card-text">Remote, freelance, CDI en Europe ou au Canada — les frontières n'existent plus pour un expert cyber. Ta certification ouvre des portes dans 150 pays.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon">🛡️</div>
+        <div class="card-title">Métier d'avenir garanti</div>
+        <p class="card-text">La cybersécurité ne sera jamais automatisée. L'intelligence humaine est irremplaçable face aux hackers. Ton emploi est protégé contre l'IA pour 20 ans minimum.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Reconversion rapide</div>
+        <p class="card-text">Pas besoin d'un Master de 5 ans. En 3 mois de formation intensive, tu acquiers les compétences recherchées par les recruteurs et tu peux postuler immédiatement.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon">🏆</div>
+        <div class="card-title">Prestige & respect</div>
+        <p class="card-text">Un expert cyber est vu comme un gardien de l'ère numérique. Tu intègres une élite qui protège les gouvernements, les banques et les multinationales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMME -->
+<section class="programme-section">
+  <div style="max-width:900px;margin:0 auto;">
+    <div class="section-label">Programme de formation</div>
+    <h2 class="section-title">Curriculum complet<br>de zéro à expert</h2>
+    <div class="divider"></div>
+    <p class="section-sub">12 modules progressifs, 100% pratique, avec labs virtuels et projets réels.</p>
+
+    <div class="modules-list">
+      <div class="module-item">
+        <div class="module-num">M01</div>
+        <div class="module-name">Fondamentaux des Réseaux & Systèmes <small>TCP/IP, OSI, Linux, Windows Server</small></div>
+        <div class="module-badge badge-pro">Base</div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">M02</div>
+        <div class="module-name">Cryptographie & Chiffrement <small>AES, RSA, certificats SSL/TLS, PKI</small></div>
+        <div class="module-badge badge-pro">Base</div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">M03</div>
+        <div class="module-name">Ethical Hacking & Pentesting <small>Kali Linux, Nmap, Metasploit, Burp Suite</small></div>
+        <div class="module-badge badge-hot">🔥 Hot</div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">M04</div>
+        <div class="module-name">Analyse des Malwares & Forensique <small>Reverse engineering, analyse mémoire, DFIR</small></div>
+        <div class="module-badge badge-hot">🔥 Hot</div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">M05</div>
+        <div class="module-name">SIEM & Surveillance des Menaces <small>Splunk, Elastic SIEM, détection d'intrusion</small></div>
+        <div class="module-badge badge-new">Nouveau</div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">M06</div>
+        <div class="module-name">Sécurité Cloud & DevSecOps <small>AWS Security, Docker, CI/CD sécurisé</small></div>
+        <div class="module-badge badge-new">Nouveau</div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">M07</div>
+        <div class="module-name">CTF & Bug Bounty — Gagne de l'argent <small>HackTheBox, platforms de bug bounty, monétisation</small></div>
+        <div class="module-badge badge-hot">💰 Revenus</div>
+      </div>
+      <div class="module-item">
+        <div class="module-num">M08</div>
+        <div class="module-name">Certifications CEH / CompTIA Security+ <small>Préparation aux examens internationaux</small></div>
+        <div class="module-badge badge-pro">Certif</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SALAIRES -->
+<section class="salary-section">
+  <div class="section-label" style="justify-content:center;display:flex;">Rémunérations par région</div>
+  <h2 class="section-title">Ce que tu peux gagner<br>avec cette formation</h2>
+  <div class="divider" style="margin:20px auto 48px;"></div>
+
+  <div class="salary-grid">
+    <div class="salary-card africa">
+      <div class="salary-flag">🌍</div>
+      <div class="salary-region">Afrique Centrale & Ouest</div>
+      <div class="salary-range">400K–<br>1.5M FCFA</div>
+      <div class="salary-unit">par mois</div>
+      <div class="salary-roles">
+        <div class="salary-role">Analyste Sécurité – 400K FCFA</div>
+        <div class="salary-role">Pentester Senior – 900K FCFA</div>
+        <div class="salary-role">RSSI – 1.2M FCFA</div>
+        <div class="salary-role">Consultant Freelance – 1.5M+</div>
+      </div>
+    </div>
+    <div class="salary-card europe">
+      <div class="salary-flag">🇪🇺</div>
+      <div class="salary-region">Europe (France, Belgique, Suisse)</div>
+      <div class="salary-range">3 500–<br>8 000 €</div>
+      <div class="salary-unit">par mois</div>
+      <div class="salary-roles">
+        <div class="salary-role">Analyste SOC – 3 500 €</div>
+        <div class="salary-role">Pentester – 5 000 €</div>
+        <div class="salary-role">Architecte Sécurité – 7 000 €</div>
+        <div class="salary-role">RSSI / CISO – 8 000 €+</div>
+      </div>
+    </div>
+    <div class="salary-card usa">
+      <div class="salary-flag">🇺🇸</div>
+      <div class="salary-region">États-Unis & Remote USD</div>
+      <div class="salary-range">$6K–<br>$15K</div>
+      <div class="salary-unit">par mois</div>
+      <div class="salary-roles">
+        <div class="salary-role">Security Engineer – $8K</div>
+        <div class="salary-role">Red Team Lead – $10K</div>
+        <div class="salary-role">Cloud Security – $12K</div>
+        <div class="salary-role">CISO Fortune 500 – $15K+</div>
+      </div>
+    </div>
+    <div class="salary-card canada">
+      <div class="salary-flag">🇨🇦</div>
+      <div class="salary-region">Canada & Australie</div>
+      <div class="salary-range">$5K–<br>$11K CAD</div>
+      <div class="salary-unit">par mois</div>
+      <div class="salary-roles">
+        <div class="salary-role">Analyste Cyber – $5K CAD</div>
+        <div class="salary-role">Incident Responder – $7K</div>
+        <div class="salary-role">Security Consultant – $9K</div>
+        <div class="salary-role">Bug Bounty (illimité)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTEURS D'EMPLOI -->
+<section style="text-align:center;background:rgba(0,112,243,0.02);">
+  <div class="section-label" style="justify-content:center;display:flex;">Secteurs qui recrutent</div>
+  <h2 class="section-title">Travaille dans n'importe<br>quel secteur stratégique</h2>
+  <div class="divider" style="margin:20px auto 48px;"></div>
+
+  <div class="sectors-grid">
+    <div class="sector-pill"><span class="sector-emoji">🏦</span><div class="sector-name">Banques & Fintech</div></div>
+    <div class="sector-pill"><span class="sector-emoji">🏥</span><div class="sector-name">Santé & Hôpitaux</div></div>
+    <div class="sector-pill"><span class="sector-emoji">🏛️</span><div class="sector-name">Gouvernements & Défense</div></div>
+    <div class="sector-pill"><span class="sector-emoji">📡</span><div class="sector-name">Télécommunications</div></div>
+    <div class="sector-pill"><span class="sector-emoji">🛢️</span><div class="sector-name">Pétrole & Énergie</div></div>
+    <div class="sector-pill"><span class="sector-emoji">✈️</span><div class="sector-name">Aviation & Transport</div></div>
+    <div class="sector-pill"><span class="sector-emoji">🛒</span><div class="sector-name">E-commerce & Retail</div></div>
+    <div class="sector-pill"><span class="sector-emoji">🎓</span><div class="sector-name">Éducation & Universités</div></div>
+    <div class="sector-pill"><span class="sector-emoji">🔒</span><div class="sector-name">Cabinets de Conseil</div></div>
+    <div class="sector-pill"><span class="sector-emoji">🌐</span><div class="sector-name">ONG & Nations Unies</div></div>
+    <div class="sector-pill"><span class="sector-emoji">💻</span><div class="sector-name">GAFAM & Big Tech</div></div>
+    <div class="sector-pill"><span class="sector-emoji">🚀</span><div class="sector-name">Startups & Scale-ups</div></div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section>
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-label">Ce qu'ils disent</div>
+    <h2 class="section-title">Nos apprenants transforment<br>leur vie avec la cyber</h2>
+    <div class="divider"></div>
+
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"J'étais technicien GSM à Douala. 4 mois après cette formation, j'ai décroché un contrat remote à 3 500 € avec une boîte française. Ma vie a complètement changé."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">KM</div>
+          <div>
+            <div class="testi-name">Kévin M.</div>
+            <div class="testi-loc">Douala, Cameroun → Paris remote</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"La formation est ultra-pratique. On fait du vrai hacking sur des labs. En 3 mois j'ai gagné mes 2 premières primes bug bounty sur HackerOne. La méthode est sérieuse."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">FA</div>
+          <div>
+            <div class="testi-name">Fatima A.</div>
+            <div class="testi-loc">Abidjan, Côte d'Ivoire</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Avant je ne savais pas ce qu'était un pare-feu. Aujourd'hui je travaille comme analyste SOC dans une banque camerounaise à 900 000 FCFA/mois. Stop None Académie a tout changé."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">JN</div>
+          <div>
+            <div class="testi-name">Jean-Baptiste N.</div>
+            <div class="testi-loc">Yaoundé, Cameroun</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- URGENCY + FINAL CTA -->
+<section class="urgency-section">
+  <div class="section-label" style="justify-content:center;display:flex;">⚡ Offre limitée</div>
+  <h2 class="section-title">La prochaine session commence<br>dans quelques jours</h2>
+
+  <div class="urgency-timer">
+    <div class="timer-block">
+      <span class="timer-num" id="t-days">--</span>
+      <div class="timer-label">Jours</div>
+    </div>
+    <div class="timer-block">
+      <span class="timer-num" id="t-hours">--</span>
+      <div class="timer-label">Heures</div>
+    </div>
+    <div class="timer-block">
+      <span class="timer-num" id="t-min">--</span>
+      <div class="timer-label">Minutes</div>
+    </div>
+    <div class="timer-block">
+      <span class="timer-num" id="t-sec">--</span>
+      <div class="timer-label">Secondes</div>
+    </div>
+  </div>
+
+  <div class="spots-bar">
+    <p class="spots-text">Places disponibles : <span>seulement 7 restantes</span> sur 30</p>
+    <div class="progress-track"><div class="progress-fill"></div></div>
+  </div>
+
+  <a href="https://chat.whatsapp.com/IbdnwME1NFV4VtRIwQ2G6U?s=cl&p=a&mlu=4" class="big-cta" target="_blank">
+    <span style="font-size:1.4rem;">💬</span>
+    REJOINDRE MAINTENANT — C'EST GRATUIT
+  </a>
+  <p style="margin-top:20px;font-size:0.82rem;color:var(--muted);">
+    Clique, rejoins, et reçois ton programme complet + accès aux ressources exclusives
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Stop None Académie</div>
+  <div class="footer-text">Formation professionnelle en cybersécurité · Yaoundé, Cameroun</div>
+  <div class="footer-text">🔐 Powered by <strong style="color:var(--cyan);">Dongle Prog</strong></div>
+  <div class="footer-disclaimer">Les salaires indiqués sont des moyennes du marché basées sur des données réelles. Les résultats individuels varient selon l'implication et les opportunités de chaque apprenant.</div>
+</footer>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ─── MATRIX RAIN ───
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const cols = Math.floor(canvas.width / 20);
+const drops = Array(cols).fill(1);
+const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,./<>?アイウエオカキクケコ';
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(3,7,18,0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#00F5FF';
+  ctx.font = '14px Orbitron, monospace';
+  for (let i = 0; i < drops.length; i++) {
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(text, i * 20, drops[i] * 20);
+    if (drops[i] * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  }
+}
+setInterval(drawMatrix, 45);
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// ─── COUNTDOWN TIMER ───
+function updateTimer() {
+  const now = new Date();
+  // Next session: 7 days from page load (fixed start)
+  const target = new Date(now);
+  target.setDate(target.getDate() + 7);
+  target.setHours(9, 0, 0, 0);
+
+  const diff = target - new Date();
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('t-days').textContent = String(d).padStart(2,'0');
+  document.getElementById('t-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('t-min').textContent = String(m).padStart(2,'0');
+  document.getElementById('t-sec').textContent = String(s).padStart(2,'0');
+}
+updateTimer();
+setInterval(updateTimer, 1000);
+
+// ─── SCROLL REVEAL ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.why-card, .salary-card, .sector-pill, .testi-card, .module-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
