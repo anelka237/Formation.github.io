@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dongle Ultimate Test 673818077</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&display=swap');
+
+  :root {
+    --bg: #060a0f;
+    --bg2: #0b1120;
+    --card: #0d1a2e;
+    --border: #00ffe7;
+    --accent: #00ffe7;
+    --accent2: #ff2d6b;
+    --warn: #ffcc00;
+    --text: #c8e6f5;
+    --dim: #4a6a80;
+    --green: #00ff88;
+    --red: #ff2d6b;
+    --purple: #a855f7;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,231,0.012) 2px, rgba(0,255,231,0.012) 4px);
+    pointer-events:none; z-index:9999;
+  }
+
+  /* HEADER */
+  header {
+    text-align:center;
+    padding: 1.5rem 1rem 1rem;
+    border-bottom: 1px solid rgba(0,255,231,0.15);
+    position: relative;
+    background: linear-gradient(180deg, rgba(0,255,231,0.03) 0%, transparent 100%);
+  }
+  .logo-tag {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.7rem;
+    color: var(--accent);
+    letter-spacing:4px;
+    text-transform:uppercase;
+    margin-bottom:.4rem;
+    opacity:.6;
+  }
+  header h1 {
+    font-family:'Orbitron', monospace;
+    font-size: clamp(1rem, 3.5vw, 1.9rem);
+    color: #fff;
+    text-shadow: 0 0 20px var(--accent), 0 0 40px rgba(0,255,231,0.25);
+    letter-spacing:2px;
+    line-height:1.3;
+  }
+  header h1 span { color: var(--accent); }
+  .header-id {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.65rem;
+    color: var(--accent2);
+    letter-spacing:3px;
+    margin-top:.3rem;
+    opacity:.7;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    max-width: 780px;
+    margin: 1rem auto 0;
+    padding: 0 1rem;
+  }
+  .progress-info {
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'Share Tech Mono', monospace;
+    font-size:.7rem;
+    color: var(--dim);
+    margin-bottom:.4rem;
+    flex-wrap: wrap;
+    gap: .3rem;
+  }
+  .session-badge {
+    background: rgba(168,85,247,0.15);
+    border: 1px solid rgba(168,85,247,0.4);
+    color: var(--purple);
+    padding:.15rem .5rem;
+    border-radius:3px;
+    font-size:.65rem;
+    letter-spacing:1px;
+  }
+  .progress-track {
+    height:3px;
+    background: rgba(0,255,231,0.08);
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .progress-fill {
+    height:100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius:2px;
+    transition: width .5s ease;
+    box-shadow: 0 0 6px var(--accent);
+  }
+
+  main { max-width:780px; margin:0 auto; padding:1.5rem 1rem 4rem; }
+
+  /* ===== BOT INTERFACE ===== */
+  .bot-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .bot-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: .5rem;
+  }
+  .bot-avatar {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, #0d2a3e, #0d1a2e);
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 15px rgba(0,255,231,0.2);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .bot-avatar::after {
+    content:'';
+    position:absolute;
+    bottom:2px; right:2px;
+    width:9px; height:9px;
+    background: var(--green);
+    border-radius:50%;
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 6px var(--green);
+  }
+  .bot-info {}
+  .bot-name {
+    font-family: 'Orbitron', monospace;
+    font-size: .85rem;
+    color: var(--accent);
+    letter-spacing:1px;
+  }
+  .bot-status {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .6rem;
+    color: var(--green);
+    letter-spacing:2px;
+    opacity:.8;
+  }
+
+  /* BOT BUBBLE */
+  .bot-bubble {
+    background: var(--card);
+    border: 1px solid rgba(0,255,231,0.12);
+    border-radius: 4px 12px 12px 12px;
+    padding: 1rem 1.2rem;
+    position: relative;
+    max-width: 100%;
+    animation: fadeSlide .3s ease;
+  }
+  .bot-bubble::before {
+    content:'';
+    position:absolute;
+    top:0; left:-6px;
+    border:6px solid transparent;
+    border-right-color: rgba(0,255,231,0.12);
+    border-top-color: rgba(0,255,231,0.12);
+  }
+  @keyframes fadeSlide {
+    from { opacity:0; transform:translateY(8px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  .bot-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.6;
+    min-height: 1.5em;
+  }
+  .cursor-blink {
+    display: inline-block;
+    width: 2px; height: 1em;
+    background: var(--accent);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink .7s infinite;
+  }
+  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+
+  /* Q META */
+  .q-meta-row {
+    display: flex; align-items:center; gap:.6rem;
+    margin-bottom: .8rem;
+    flex-wrap: wrap;
+  }
+  .q-num {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.65rem;
+    color: var(--bg);
+    background: var(--accent);
+    padding:.15rem .45rem;
+    border-radius:3px;
+    font-weight:700;
+  }
+  .q-category {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.6rem;
+    color: var(--accent2);
+    letter-spacing:2px;
+    text-transform:uppercase;
+    opacity:.85;
+  }
+
+  /* OPTIONS */
+  .options { display:flex; flex-direction:column; gap:.55rem; margin-top:.8rem; }
+
+  .option {
+    display:flex; align-items:flex-start; gap:.7rem;
+    background: rgba(0,255,231,0.025);
+    border: 1px solid rgba(0,255,231,0.08);
+    border-radius:5px;
+    padding:.7rem .9rem;
+    cursor:pointer;
+    transition: all .2s;
+    position:relative;
+    overflow:hidden;
+  }
+  .option::before {
+    content:'';
+    position:absolute; left:0; top:0; bottom:0;
+    width:0;
+    background: rgba(0,255,231,0.05);
+    transition: width .2s;
+  }
+  .option:hover::before { width:100%; }
+  .option:hover { border-color: rgba(0,255,231,0.35); }
+  .option.selected { border-color: var(--accent); background: rgba(0,255,231,0.07); }
+  .option.correct { border-color: var(--green); background: rgba(0,255,136,0.07); }
+  .option.wrong { border-color: var(--red); background: rgba(255,45,107,0.07); }
+  .option.disabled { cursor: default; pointer-events:none; }
+
+  .opt-letter {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.75rem;
+    color: var(--accent);
+    min-width:1.3rem;
+    padding-top:.1rem;
+    flex-shrink:0;
+  }
+  .option.correct .opt-letter { color: var(--green); }
+  .option.wrong .opt-letter { color: var(--red); }
+
+  .opt-text { font-size:.92rem; line-height:1.45; flex:1; }
+
+  .opt-badge {
+    margin-left:auto;
+    font-size:.72rem;
+    font-family:'Share Tech Mono', monospace;
+    padding:.12rem .35rem;
+    border-radius:3px;
+    display:none;
+    flex-shrink:0;
+  }
+  .option.correct .opt-badge { display:block; color: var(--green); }
+  .option.wrong .opt-badge { display:block; color: var(--red); }
+
+  /* EXPLANATION */
+  .explanation {
+    margin-top:.8rem;
+    padding:.65rem .9rem;
+    border-left:3px solid var(--accent);
+    background: rgba(0,255,231,0.035);
+    font-size:.88rem;
+    color: var(--dim);
+    line-height:1.5;
+    border-radius:0 4px 4px 0;
+    display:none;
+  }
+  .explanation.show { display:block; animation: fadeSlide .3s ease; }
+  .explanation strong { color: var(--text); }
+
+  /* NAV */
+  .nav-wrap { text-align:center; margin-top:1.2rem; }
+  .btn-next {
+    font-family:'Orbitron', monospace;
+    font-size:.8rem;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding:.65rem 1.8rem;
+    border-radius:4px;
+    cursor:pointer;
+    transition: all .2s;
+    box-shadow: 0 0 10px rgba(0,255,231,0.08);
+  }
+  .btn-next:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 0 20px rgba(0,255,231,0.4);
+  }
+  .btn-next:disabled { opacity:.3; cursor:default; }
+
+  /* BLOCK SCREEN */
+  #block-screen {
+    display:none;
+    text-align:center;
+    padding:2rem 1rem;
+    animation: fadeSlide .4s ease;
+  }
+  .block-card {
+    background: var(--card);
+    border: 1px solid rgba(255,45,107,0.3);
+    border-radius:8px;
+    padding:2rem;
+    max-width:480px;
+    margin:0 auto;
+  }
+  .block-icon { font-size:3rem; margin-bottom:1rem; }
+  .block-title {
+    font-family:'Orbitron', monospace;
+    font-size:1.1rem;
+    color: var(--red);
+    letter-spacing:2px;
+    margin-bottom:.75rem;
+    text-shadow: 0 0 15px rgba(255,45,107,0.5);
+  }
+  .block-desc {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.8rem;
+    color: var(--dim);
+    line-height:1.6;
+    margin-bottom:1.5rem;
+  }
+  .countdown-display {
+    font-family:'Orbitron', monospace;
+    font-size:2.5rem;
+    color: var(--warn);
+    text-shadow: 0 0 20px rgba(255,204,0,0.5);
+    letter-spacing:4px;
+    margin-bottom:.5rem;
+  }
+  .countdown-label {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.65rem;
+    color: var(--dim);
+    letter-spacing:3px;
+    margin-bottom:1.5rem;
+  }
+  .countdown-bar-wrap {
+    width:100%;
+    height:4px;
+    background: rgba(255,204,0,0.1);
+    border-radius:2px;
+    margin-bottom:1rem;
+    overflow:hidden;
+  }
+  .countdown-bar {
+    height:100%;
+    background: var(--warn);
+    box-shadow: 0 0 8px var(--warn);
+    border-radius:2px;
+    transition: width 1s linear;
+  }
+
+  /* SESSION RESULT */
+  #session-result-screen {
+    display:none;
+    animation: fadeSlide .5s ease;
+  }
+  .session-result-card {
+    background: var(--card);
+    border: 1px solid rgba(0,255,231,0.15);
+    border-radius:8px;
+    padding:2rem;
+    text-align:center;
+    max-width:600px;
+    margin:0 auto;
+  }
+  .session-trophy { font-size:3rem; margin-bottom:1rem; }
+  .session-title {
+    font-family:'Orbitron', monospace;
+    font-size:1.1rem;
+    color: var(--accent);
+    letter-spacing:2px;
+    margin-bottom:.5rem;
+  }
+  .session-score-big {
+    font-family:'Orbitron', monospace;
+    font-size:2.5rem;
+    color:#fff;
+    text-shadow: 0 0 20px var(--accent);
+    margin:1rem 0;
+  }
+  .session-score-big span { color: var(--accent); }
+  .session-verdict {
+    font-size:.95rem;
+    color: var(--text);
+    line-height:1.6;
+    margin-bottom:1.5rem;
+    max-width:400px;
+    margin-left:auto; margin-right:auto;
+  }
+  .session-cat-breakdown {
+    text-align:left;
+    margin:1.5rem 0;
+  }
+  .session-cat-breakdown h4 {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.7rem;
+    color: var(--accent);
+    letter-spacing:2px;
+    margin-bottom:.8rem;
+  }
+  .cat-score-row {
+    display:flex; align-items:center; gap:.65rem;
+    margin-bottom:.5rem;
+  }
+  .cat-score-name {
+    font-size:.82rem;
+    min-width:150px;
+    color: var(--dim);
+    flex-shrink:0;
+  }
+  .cat-bar-track {
+    flex:1;
+    height:5px;
+    background: rgba(255,255,255,0.05);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .cat-bar-fill {
+    height:100%;
+    border-radius:3px;
+    transition: width 1s ease .3s;
+  }
+  .cat-score-pct {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.7rem;
+    color:#fff;
+    min-width:32px;
+    text-align:right;
+    flex-shrink:0;
+  }
+  .next-session-info {
+    background: rgba(168,85,247,0.08);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius:5px;
+    padding:.8rem 1rem;
+    margin:1rem 0;
+    font-family:'Share Tech Mono', monospace;
+    font-size:.75rem;
+    color: var(--purple);
+    line-height:1.5;
+  }
+  .btn-session-next {
+    font-family:'Orbitron', monospace;
+    font-size:.85rem;
+    letter-spacing:2px;
+    background: linear-gradient(135deg, var(--accent) 0%, #0099aa 100%);
+    color: var(--bg);
+    border:none;
+    padding:.8rem 2.5rem;
+    border-radius:4px;
+    cursor:pointer;
+    font-weight:700;
+    box-shadow: 0 0 20px rgba(0,255,231,0.25);
+    transition: all .2s;
+    margin-top:.5rem;
+  }
+  .btn-session-next:hover { transform:scale(1.04); box-shadow: 0 0 30px rgba(0,255,231,0.45); }
+
+  /* FINAL RESULTS */
+  #result-screen {
+    display:none;
+    text-align:center;
+    padding:1.5rem 0;
+    animation: fadeSlide .5s ease;
+  }
+  .result-badge {
+    display:inline-block;
+    font-family:'Orbitron', monospace;
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-weight:900;
+    padding:1rem 2rem;
+    border-radius:6px;
+    margin-bottom:1.5rem;
+    letter-spacing:2px;
+    text-shadow: 0 0 20px currentColor;
+  }
+  .level-debutant { color:var(--warn); border:2px solid var(--warn); box-shadow: 0 0 25px rgba(255,204,0,0.2); }
+  .level-intermediaire { color:var(--accent); border:2px solid var(--accent); box-shadow: 0 0 25px rgba(0,255,231,0.2); }
+  .level-avance { color:var(--green); border:2px solid var(--green); box-shadow: 0 0 25px rgba(0,255,136,0.2); }
+
+  .result-score {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.95rem;
+    color:var(--dim);
+    margin-bottom:1.5rem;
+  }
+  .result-score span { color:#fff; font-size:1.3rem; }
+  .result-desc {
+    max-width:500px; margin:0 auto 2rem;
+    font-size:.95rem; line-height:1.65; color:var(--text);
+  }
+  .result-details { max-width:600px; margin:0 auto 2rem; text-align:left; }
+  .result-details h3 {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.75rem; color:var(--accent); letter-spacing:2px; margin-bottom:1rem;
+  }
+
+  .btn-restart {
+    font-family:'Orbitron', monospace;
+    font-size:.8rem; letter-spacing:2px;
+    background: var(--accent2); color:#fff;
+    border:none; padding:.75rem 2rem;
+    border-radius:4px; cursor:pointer;
+    box-shadow: 0 0 20px rgba(255,45,107,0.3);
+    transition: all .2s;
+  }
+  .btn-restart:hover { transform:scale(1.04); box-shadow: 0 0 30px rgba(255,45,107,0.5); }
+
+  /* INTRO / NAME SCREEN */
+  #intro-screen { animation: fadeSlide .5s ease; }
+  .intro-card {
+    background: var(--card);
+    border: 1px solid rgba(0,255,231,0.13);
+    border-radius:8px;
+    padding:2rem 1.5rem;
+    text-align:center;
+    margin-bottom:1.5rem;
+  }
+  .intro-card h2 {
+    font-family:'Orbitron', monospace;
+    font-size:1rem; color:var(--accent);
+    letter-spacing:2px; margin-bottom:1rem;
+  }
+  .intro-card p { font-size:.92rem; line-height:1.7; color:var(--text); }
+
+  /* NAME INPUT */
+  .name-input-wrap {
+    margin:1.5rem 0;
+    display:flex; flex-direction:column; align-items:center; gap:.75rem;
+  }
+  .name-input-label {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.75rem; color:var(--accent); letter-spacing:2px;
+  }
+  .name-input {
+    background: rgba(0,255,231,0.04);
+    border: 1px solid rgba(0,255,231,0.25);
+    border-radius:5px;
+    color:#fff;
+    font-family:'Rajdhani', sans-serif;
+    font-size:1.1rem;
+    font-weight:600;
+    padding:.65rem 1.2rem;
+    text-align:center;
+    width:100%;
+    max-width:300px;
+    outline:none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .name-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(0,255,231,0.2);
+  }
+  .name-input::placeholder { color: var(--dim); font-size:.9rem; }
+
+  .intro-stats {
+    display:flex; justify-content:center; gap:1.5rem;
+    flex-wrap:wrap; margin:1.5rem 0;
+  }
+  .stat-box { text-align:center; }
+  .stat-num {
+    font-family:'Orbitron', monospace;
+    font-size:1.6rem; color:var(--accent);
+    text-shadow: 0 0 12px var(--accent);
+  }
+  .stat-lbl {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.65rem; color:var(--dim);
+    letter-spacing:2px; text-transform:uppercase;
+  }
+
+  .sessions-preview {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap:.75rem; margin:1.5rem 0;
+  }
+  .session-card {
+    background: rgba(0,0,0,0.3);
+    border:1px solid rgba(255,255,255,0.05);
+    border-radius:5px;
+    padding:.9rem .75rem;
+    text-align:center;
+  }
+  .session-card .sc-icon { font-size:1.3rem; margin-bottom:.35rem; }
+  .session-card .sc-name {
+    font-family:'Orbitron', monospace; font-size:.65rem;
+    letter-spacing:1px; color: var(--accent); margin-bottom:.25rem;
+  }
+  .session-card .sc-count {
+    font-family:'Share Tech Mono', monospace;
+    font-size:.6rem; color:var(--dim);
+  }
+
+  .btn-start {
+    font-family:'Orbitron', monospace;
+    font-size:.9rem; letter-spacing:3px;
+    background: linear-gradient(135deg, var(--accent) 0%, #0099aa 100%);
+    color:var(--bg); border:none;
+    padding:.9rem 2.5rem; border-radius:5px;
+    cursor:pointer; font-weight:700;
+    box-shadow: 0 0 25px rgba(0,255,231,0.3);
+    transition: all .2s;
+    margin-top:.5rem;
+  }
+  .btn-start:hover { transform:scale(1.05); box-shadow: 0 0 40px rgba(0,255,231,0.5); }
+  .btn-start:disabled { opacity:.4; cursor:default; transform:none; }
+
+  /* GREETING */
+  #greeting-screen {
+    display:none;
+    animation: fadeSlide .4s ease;
+  }
+  .greeting-bot {
+    background: var(--card);
+    border: 1px solid rgba(0,255,231,0.12);
+    border-radius:8px;
+    padding:2rem;
+    text-align:center;
+  }
+  .greeting-avatar { font-size:3.5rem; margin-bottom:1rem; }
+  .greeting-text {
+    font-size:1rem;
+    line-height:1.7;
+    color:var(--text);
+    margin-bottom:1.5rem;
+  }
+  .greeting-name-highlight {
+    color:var(--accent);
+    font-family:'Orbitron', monospace;
+    font-size:1.1rem;
+    text-shadow: 0 0 10px rgba(0,255,231,0.4);
+  }
+
+  /* RESPONSIVE */
+  @media(max-width:520px) {
+    .intro-stats { gap:1rem; }
+    .stat-num { font-size:1.3rem; }
+    .opt-text { font-size:.87rem; }
+    .bot-text { font-size:.95rem; }
+    .sessions-preview { grid-template-columns: repeat(2, 1fr); }
+    .result-badge { padding:.8rem 1.5rem; }
+    .cat-score-name { min-width:110px; font-size:.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-tag">// Stop None Académie × Dongle Prog</div>
+  <h1>DONGLE <span>ULTIMATE TEST</span></h1>
+  <div class="header-id">ID : 673818077 · ASSESSMENT v2.0</div>
+  <div class="progress-wrap" id="progress-wrap" style="display:none">
+    <div class="progress-info">
+      <span id="prog-text">Question 1 / 10</span>
+      <span id="session-label" class="session-badge">SESSION 1</span>
+      <span id="prog-pct">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- INTRO -->
+<div id="intro-screen">
+  <div class="intro-card">
+    <h2>[ INITIALISATION — DONGLE BOT 🤖 ]</h2>
+    <p>Ce test évalue tes connaissances en <strong>informatique de base, réseaux, cybersécurité, raisonnement logique et anglais technique</strong>. Il se compose de <strong>5 sessions indépendantes</strong> — une session peut être passée par jour.</p>
+
+    <div class="name-input-wrap">
+      <div class="name-input-label">&gt; IDENTIFIE-TOI, APPRENANT :</div>
+      <input type="text" class="name-input" id="learner-name" placeholder="Ton prénom..." maxlength="30" oninput="checkNameInput()" onkeypress="handleNameKey(event)">
+    </div>
+
+    <div class="intro-stats">
+      <div class="stat-box"><div class="stat-num">50</div><div class="stat-lbl">Questions</div></div>
+      <div class="stat-box"><div class="stat-num">5</div><div class="stat-lbl">Sessions</div></div>
+      <div class="stat-box"><div class="stat-num">5</div><div class="stat-lbl">Modules</div></div>
+    </div>
+
+    <div class="sessions-preview">
+      <div class="session-card">
+        <div class="sc-icon">💻</div>
+        <div class="sc-name">SESSION 1</div>
+        <div class="sc-count">Informatique de base · 10Q</div>
+      </div>
+      <div class="session-card">
+        <div class="sc-icon">🌐</div>
+        <div class="sc-name">SESSION 2</div>
+        <div class="sc-count">Réseaux & Infra · 10Q</div>
+      </div>
+      <div class="session-card">
+        <div class="sc-icon">🔐</div>
+        <div class="sc-name">SESSION 3</div>
+        <div class="sc-count">Cybersécurité · 10Q</div>
+      </div>
+      <div class="session-card">
+        <div class="sc-icon">🧠</div>
+        <div class="sc-name">SESSION 4</div>
+        <div class="sc-count">Raisonnement · 10Q</div>
+      </div>
+      <div class="session-card">
+        <div class="sc-icon">🇬🇧</div>
+        <div class="sc-name">SESSION 5</div>
+        <div class="sc-count">Anglais Tech · 10Q</div>
+      </div>
+    </div>
+
+    <button class="btn-start" id="btn-start" onclick="startGreeting()" disabled>LANCER LE TEST →</button>
+  </div>
+</div>
+
+<!-- GREETING -->
+<div id="greeting-screen">
+  <div class="greeting-bot">
+    <div class="greeting-avatar">🤖</div>
+    <div class="greeting-text" id="greeting-text"></div>
+    <button class="btn-start" id="btn-begin-session" onclick="beginFirstSession()" style="display:none">DÉMARRER LA SESSION 1 →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-screen" style="display:none">
+  <div class="bot-container">
+    <div class="bot-header">
+      <div class="bot-avatar">🤖</div>
+      <div class="bot-info">
+        <div class="bot-name">DONGLE BOT</div>
+        <div class="bot-status">● EN LIGNE · ÉVALUATION ACTIVE</div>
+      </div>
+    </div>
+    <div class="bot-bubble">
+      <div class="q-meta-row">
+        <span class="q-num" id="q-num-badge">Q1</span>
+        <span class="q-category" id="q-cat-badge"></span>
+      </div>
+      <div class="bot-text" id="bot-question-text"></div>
+      <div class="options" id="options-container"></div>
+      <div class="explanation" id="explanation"></div>
+    </div>
+  </div>
+  <div class="nav-wrap">
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()" disabled>QUESTION SUIVANTE →</button>
+  </div>
+</div>
+
+<!-- BLOCK SCREEN -->
+<div id="block-screen">
+  <div class="block-card">
+    <div class="block-icon">🚫</div>
+    <div class="block-title">ACCÈS BLOQUÉ</div>
+    <div class="block-desc" id="block-desc"></div>
+    <div class="countdown-display" id="countdown-display">05:00</div>
+    <div class="countdown-label">TEMPS RESTANT AVANT DÉBLOCAGE</div>
+    <div class="countdown-bar-wrap">
+      <div class="countdown-bar" id="countdown-bar" style="width:100%"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SESSION RESULT -->
+<div id="session-result-screen">
+  <div class="session-result-card">
+    <div class="session-trophy" id="session-trophy"></div>
+    <div class="session-title" id="session-result-title"></div>
+    <div class="session-score-big" id="session-score-big"></div>
+    <div class="session-verdict" id="session-verdict"></div>
+    <div class="session-cat-breakdown" id="session-cat-breakdown"></div>
+    <div class="next-session-info" id="next-session-info"></div>
+    <button class="btn-session-next" id="btn-session-next" onclick="goNextSession()"></button>
+  </div>
+</div>
+
+<!-- FINAL RESULTS -->
+<div id="result-screen"></div>
+
+</main>
+
+<script>
+// ============================================================
+//  DATA — 50 QUESTIONS IN 5 SESSIONS OF 10
+// ============================================================
+const SESSIONS = [
+  {
+    id: 1,
+    name: "💻 Informatique de base",
+    label: "SESSION 1",
+    questions: [
+      {
+        q: "Quel est le rôle principal d'un système d'exploitation (OS) comme Windows ou Linux ?",
+        opts: ["Naviguer sur internet uniquement","Gérer les ressources matérielles et logicielles","Créer des documents Word et Excel","Connecter l'ordinateur à une imprimante"],
+        ans: 1,
+        expl: "Le système d'exploitation fait l'interface entre le matériel (CPU, RAM, disque) et les logiciels. Il gère les processus, la mémoire, les fichiers et les périphériques."
+      },
+      {
+        q: "Lors de l'installation d'un logiciel sur Windows, quel type de fichier utilise-t-on généralement ?",
+        opts: [".mp3",".exe ou .msi",".jpg",".docx"],
+        ans: 1,
+        expl: "Les fichiers .exe (exécutable) et .msi (Windows Installer) sont les formats standards d'installation de logiciels sous Windows."
+      },
+      {
+        q: "Que permet de faire le 'Gestionnaire de tâches' (Task Manager) de Windows ?",
+        opts: ["Créer un nouveau compte utilisateur","Voir et arrêter les processus en cours","Formater le disque dur","Installer de nouveaux pilotes"],
+        ans: 1,
+        expl: "Le Gestionnaire de tâches (Ctrl+Alt+Suppr) montre les processus actifs, l'utilisation CPU/RAM/réseau et permet de forcer la fermeture d'une application bloquée."
+      },
+      {
+        q: "Quelle action correspond à 'configurer une application' ?",
+        opts: ["Télécharger l'application depuis internet","Supprimer l'application du système","Ajuster les paramètres selon ses besoins","Copier l'application sur une clé USB"],
+        ans: 2,
+        expl: "Configurer une application signifie accéder à ses paramètres pour l'adapter : langue, chemin de sauvegarde, permissions, comportement au démarrage, etc."
+      },
+      {
+        q: "Quelle est la différence entre RAM et stockage (HDD/SSD) ?",
+        opts: ["Ce sont les mêmes choses","La RAM est permanente, le SSD est temporaire","La RAM est temporaire (mémoire vive), le SSD/HDD est permanent (stockage)","Le HDD est plus rapide que la RAM"],
+        ans: 2,
+        expl: "La RAM (Random Access Memory) est la mémoire de travail : rapide mais effacée à l'extinction. Le SSD/HDD stocke les données de façon permanente."
+      },
+      {
+        q: "Qu'est-ce qu'un 'pilote' (driver) dans le contexte informatique ?",
+        opts: ["Un logiciel qui navigue sur internet","Un programme qui permet à l'OS de communiquer avec un périphérique matériel","Un virus informatique","Un type de câble réseau"],
+        ans: 1,
+        expl: "Un pilote (driver) est un logiciel qui sert d'intermédiaire entre le système d'exploitation et un périphérique (imprimante, carte graphique, clavier). Sans pilote, le matériel ne fonctionne pas."
+      },
+      {
+        q: "Que signifie l'acronyme 'BIOS' dans un ordinateur ?",
+        opts: ["Basic Input/Output System","Binary Internet Operating Software","Bureau Intégré d'Opérations Système","Browser Integrated OS"],
+        ans: 0,
+        expl: "Le BIOS (Basic Input/Output System) est le premier programme exécuté au démarrage. Il initialise le matériel et lance le chargement du système d'exploitation."
+      },
+      {
+        q: "Quelle est la fonction de la corbeille (Recycle Bin) sous Windows ?",
+        opts: ["Supprimer définitivement les fichiers immédiatement","Stocker temporairement les fichiers supprimés, permettant leur récupération","Compresser les fichiers volumineux","Sauvegarder automatiquement les documents"],
+        ans: 1,
+        expl: "La corbeille est un espace tampon. Les fichiers supprimés y sont stockés jusqu'à ce que tu vides la corbeille ou que tu les restaures. Elle protège contre les suppressions accidentelles."
+      },
+      {
+        q: "Dans Windows, quelle combinaison clavier permet de copier un élément ?",
+        opts: ["Ctrl+X","Ctrl+Z","Ctrl+C","Ctrl+V"],
+        ans: 2,
+        expl: "Ctrl+C = Copier | Ctrl+X = Couper | Ctrl+V = Coller | Ctrl+Z = Annuler. Ces raccourcis sont fondamentaux et fonctionnent dans la grande majorité des applications."
+      },
+      {
+        q: "Qu'est-ce qu'une extension de fichier (.pdf, .docx, .mp3) ?",
+        opts: ["Le nom du créateur du fichier","Des caractères aléatoires sans signification","Un indicateur du format/type du fichier, utilisé par l'OS pour l'ouvrir avec le bon programme","La taille du fichier en octets"],
+        ans: 2,
+        expl: "L'extension de fichier indique son format. L'OS l'utilise pour savoir quel programme utiliser pour l'ouvrir. Exemple : .pdf → Adobe Reader, .mp3 → lecteur audio."
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: "🌐 Réseaux & Infrastructure",
+    label: "SESSION 2",
+    questions: [
+      {
+        q: "Quel composant matériel connecte plusieurs appareils dans un réseau local (LAN) en redirigeant les paquets vers le bon destinataire ?",
+        opts: ["Un moniteur","Un switch (commutateur)","Un scanner","Une carte graphique"],
+        ans: 1,
+        expl: "Le switch fonctionne en couche 2 du modèle OSI. Il connecte plusieurs appareils dans un LAN et redirige les données uniquement vers le destinataire ciblé grâce aux adresses MAC."
+      },
+      {
+        q: "Quelle est la différence principale entre un switch et un routeur ?",
+        opts: ["Le switch est plus rapide, le routeur plus lent","Le switch relie des appareils dans un même réseau local ; le routeur relie plusieurs réseaux différents","Le routeur est pour la maison, le switch pour l'entreprise uniquement","Il n'y a aucune différence"],
+        ans: 1,
+        expl: "Le switch opère en LAN (réseau local) avec les adresses MAC. Le routeur opère entre réseaux (LAN → Internet) avec les adresses IP."
+      },
+      {
+        q: "Qu'est-ce qu'une adresse IP ?",
+        opts: ["L'identifiant physique gravé dans la carte réseau","Un identifiant numérique attribué à chaque appareil pour permettre la communication réseau","Le nom de domaine d'un site web","Le mot de passe du routeur"],
+        ans: 1,
+        expl: "L'adresse IP (ex: 192.168.1.10) est l'identifiant logique d'un appareil sur un réseau. Elle permet au routeur de savoir à qui envoyer les données. L'adresse MAC est l'identifiant physique."
+      },
+      {
+        q: "Qu'est-ce qu'un serveur Windows Server dans une infrastructure d'entreprise ?",
+        opts: ["Un PC de bureau classique avec Windows 10","Un système dédié qui fournit des services centralisés (auth, fichiers, DNS, DHCP) aux postes clients","Une console de jeu","Un antivirus réseau"],
+        ans: 1,
+        expl: "Windows Server centralise les services : Active Directory, serveur de fichiers, DNS, DHCP, IIS, etc. C'est la Phase 2 du programme CyberSec."
+      },
+      {
+        q: "Que signifie l'acronyme DNS ?",
+        opts: ["Data Network System","Domain Name System","Dynamic Node Service","Distributed Name Server"],
+        ans: 1,
+        expl: "Le DNS (Domain Name System) est le 'annuaire téléphonique' d'Internet. Il traduit les noms de domaine lisibles (google.com) en adresses IP numériques (142.250.74.46)."
+      },
+      {
+        q: "Quel port est utilisé par défaut pour le protocole HTTPS ?",
+        opts: ["Port 21","Port 80","Port 443","Port 8080"],
+        ans: 2,
+        expl: "HTTPS utilise le port 443. HTTP utilise le port 80. FTP utilise le port 21. HTTPS chiffre les communications avec TLS/SSL, contrairement à HTTP."
+      },
+      {
+        q: "Qu'est-ce qu'un pare-feu (firewall) ?",
+        opts: ["Un antivirus","Un système qui surveille et filtre le trafic réseau selon des règles définies","Un câble réseau spécial","Un logiciel de sauvegarde"],
+        ans: 1,
+        expl: "Un pare-feu filtre le trafic réseau entrant et sortant selon des règles de sécurité. Il peut bloquer des ports, des IP ou des protocoles suspects."
+      },
+      {
+        q: "Que signifie DHCP ?",
+        opts: ["Dynamic Host Configuration Protocol","Data Host Control Panel","Direct HTTP Communication Protocol","Distributed Host Cache Protocol"],
+        ans: 0,
+        expl: "Le DHCP assigne automatiquement des adresses IP aux appareils sur un réseau. Sans DHCP, il faudrait configurer manuellement l'adresse IP de chaque appareil."
+      },
+      {
+        q: "Quelle est la plage d'adresses IP privées de classe C la plus courante dans un réseau domestique ou de bureau ?",
+        opts: ["10.0.0.0 – 10.255.255.255","172.16.0.0 – 172.31.255.255","192.168.0.0 – 192.168.255.255","8.8.8.0 – 8.8.8.255"],
+        ans: 2,
+        expl: "La plage 192.168.x.x est la plus courante pour les réseaux privés locaux. Ce sont des adresses non routables sur Internet, réservées aux réseaux internes."
+      },
+      {
+        q: "Qu'est-ce que le protocole SSH ?",
+        opts: ["Super Security HTTP","Secure Shell — un protocole permettant d'accéder à distance à un terminal de façon chiffrée","Shared Server Host — pour partager des fichiers","System Software Handler — pour gérer les mises à jour"],
+        ans: 1,
+        expl: "SSH (Secure Shell) permet d'accéder à distance à la ligne de commande d'un serveur de façon sécurisée et chiffrée. Il remplace Telnet, qui transmettait tout en clair."
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "🔐 Cybersécurité",
+    label: "SESSION 3",
+    questions: [
+      {
+        q: "Qu'est-ce que le phishing ?",
+        opts: ["Un sport de pêche numérique","Une technique d'attaque consistant à se faire passer pour une entité de confiance pour voler des informations","Un type de virus qui détruit les fichiers","Un protocole réseau sécurisé"],
+        ans: 1,
+        expl: "Le phishing (hameçonnage) consiste à envoyer de faux emails/SMS imitant une banque, un service officiel, etc., pour pousser la victime à révéler ses identifiants ou cliquer sur un lien malveillant."
+      },
+      {
+        q: "Qu'est-ce qu'un ransomware ?",
+        opts: ["Un logiciel gratuit légal","Un malware qui chiffre les fichiers de la victime et réclame une rançon pour les déchiffrer","Un antivirus performant","Un outil de sauvegarde automatique"],
+        ans: 1,
+        expl: "Le ransomware chiffre les données de la victime, les rendant inaccessibles, puis exige un paiement (souvent en crypto) pour fournir la clé de déchiffrement. Exemple : WannaCry, Ryuk."
+      },
+      {
+        q: "Parmi ces mots de passe, lequel est le plus sécurisé ?",
+        opts: ["123456","MonNom2024","T#9xK!mL@3qZ","azerty"],
+        ans: 2,
+        expl: "Un bon mot de passe combine majuscules, minuscules, chiffres et symboles, avec une longueur suffisante. 'T#9xK!mL@3qZ' est aléatoire et complexe. Les autres sont prévisibles."
+      },
+      {
+        q: "Qu'est-ce que l'authentification à deux facteurs (2FA) ?",
+        opts: ["Se connecter avec deux mots de passe différents","Un système où l'identité est vérifiée avec deux éléments distincts : quelque chose qu'on sait + quelque chose qu'on possède","Utiliser deux navigateurs différents","Avoir deux comptes utilisateurs"],
+        ans: 1,
+        expl: "Le 2FA ajoute une couche de sécurité : mot de passe + code SMS/OTP ou application d'authentification. Même si le mot de passe est volé, le compte reste protégé."
+      },
+      {
+        q: "Qu'est-ce qu'une attaque par force brute (brute force) ?",
+        opts: ["Une attaque physique sur un serveur","Tenter toutes les combinaisons possibles pour trouver un mot de passe","Envoyer des milliers d'emails de spam","Intercepter les communications réseau"],
+        ans: 1,
+        expl: "L'attaque par force brute teste automatiquement toutes les combinaisons possibles de mots de passe jusqu'à trouver le bon. Un mot de passe complexe et long rend cette attaque impraticable."
+      },
+      {
+        q: "Qu'est-ce qu'un VPN ?",
+        opts: ["Un antivirus très puissant","Virtual Private Network — un tunnel chiffré pour protéger les communications et masquer l'adresse IP","Very Powerful Network — une connexion internet ultra-rapide","Un réseau local sans fil (Wi-Fi)"],
+        ans: 1,
+        expl: "Un VPN crée un tunnel chiffré entre ton appareil et un serveur VPN, masquant ton IP réelle et chiffrant ton trafic. Très utile sur les Wi-Fi publics et pour contourner des restrictions géographiques."
+      },
+      {
+        q: "Qu'est-ce qu'une vulnérabilité zero-day ?",
+        opts: ["Une faille connue depuis zéro jours, donc pas dangereuse","Une faille de sécurité inconnue du fabricant, exploitée avant qu'un correctif existe","Un virus qui s'active le premier jour de l'an","Un bug de code visible dans le code source public"],
+        ans: 1,
+        expl: "Une zero-day est une vulnérabilité inconnue du fabricant du logiciel. Les attaquants l'exploitent avant qu'un patch soit disponible. Très dangereuse car il n'y a pas de défense immédiate."
+      },
+      {
+        q: "Quel est le rôle d'un antivirus ?",
+        opts: ["Accélérer l'ordinateur","Détecter, bloquer et supprimer les logiciels malveillants (virus, malware, spyware)","Protéger contre toutes les cyberattaques sans exception","Chiffrer les données sur le disque dur"],
+        ans: 1,
+        expl: "Un antivirus analyse les fichiers et programmes à la recherche de signatures de malwares connus. Il ne protège pas contre tout (ex: attaques zero-day, phishing sophistiqué), d'où l'importance de plusieurs couches de sécurité."
+      },
+      {
+        q: "Qu'est-ce que le social engineering en cybersécurité ?",
+        opts: ["Créer des réseaux sociaux sécurisés","Manipuler psychologiquement des personnes pour les pousser à révéler des informations confidentielles ou effectuer des actions","Programmer des bots pour les réseaux sociaux","Analyser les comportements des utilisateurs sur internet"],
+        ans: 1,
+        expl: "Le social engineering exploite les failles humaines plutôt que techniques. Exemple : appeler un employé en se faisant passer pour le support IT pour obtenir son mot de passe. La sensibilisation est la principale défense."
+      },
+      {
+        q: "Qu'est-ce qu'une attaque DDoS ?",
+        opts: ["Double Denial of Security — une double couche de protection","Distributed Denial of Service — submerger un serveur de requêtes pour le rendre inaccessible","Direct Download of Software — télécharger des logiciels illégaux","Data Deletion on Server — effacer des données à distance"],
+        ans: 1,
+        expl: "Un DDoS utilise des milliers/millions de machines (souvent un botnet) pour envoyer simultanément des requêtes massives vers une cible, la surchargeant jusqu'à la rendre hors service."
+      }
+    ]
+  },
+  {
+    id: 4,
+    name: "🧠 Raisonnement logique",
+    label: "SESSION 4",
+    questions: [
+      {
+        q: "Votre PC ne démarre plus après une mise à jour. Quelle est la première étape logique de diagnostic ?",
+        opts: ["Acheter un nouveau PC immédiatement","Redémarrer en mode sans échec pour isoler le problème","Reformater le disque dur sans sauvegarde","Appeler le fabricant sans essayer quoi que ce soit"],
+        ans: 1,
+        expl: "Le mode sans échec démarre Windows avec les pilotes minimaux, permettant de déterminer si le problème vient d'un pilote ou d'un logiciel installé par la mise à jour."
+      },
+      {
+        q: "Un utilisateur ne peut pas accéder à un site web mais son collègue oui, depuis le même réseau. Où se situe probablement le problème ?",
+        opts: ["Le site est en panne mondiale","Le routeur de toute l'entreprise est défaillant","Le problème est localisé sur le poste ou le navigateur de cet utilisateur","Le câble internet entrant est coupé"],
+        ans: 2,
+        expl: "Puisque le collègue accède au site depuis le même réseau, le problème n'est pas global. Il faut chercher : cache DNS local, proxy navigateur, fichier hosts, ou profil utilisateur."
+      },
+      {
+        q: "Vous recevez un email urgent de votre 'banque' vous demandant de cliquer sur un lien pour sécuriser votre compte. Que faites-vous ?",
+        opts: ["Cliquer immédiatement sur le lien car c'est urgent","Transférer l'email à tous vos collègues","Vérifier l'adresse d'expéditeur et contacter directement la banque par ses canaux officiels","Répondre à l'email avec vos identifiants"],
+        ans: 2,
+        expl: "C'est une tentative de phishing. Règle de base : ne jamais cliquer sur un lien suspect, toujours contacter l'organisme via son site officiel ou numéro de téléphone connu."
+      },
+      {
+        q: "Un script Python affiche une erreur 'FileNotFoundError'. Quelle est la cause la plus probable ?",
+        opts: ["Le serveur est en panne","Python n'est pas installé","Le fichier mentionné dans le script n'existe pas à l'emplacement spécifié","La carte mémoire est pleine"],
+        ans: 2,
+        expl: "FileNotFoundError signifie que Python ne trouve pas le fichier au chemin indiqué. Causes : mauvais chemin, fichier supprimé, faute de frappe dans le nom, ou mauvais répertoire de travail."
+      },
+      {
+        q: "Un serveur répond très lentement depuis 2 heures. Quelle est la première ressource à vérifier via les outils de monitoring ?",
+        opts: ["La couleur du câble réseau","L'utilisation CPU, RAM et espace disque","Le modèle du serveur","La date d'achat du serveur"],
+        ans: 1,
+        expl: "L'analyse de performance commence par les métriques de base : CPU (traitement), RAM (mémoire), disque (I/O et espace), réseau. Un de ces éléments saturé explique souvent la lenteur."
+      },
+      {
+        q: "Si A implique B, et B implique C, et A est vrai, alors :",
+        opts: ["C est faux","B et C sont vrais","On ne peut pas savoir","A est faux"],
+        ans: 1,
+        expl: "C'est le syllogisme classique (modus ponens) : A→B, B→C, A est vrai → B est vrai → C est vrai. Raisonnement fondamental en logique et en informatique (conditions, chaînes de déduction)."
+      },
+      {
+        q: "Vous devez migrer une base de données vers un nouveau serveur. Quelle est l'étape INDISPENSABLE avant de commencer ?",
+        opts: ["Éteindre l'ancien serveur immédiatement","Effectuer une sauvegarde complète de la base de données","Informer les utilisateurs par email","Acheter un nouveau câble réseau"],
+        ans: 1,
+        expl: "Avant toute opération critique, TOUJOURS sauvegarder. Une migration peut échouer et corrompre les données. Sans backup, la perte de données serait définitive."
+      },
+      {
+        q: "Un utilisateur dit que 'internet ne fonctionne plus'. Quelle question POS-ER EN PREMIER pour diagnostiquer ?",
+        opts: ["Quel est ton âge ?","As-tu redémarré ton PC ?","Est-ce que tu peux pinguer le routeur (192.168.1.1) ?","Quand as-tu acheté cet ordinateur ?"],
+        ans: 2,
+        expl: "Pinguer le routeur local vérifie d'abord la couche 3 locale. Si le ping réussit → problème au-delà du routeur (FAI, DNS). S'il échoue → problème sur le poste ou le réseau local."
+      },
+      {
+        q: "Parmi ces tâches, laquelle doit être accomplie EN PREMIER lors de la mise en place d'un serveur sécurisé ?",
+        opts: ["Installer les applications métier","Changer le nom du serveur","Appliquer toutes les mises à jour et patches de sécurité","Créer les comptes utilisateurs des employés"],
+        ans: 2,
+        expl: "Un serveur non patché est vulnérable dès le premier démarrage. Les mises à jour de sécurité sont la priorité absolue avant tout déploiement de services ou d'applications."
+      },
+      {
+        q: "Un programme tourne mais ne répond plus. Quelle est la suite logique d'actions ?",
+        opts: ["Débrancher le PC directement","Tenter d'abord une fermeture forcée via le Gestionnaire de tâches, puis redémarrer si nécessaire","Reformater immédiatement","Appeler le support sans rien faire"],
+        ans: 1,
+        expl: "La démarche logique : 1) Gestionnaire de tâches → Fin de tâche (fermeture douce). Si ça échoue : 2) Fin du processus. Si ça échoue encore : 3) Redémarrage du système. On escalade progressivement."
+      }
+    ]
+  },
+  {
+    id: 5,
+    name: "🇬🇧 Anglais technique",
+    label: "SESSION 5",
+    questions: [
+      {
+        q: "Que signifie le message d'erreur 'Access Denied' affiché par un système ?",
+        opts: ["Le fichier est introuvable","L'accès est refusé — vous n'avez pas les droits suffisants","La connexion internet est perdue","Le disque dur est plein"],
+        ans: 1,
+        expl: "'Access Denied' = Accès refusé. Votre compte utilisateur n'a pas les permissions nécessaires pour accéder à cette ressource (fichier, dossier, service)."
+      },
+      {
+        q: "Dans un manuel, vous lisez : 'Please update your firewall rules to allow inbound traffic on port 443.' Que faire ?",
+        opts: ["Éteindre le firewall","Mettre à jour les règles du pare-feu pour autoriser le trafic entrant sur le port 443 (HTTPS)","Bloquer tout le trafic réseau","Changer le mot de passe du routeur"],
+        ans: 1,
+        expl: "Inbound = entrant | Allow = autoriser | Port 443 = HTTPS. La phrase demande d'ouvrir le port 443 en entrée dans les règles du pare-feu."
+      },
+      {
+        q: "Que signifie 'Deploy a secure Windows Server infrastructure' ?",
+        opts: ["Acheter un serveur Windows","Déployer (mettre en place) une infrastructure serveur Windows sécurisée","Désactiver la sécurité du serveur","Supprimer Windows du serveur"],
+        ans: 1,
+        expl: "'Deploy' = déployer/mettre en place | 'Secure' = sécurisée | 'Infrastructure' = ensemble des composants serveurs."
+      },
+      {
+        q: "Un collègue vous envoie ce message : 'The server is down, we need to troubleshoot ASAP.' Que comprends-tu ?",
+        opts: ["Le serveur est déplacé physiquement","Le serveur est hors service et il faut diagnostiquer le problème immédiatement","Le serveur est lent mais fonctionnel","Il faut redémarrer le serveur dans une semaine"],
+        ans: 1,
+        expl: "'Down' = hors service/en panne | 'Troubleshoot' = diagnostiquer/résoudre le problème | 'ASAP' = As Soon As Possible = dès que possible."
+      },
+      {
+        q: "Que signifie 'Patch your systems regularly' dans une politique de sécurité ?",
+        opts: ["Réparer physiquement les câbles régulièrement","Appliquer régulièrement les mises à jour et correctifs de sécurité sur vos systèmes","Acheter de nouveaux systèmes régulièrement","Sauvegarder vos données chaque semaine"],
+        ans: 1,
+        expl: "'Patch' en informatique = correctif/mise à jour. 'Patch your systems' = appliquer les patches de sécurité pour corriger les vulnérabilités connues."
+      },
+      {
+        q: "Vous lisez dans un log serveur : 'WARNING: Unauthorized login attempt detected from IP 45.23.112.4.' Que se passe-t-il ?",
+        opts: ["Un utilisateur a oublié son mot de passe une fois","Une tentative de connexion non autorisée a été détectée depuis l'adresse IP 45.23.112.4","Le serveur a effectué une mise à jour automatique","Un fichier a été corrompu"],
+        ans: 1,
+        expl: "'Unauthorized' = non autorisé | 'Login attempt' = tentative de connexion | 'Detected' = détectée. C'est une alerte de sécurité à investiguer immédiatement."
+      },
+      {
+        q: "Que signifie l'acronyme 'GUI' dans le contexte d'un logiciel ?",
+        opts: ["Global User Interface","Graphical User Interface — l'interface graphique (avec fenêtres, boutons, icônes)","General Utility Install","Group User Identification"],
+        ans: 1,
+        expl: "GUI = Graphical User Interface. C'est l'interface visuelle d'un logiciel (fenêtres, menus, boutons), par opposition à la CLI (Command Line Interface) qui est en ligne de commande."
+      },
+      {
+        q: "Dans une documentation technique, 'deprecated' signifie que la fonctionnalité est :",
+        opts: ["Nouvelle et recommandée","Obsolète — toujours disponible mais déconseillée car sera supprimée dans une future version","Interdite et illégale","La plus récente et performante"],
+        ans: 1,
+        expl: "'Deprecated' = déprécié/obsolète. La fonctionnalité fonctionne encore mais ne doit plus être utilisée car elle sera supprimée dans une prochaine version. Il faut migrer vers l'alternative recommandée."
+      },
+      {
+        q: "Que signifie 'scalability' dans le contexte d'une infrastructure informatique ?",
+        opts: ["La capacité d'un système à être sécurisé","La capacité d'un système à monter en charge et gérer une croissance de la demande","La facilité d'utilisation d'un logiciel","Le coût d'un système informatique"],
+        ans: 1,
+        expl: "'Scalability' = scalabilité/montée en charge. Un système scalable peut gérer une augmentation de la charge (utilisateurs, données, requêtes) sans dégradation significative des performances."
+      },
+      {
+        q: "Un admin système écrit : 'I need to backup the DB before the migration.' Que veut-il dire ?",
+        opts: ["Il veut supprimer la base de données","Il doit sauvegarder la base de données avant la migration","Il veut créer une nouvelle base de données","Il souhaite migrer sans sauvegarde préalable"],
+        ans: 1,
+        expl: "'Backup' = sauvegarder/faire une copie de sauvegarde | 'DB' = Database (base de données) | 'Before the migration' = avant la migration. Bonne pratique incontournable."
+      }
+    ]
+  }
+];
+
+// ============================================================
+//  STATE
+// ============================================================
+let learnerName = '';
+let currentSession = 0; // 0-indexed
+let currentQ = 0; // within session
+let answered = false;
+let sessionScore = 0;
+let totalScore = 0;
+let sessionScores = [];
+let blockTimer = null;
+let blockSeconds = 300; // 5 minutes
+const BLOCK_TOTAL = 300;
+
+// ============================================================
+//  UTILS
+// ============================================================
+function checkNameInput() {
+  const val = document.getElementById('learner-name').value.trim();
+  document.getElementById('btn-start').disabled = val.length < 2;
+}
+function handleNameKey(e) {
+  if (e.key === 'Enter') {
+    const val = document.getElementById('learner-name').value.trim();
+    if (val.length >= 2) startGreeting();
+  }
+}
+
+// ============================================================
+//  TYPE ANIMATION
+// ============================================================
+let typeInterval = null;
+
+function typeText(elementId, text, speed, callback) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  if (typeInterval) clearInterval(typeInterval);
+  el.innerHTML = '<span class="cursor-blink"></span>';
+  let i = 0;
+  typeInterval = setInterval(() => {
+    if (i < text.length) {
+      el.innerHTML = text.substring(0, i + 1) + '<span class="cursor-blink"></span>';
+      i++;
+    } else {
+      clearInterval(typeInterval);
+      typeInterval = null;
+      el.innerHTML = text;
+      if (callback) callback();
+    }
+  }, speed || 22);
+}
+
+// ============================================================
+//  GREETING SEQUENCE
+// ============================================================
+function startGreeting() {
+  learnerName = document.getElementById('learner-name').value.trim();
+  document.getElementById('intro-screen').style.display = 'none';
+  document.getElementById('greeting-screen').style.display = 'block';
+
+  const lines = [
+    `Salut <span class="greeting-name-highlight">${learnerName}</span> ! 👋<br><br>`,
+    `Je suis <strong>Dongle Bot</strong> 🤖, ton assistant pour ce test d'évaluation.<br><br>`,
+    `Tu vas passer <strong>5 sessions</strong> couvrant tout ce que tu dois maîtriser avant d'entrer en formation CyberSec.<br><br>`,
+    `⚠️ <strong>Règle importante :</strong> si tu rates une question, le quiz sera bloqué <strong>5 minutes</strong> avant de recommencer. Alors concentre-toi !<br><br>`,
+    `Les sessions peuvent être passées à des jours différents. À la fin de chaque session, tu verras ton score avant de continuer.<br><br>`,
+    `Prêt(e) ? Let's go ! 🚀`
+  ];
+  const fullText = lines.join('');
+  document.getElementById('greeting-text').innerHTML = '<span class="cursor-blink"></span>';
+
+  let i = 0;
+  const allChars = fullText;
+  if (typeInterval) clearInterval(typeInterval);
+  typeInterval = setInterval(() => {
+    if (i < allChars.length) {
+      document.getElementById('greeting-text').innerHTML = allChars.substring(0, i + 1) + '<span class="cursor-blink"></span>';
+      i++;
+    } else {
+      clearInterval(typeInterval);
+      document.getElementById('greeting-text').innerHTML = allChars;
+      const btn = document.getElementById('btn-begin-session');
+      btn.style.display = 'inline-block';
+      btn.style.animation = 'fadeSlide .4s ease';
+    }
+  }, 12);
+}
+
+function beginFirstSession() {
+  document.getElementById('greeting-screen').style.display = 'none';
+  launchSession(0);
+}
+
+// ============================================================
+//  SESSION LAUNCH
+// ============================================================
+function launchSession(sessionIndex) {
+  currentSession = sessionIndex;
+  currentQ = 0;
+  sessionScore = 0;
+  answered = false;
+
+  document.getElementById('session-result-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('progress-wrap').style.display = 'block';
+
+  const s = SESSIONS[sessionIndex];
+  document.getElementById('session-label').textContent = s.label;
+
+  renderQuestion();
+}
+
+// ============================================================
+//  RENDER QUESTION
+// ============================================================
+function renderQuestion() {
+  const s = SESSIONS[currentSession];
+  const q = s.questions[currentQ];
+  answered = false;
+  document.getElementById('btn-next').disabled = true;
+
+  // Progress
+  const pct = Math.round((currentQ / s.questions.length) * 100);
+  document.getElementById('prog-text').textContent = `Question ${currentQ + 1} / ${s.questions.length}`;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+  document.getElementById('q-num-badge').textContent = `Q${currentQ + 1}`;
+  document.getElementById('q-cat-badge').textContent = s.name;
+
+  // Clear options & explanation
+  document.getElementById('options-container').innerHTML = '';
+  document.getElementById('explanation').className = 'explanation';
+  document.getElementById('explanation').innerHTML = '';
+
+  // Animate question text
+  const botText = document.getElementById('bot-question-text');
+  botText.innerHTML = '<span class="cursor-blink"></span>';
+
+  const isLast = currentQ === s.questions.length - 1;
+  document.getElementById('btn-next').textContent = isLast ? 'VOIR RÉSULTATS SESSION →' : 'QUESTION SUIVANTE →';
+
+  // Type the question
+  const speed = Math.max(8, Math.min(25, Math.floor(1200 / q.q.length)));
+  typeText('bot-question-text', q.q, speed, () => {
+    // Render options after typing
+    const letters = ['A','B','C','D'];
+    const container = document.getElementById('options-container');
+    container.innerHTML = '';
+    q.opts.forEach((o, i) => {
+      const div = document.createElement('div');
+      div.className = 'option';
+      div.setAttribute('data-idx', i);
+      div.onclick = () => selectOption(div, i);
+      div.innerHTML = `
+        <span class="opt-letter">[${letters[i]}]</span>
+        <span class="opt-text">${o}</span>
+        <span class="opt-badge" id="badge-${i}"></span>
+      `;
+      div.style.opacity = '0';
+      div.style.transform = 'translateY(6px)';
+      container.appendChild(div);
+      setTimeout(() => {
+        div.style.transition = 'opacity .25s, transform .25s';
+        div.style.opacity = '1';
+        div.style.transform = 'translateY(0)';
+      }, i * 80);
+    });
+  });
+}
+
+// ============================================================
+//  SELECT OPTION → BLOCK IF WRONG
+// ============================================================
+function selectOption(el, idx) {
+  if (answered) return;
+  answered = true;
+
+  const q = SESSIONS[currentSession].questions[currentQ];
+  const options = document.querySelectorAll('.option');
+  options.forEach(o => o.classList.add('disabled'));
+
+  if (idx === q.ans) {
+    el.classList.add('correct');
+    document.getElementById(`badge-${idx}`).textContent = '✓ CORRECT';
+    sessionScore++;
+  } else {
+    el.classList.add('wrong');
+    document.getElementById(`badge-${idx}`).textContent = '✗ FAUX';
+    options[q.ans].classList.add('correct');
+    document.getElementById(`badge-${q.ans}`).textContent = '✓ BONNE RÉPONSE';
+  }
+
+  const expl = document.getElementById('explanation');
+  expl.innerHTML = q.expl;
+  expl.classList.add('show');
+
+  if (idx !== q.ans) {
+    // Block for 5 minutes
+    setTimeout(() => startBlock(), 1000);
+  } else {
+    document.getElementById('btn-next').disabled = false;
+  }
+}
+
+// ============================================================
+//  5-MINUTE BLOCK
+// ============================================================
+function startBlock() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+  document.getElementById('block-screen').style.display = 'block';
+
+  const s = SESSIONS[currentSession];
+  document.getElementById('block-desc').innerHTML = `
+    Tu as raté une question dans la session <strong style="color:#fff">${s.label} — ${s.name}</strong>.<br><br>
+    Le quiz reprend depuis le début de cette session dans 5 minutes.<br>
+    Profite-en pour revoir tes notes ! 📖
+  `;
+
+  blockSeconds = BLOCK_TOTAL;
+  updateCountdown();
+  blockTimer = setInterval(() => {
+    blockSeconds--;
+    if (blockSeconds <= 0) {
+      clearInterval(blockTimer);
+      endBlock();
+    } else {
+      updateCountdown();
+    }
+  }, 1000);
+}
+
+function updateCountdown() {
+  const m = Math.floor(blockSeconds / 60).toString().padStart(2, '0');
+  const s = (blockSeconds % 60).toString().padStart(2, '0');
+  document.getElementById('countdown-display').textContent = `${m}:${s}`;
+  const pct = (blockSeconds / BLOCK_TOTAL) * 100;
+  document.getElementById('countdown-bar').style.width = pct + '%';
+}
+
+function endBlock() {
+  document.getElementById('block-screen').style.display = 'none';
+  // Restart this session from scratch
+  launchSession(currentSession);
+}
+
+// ============================================================
+//  NEXT QUESTION
+// ============================================================
+function nextQuestion() {
+  currentQ++;
+  const s = SESSIONS[currentSession];
+  if (currentQ >= s.questions.length) {
+    showSessionResult();
+  } else {
+    renderQuestion();
+  }
+}
+
+// ============================================================
+//  SESSION RESULT
+// ============================================================
+function showSessionResult() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+
+  const s = SESSIONS[currentSession];
+  const total = s.questions.length;
+  const pct = Math.round((sessionScore / total) * 100);
+  sessionScores.push({ session: s, score: sessionScore, total });
+  totalScore += sessionScore;
+
+  let trophy, verdict;
+  if (pct >= 80) { trophy = '🏆'; verdict = `Excellent ${learnerName} ! Tu maîtrises très bien ce module. Continue comme ça !`; }
+  else if (pct >= 60) { trophy = '👍'; verdict = `Bon travail ${learnerName} ! Tu as les bases. Quelques points à retravailler mais tu es sur la bonne voie.`; }
+  else { trophy = '📚'; verdict = `C'est un début ${learnerName}. Ce module mérite révision — le support de cours t'aidera à combler ces lacunes.`; }
+
+  document.getElementById('session-trophy').textContent = trophy;
+  document.getElementById('session-result-title').textContent = `${s.label} TERMINÉE — ${s.name}`;
+  document.getElementById('session-score-big').innerHTML = `${sessionScore}<span>/${total}</span>`;
+  document.getElementById('session-verdict').textContent = verdict;
+
+  // Cat breakdown (single cat here, but scalable)
+  document.getElementById('session-cat-breakdown').innerHTML = `
+    <h4>// DÉTAIL DE LA SESSION</h4>
+    <div class="cat-score-row">
+      <div class="cat-score-name">${s.name}</div>
+      <div class="cat-bar-track"><div class="cat-bar-fill" id="session-bar" style="width:0%;background:${pct>=75?'var(--green)':pct>=50?'var(--accent)':'var(--accent2)'}"></div></div>
+      <div class="cat-score-pct">${sessionScore}/${total}</div>
+    </div>
+  `;
+  setTimeout(() => {
+    const bar = document.getElementById('session-bar');
+    if (bar) bar.style.width = pct + '%';
+  }, 200);
+
+  const isLastSession = currentSession === SESSIONS.length - 1;
+
+  if (isLastSession) {
+    document.getElementById('next-session-info').innerHTML = `
+      🎉 Tu as complété les <strong>${SESSIONS.length} sessions</strong> du Dongle Ultimate Test !<br>
+      Score total cumulé : <strong style="color:#fff">${totalScore + sessionScore - sessionScore}... clique pour voir le bilan final.</strong>
+    `;
+    // Recalculate: totalScore was already updated before this call
+    document.getElementById('next-session-info').innerHTML = `
+      🎉 Tu as complété toutes les <strong>${SESSIONS.length} sessions</strong> !<br>
+      Clique pour découvrir ton <strong style="color:var(--accent)">bilan final complet</strong>.
+    `;
+    document.getElementById('btn-session-next').textContent = 'VOIR MON BILAN FINAL 🏁';
+  } else {
+    const nextS = SESSIONS[currentSession + 1];
+    document.getElementById('next-session-info').innerHTML = `
+      📅 La prochaine session peut être passée un autre jour.<br>
+      <strong style="color:#fff">SESSION ${currentSession + 2} :</strong> ${nextS.name} — ${nextS.questions.length} questions.
+    `;
+    document.getElementById('btn-session-next').textContent = `DÉMARRER ${nextS.label} →`;
+  }
+
+  document.getElementById('session-result-screen').style.display = 'block';
+  document.getElementById('session-result-screen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function goNextSession() {
+  const isLastSession = currentSession === SESSIONS.length - 1;
+  if (isLastSession) {
+    showFinalResults();
+  } else {
+    document.getElementById('session-result-screen').style.display = 'none';
+    launchSession(currentSession + 1);
+  }
+}
+
+// ============================================================
+//  FINAL RESULTS
+// ============================================================
+function showFinalResults() {
+  document.getElementById('session-result-screen').style.display = 'none';
+
+  const totalQs = SESSIONS.reduce((sum, s) => sum + s.questions.length, 0);
+  const pct = Math.round((totalScore / totalQs) * 100);
+
+  let level, levelClass, emoji, desc;
+  if (pct < 50) {
+    level = 'DÉBUTANT'; levelClass = 'level-debutant'; emoji = '🟡';
+    desc = `${learnerName}, tu as les bases mais il reste beaucoup à découvrir. Le programme Summer School CyberSec est fait pour toi : une pédagogie active te guidera de zéro vers l'opérationnel. Chaque expert était un débutant !`;
+  } else if (pct < 75) {
+    level = 'INTERMÉDIAIRE'; levelClass = 'level-intermediaire'; emoji = '🔵';
+    desc = `Bon niveau ${learnerName} ! Tu maîtrises les fondamentaux et es prêt(e) à plonger dans les phases avancées du programme. Quelques lacunes à combler, mais tu as clairement le profil.`;
+  } else {
+    level = 'AVANCÉ'; levelClass = 'level-avance'; emoji = '🟢';
+    desc = `Excellent ${learnerName} ! Tu dépasses largement les prérequis. La formation CyberSec sera une confirmation de tes acquis. Tu pourrais envisager des certifications (CompTIA Security+, CEH).`;
+  }
+
+  let catHTML = sessionScores.map(({session, score, total}) => {
+    const p = Math.round((score / total) * 100);
+    const color = p >= 75 ? 'var(--green)' : p >= 50 ? 'var(--accent)' : 'var(--accent2)';
+    return `
+      <div class="cat-score-row">
+        <div class="cat-score-name">${session.name}</div>
+        <div class="cat-bar-track"><div class="cat-bar-fill" style="width:0%;background:${color}" data-width="${p}"></div></div>
+        <div class="cat-score-pct">${score}/${total}</div>
+      </div>
+    `;
+  }).join('');
+
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+  rs.innerHTML = `
+    <div class="result-badge ${levelClass}">${emoji} ${level}</div>
+    <div class="result-score">Score final : <span>${totalScore} / ${totalQs}</span> (${pct}%)</div>
+    <div class="result-desc">${desc}</div>
+    <div class="result-details">
+      <h3>// BILAN PAR SESSION</h3>
+      ${catHTML}
+    </div>
+    <button class="btn-restart" onclick="restartAll()">↺ RECOMMENCER LE TEST</button>
+  `;
+
+  setTimeout(() => {
+    document.querySelectorAll('.cat-bar-fill[data-width]').forEach(bar => {
+      const w = bar.getAttribute('data-width');
+      bar.style.transition = 'width 1s ease .3s';
+      bar.style.width = w + '%';
+    });
+  }, 200);
+
+  rs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ============================================================
+//  RESTART
+// ============================================================
+function restartAll() {
+  currentSession = 0;
+  currentQ = 0;
+  answered = false;
+  sessionScore = 0;
+  totalScore = 0;
+  sessionScores = [];
+
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('session-result-screen').style.display = 'none';
+  document.getElementById('block-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'none';
+
+  // Reset name input and go to intro
+  document.getElementById('learner-name').value = '';
+  document.getElementById('btn-start').disabled = true;
+  document.getElementById('intro-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
